@@ -6,7 +6,7 @@ _This README contains basic information about the project and its artifacts. If 
 ## Team Members
 - Isaac Graber
 - Autumn Conway
-- MEMBER3
+- Sebastian Garcia Montejo
 - MEMBER4
 - MEMBER5
 
