@@ -4,7 +4,7 @@
 _This README contains basic information about the project and its artifacts. If kept up to date, it will act as a primary dashboard for the project._
 
 ## Team Members
-- Isaac Graber
+- Isaac(Preferred: Ada) Graber
 - Autumn Conway
 - Zachary Karlin
 - Sebastian Garcia Montejo
