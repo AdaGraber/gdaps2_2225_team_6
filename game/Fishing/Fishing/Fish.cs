@@ -8,5 +8,6 @@ namespace Fishing
 {
     internal class Fish
     {
+        //TODO: Add fish attributes (do we want to do difficulty settings? faster to catch, shorter time to catch?)
     }
 }

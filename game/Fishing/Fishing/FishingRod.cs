@@ -8,5 +8,6 @@ namespace Fishing
 {
     internal class FishingRod
     {
+        //TODO: Add code for fishing rod, probably the method on how to lower/raise fishing rod, determine if a fish is caught, etc
     }
 }
