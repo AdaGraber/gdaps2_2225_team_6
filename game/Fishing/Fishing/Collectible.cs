@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Fishing
 {
-    internal class Inventory
+    internal class Collectible
     {
-        //The player's inventory
-
-        //TODO: Add in starter code for inventory system
+        //Parent class for items that can be picked up by the player, specifically Fish and Books
     }
 }

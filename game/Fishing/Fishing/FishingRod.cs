@@ -8,6 +8,9 @@ namespace Fishing
 {
     internal class FishingRod
     {
-        //TODO: Add code for fishing rod, probably the method on how to lower/raise fishing rod, determine if a fish is caught, etc
+        //What the player controls in order to catch fish and books
+
+        //TODO: Add code for fishing rod, probably the method on how to lower/raise fishing rod,
+        //determine if a fish is caught, etc
     }
 }

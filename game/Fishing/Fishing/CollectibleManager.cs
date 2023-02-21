@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Fishing
 {
-    internal class Inventory
+    internal class CollectibleManager
     {
-        //The player's inventory
-
-        //TODO: Add in starter code for inventory system
+        //Handles the spawning and drawing of collectibles
     }
 }
