@@ -20,8 +20,8 @@ namespace Fishing
         //Textures
         Texture2D fishTexture;
 
-        //Temporary fish object
-        Fish testFish;
+        //Collectible manager
+        CollectibleManager collectibleManager;
 
         public Game1()
         {
@@ -53,8 +53,8 @@ namespace Fishing
             //Load the fish texture
             fishTexture = Content.Load<Texture2D>("fish_placeholder");
 
-            //Initialize the temporary fish object for testing
-            testFish = new Fish("test fish", 3, fishTexture, 0, windowHeight, windowWidth, windowHeight, rng);
+            //Initialize the CollectibleManager
+            collectibleManager = new CollectibleManager(rng, windowWidth, windowHeight, fishTexture);
         }
 
         protected override void Update(GameTime gameTime)
@@ -64,8 +64,10 @@ namespace Fishing
 
             // TODO: Add your update logic here
 
+            collectibleManager.Update();
+
             //Update the temporary fish
-            testFish.Update();
+            //testFish.Update();
 
             base.Update(gameTime);
         }
@@ -78,8 +80,8 @@ namespace Fishing
 
             // TODO: Add your drawing code here
 
-            //Draw the temporary fish
-            testFish.Draw(_spriteBatch);
+            //Draw the fish in the Collectible Manager
+            collectibleManager.Draw(_spriteBatch);
 
             _spriteBatch.End();
 

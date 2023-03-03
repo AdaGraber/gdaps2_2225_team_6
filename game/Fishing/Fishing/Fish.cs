@@ -27,17 +27,14 @@ namespace Fishing
 
         private Random rng;
 
-        //Window height and width
-        int windowWidth;
-        int windowHeight;
-
         private string name;
         private int speed;
 
         private Vector2 position;
         private Texture2D texture;
 
-        //I'm not sure if this implementation for depth is going to stick, but it can easily be changed if need be
+        //I'm not sure if this implementation for depth is going to stick,\
+        //but it can easily be changed if need be
         private int minDepth;
         private int maxDepth;
 
@@ -50,20 +47,29 @@ namespace Fishing
             //Get-only property
         }
 
+
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor
         public Fish(string name, int speed, Texture2D texture, int minDepth, int maxDepth,
             int windowWidth, int windowHeight, Random rng)
         {
+            // Initialize fields
             this.name = name;
-
             this.texture = texture;
-
             this.rng = rng;
-
             this.minDepth = minDepth;
-            this.maxDepth = maxDepth;
+
+            //Error handling in case maxDepth's value is invalid
+            if (maxDepth > minDepth)
+            {
+                this.maxDepth = maxDepth;
+            }
+            //If it is, set the maxDepth to 10000 as a placeholder
+            else
+            {
+                maxDepth = 10000;
+            }
 
             //Give the fish a 50-50 chance of swimming left or right
             if (rng.Next(2) == 0)
