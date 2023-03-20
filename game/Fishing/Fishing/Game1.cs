@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 
 namespace Fishing
 {
@@ -17,8 +18,8 @@ namespace Fishing
         //Random object
         private Random rng;
 
-        //Textures
-        Texture2D fishTexture;
+        //List of fish textures
+        List<Texture2D> fishTextures;
 
         //Collectible manager
         CollectibleManager collectibleManager;
@@ -41,6 +42,9 @@ namespace Fishing
             //Initialize Random object
             rng = new Random();
 
+            //Initialize the list of fish textures
+            fishTextures = new List<Texture2D>();
+
             base.Initialize();
         }
 
@@ -50,11 +54,13 @@ namespace Fishing
 
             // TODO: use this.Content to load your game content here
 
-            //Load the fish texture
-            fishTexture = Content.Load<Texture2D>("fish_placeholder");
+            //Load the fish textures and add them to the list of textures
+            fishTextures.Add(Content.Load<Texture2D>("fish_placeholder"));
+            fishTextures.Add(Content.Load<Texture2D>("fish_placeholder2"));
 
             //Initialize the CollectibleManager
-            collectibleManager = new CollectibleManager(rng, windowWidth, windowHeight, fishTexture);
+            collectibleManager = new CollectibleManager(rng, windowWidth, windowHeight,
+                fishTextures);
         }
 
         protected override void Update(GameTime gameTime)
@@ -65,9 +71,6 @@ namespace Fishing
             // TODO: Add your update logic here
 
             collectibleManager.Update();
-
-            //Update the temporary fish
-            //testFish.Update();
 
             base.Update(gameTime);
         }

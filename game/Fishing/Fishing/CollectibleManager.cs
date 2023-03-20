@@ -13,7 +13,7 @@ namespace Fishing
     {
         /* FIELDS AND PROPERTIES */
 
-        // Random object
+        //Random object
         Random rng;
 
         //Window width and height
@@ -26,8 +26,8 @@ namespace Fishing
         //List of fish
         List<Fish> fishes = new List<Fish>();
 
-        //Placeholder fish texture
-        private Texture2D fishTexture;
+        //List of textures
+        List<Texture2D> fishTextures = new List<Texture2D>();
 
         //Variables for file reading
         StreamReader input = null;
@@ -37,12 +37,12 @@ namespace Fishing
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor
-        public CollectibleManager(Random rng, int windowWidth, int windowHeight, Texture2D fishTexture)
+        public CollectibleManager(Random rng, int windowWidth, int windowHeight, List<Texture2D> fishTextures)
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
             this.rng = rng;
-            this.fishTexture = fishTexture;
+            this.fishTextures = fishTextures;
 
             //Not sure if you're supposed to call methods in constructors or not -- may change
             ReadFishData();
@@ -108,7 +108,7 @@ namespace Fishing
                 Console.WriteLine(e.Message);
             }
 
-            // If the file was opened, close it
+            //If the file was opened, close it
             if (input != null)
             {
                 input.Close();
@@ -120,11 +120,15 @@ namespace Fishing
         /// </summary>
         public void SpawnFish()
         {
+            int fishTextureIndex = 0;
 
             //Check each fish in the dictionary
             foreach (KeyValuePair<string, int[]> n in fishSpecies)
             {
-                // TODO: Will add implementation for depth later
+                //Set the texture of the fish to the texture stored at the proper index
+                Texture2D fishTexture = fishTextures[fishTextureIndex];
+
+                //TODO: Will add implementation for depth later
 
                 //Get the chance of the fish spawning
                 int spawnChance = n.Value[0];
@@ -137,6 +141,9 @@ namespace Fishing
                     fishes.Add(new Fish(n.Key, n.Value[1], fishTexture, n.Value[2], n.Value[3],
                         windowWidth, windowHeight, rng));
                 }
+
+                //Add one to the index
+                fishTextureIndex++;
             }
         }
 
