@@ -20,9 +20,13 @@ namespace Fishing
 
         //List of fish textures
         List<Texture2D> fishTextures;
+        Texture2D rodTexture;
 
         //Collectible manager
         CollectibleManager collectibleManager;
+
+        //Fishing rod class setup
+        FishingRod fishingRod;
 
         public Game1()
         {
@@ -45,6 +49,10 @@ namespace Fishing
             //Initialize the list of fish textures
             fishTextures = new List<Texture2D>();
 
+            //initialize rod texture
+            rodTexture = new Texture2D(); //TODO: Verify if this works or if there is a better way to do this.
+
+            //Initializes rod texture
             base.Initialize();
         }
 
@@ -58,9 +66,14 @@ namespace Fishing
             fishTextures.Add(Content.Load<Texture2D>("fish_placeholder"));
             fishTextures.Add(Content.Load<Texture2D>("fish_placeholder2"));
 
+            //Loads fishing rod texture
+            rodTexture.Add(Content.Load<Texture2D>("rodPH"));
             //Initialize the CollectibleManager
             collectibleManager = new CollectibleManager(rng, windowWidth, windowHeight,
                 fishTextures);
+
+            //initializes fishing rod
+            fishingRod = new FishingRod(rodTexture, depth, pos) //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
         }
 
         protected override void Update(GameTime gameTime)
@@ -71,6 +84,7 @@ namespace Fishing
             // TODO: Add your update logic here
 
             collectibleManager.Update();
+            
 
             base.Update(gameTime);
         }
