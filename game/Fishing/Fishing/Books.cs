@@ -26,6 +26,11 @@ namespace Fishing
 
         private string spell; // This field will be null if it is a skill book, a spell name if it is a spell book
 
+        public string Spell
+        {
+            get { return spell; }
+        }
+
         // Paramaterized constructor for skill books (doesn't contain a spell)
         public Books(int speed, Texture2D texture, int minDepth, int maxDepth, int windowWidth, int windowHeight, Random rng)
             : base(speed, texture, minDepth, maxDepth, windowWidth, windowHeight, rng)
