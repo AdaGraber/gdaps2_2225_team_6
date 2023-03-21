@@ -28,8 +28,8 @@ namespace Fishing
         //FIELDS and Properties
         private Texture2D rodDesign;
         private int depth;
-        private const Rectangle rect = 20,40; //TODO: Change as necessary
         private Vector2 pos;
+        private Rectangle rect;
         private Direction direction;
         private KeyboardState prevKbState;
         private KeyboardState kbState;
@@ -45,6 +45,8 @@ namespace Fishing
             this.rodDesign = rodDesign;
             this.depth = depth;
             this.pos = pos;
+
+            rect = new Rectangle((int)pos.X, (int)pos.Y, 20, 40); //very temporary fix for compiler errors
         }
 
         //TODO: Finish fishing rod update

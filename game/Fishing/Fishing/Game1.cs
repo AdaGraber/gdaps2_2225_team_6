@@ -18,7 +18,7 @@ namespace Fishing
         //Random object
         private Random rng;
 
-        //List of fish textures
+        //Textures
         List<Texture2D> fishTextures;
         Texture2D rodTexture;
 
@@ -49,9 +49,6 @@ namespace Fishing
             //Initialize the list of fish textures
             fishTextures = new List<Texture2D>();
 
-            //initialize rod texture
-            rodTexture = new Texture2D(); //TODO: Verify if this works or if there is a better way to do this.
-
             //Initializes rod texture
             base.Initialize();
         }
@@ -67,13 +64,14 @@ namespace Fishing
             fishTextures.Add(Content.Load<Texture2D>("fish_placeholder2"));
 
             //Loads fishing rod texture
-            rodTexture.Add(Content.Load<Texture2D>("rodPH"));
+            rodTexture = Content.Load<Texture2D>("rodPH");
+
             //Initialize the CollectibleManager
             collectibleManager = new CollectibleManager(rng, windowWidth, windowHeight,
                 fishTextures);
 
             //initializes fishing rod
-            fishingRod = new FishingRod(rodTexture, depth, pos) //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
+            fishingRod = new FishingRod(rodTexture, 100, new Vector2(windowWidth / 2, 0)); //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
         }
 
         protected override void Update(GameTime gameTime)
