@@ -12,8 +12,7 @@ using Microsoft.Xna.Framework.Input;
  * Class purpose: Create fish for the player to catch
  * 
  * Known issues:
- * - very incomplete
- * - implementation that exists is very messy and disorganized -- it will be improved later
+ * 
  */
 
 namespace Fishing
@@ -45,6 +44,33 @@ namespace Fishing
         {
             // Initialize name field
             this.name = name;
+        }
+
+        /// <summary>
+        /// Override of Collectible's Draw that draws the fish.
+        /// </summary>
+        /// <param name="_spriteBatch">The sprite batch.</param>
+        public override void Draw(SpriteBatch _spriteBatch)
+        {
+            //If the fish is going to the right, draw it normally
+            if (speed > 0)
+            {
+                //This seems messy, but I can't find an overload of Draw() that doesn't have all this extraneous information
+                _spriteBatch.Draw(texture, position,
+                    new Rectangle(0, 0, texture.Width, texture.Height),
+                    Color.White, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0);
+            }
+
+            //If the fish is going to the left, draw it flipped
+            else
+            {
+                _spriteBatch.Draw(texture, position,
+                    new Rectangle(0, 0, texture.Width, texture.Height),
+                    Color.White, 0, Vector2.Zero, 0.1f, SpriteEffects.FlipHorizontally, 0);
+            }
+
+            //TODO: Add animation
+
         }
     }
 }

@@ -44,7 +44,6 @@ namespace Fishing
             this.rng = rng;
             this.fishTextures = fishTextures;
 
-            //Not sure if you're supposed to call methods in constructors or not -- may change
             ReadFishData();
         }
 
