@@ -21,9 +21,6 @@ namespace Fishing
     {
         /* FIELDS AND PROPERTIES */
 
-        //If I had to guess, I'd say all of the fields and methods so far will likely be shared in some form by Book
-        //and moved to Collectible eventually
-
         private string name;
 
         //Not very many properties yet until I know what information the rest of the code will need from Fish
@@ -55,10 +52,9 @@ namespace Fishing
             //If the fish is going to the right, draw it normally
             if (speed > 0)
             {
-                //This seems messy, but I can't find an overload of Draw() that doesn't have all this extraneous information
                 _spriteBatch.Draw(texture, position,
                     new Rectangle(0, 0, texture.Width, texture.Height),
-                    Color.White, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0);
+                    Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
             }
 
             //If the fish is going to the left, draw it flipped
@@ -66,7 +62,7 @@ namespace Fishing
             {
                 _spriteBatch.Draw(texture, position,
                     new Rectangle(0, 0, texture.Width, texture.Height),
-                    Color.White, 0, Vector2.Zero, 0.1f, SpriteEffects.FlipHorizontally, 0);
+                    Color.White, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0);
             }
 
             //TODO: Add animation

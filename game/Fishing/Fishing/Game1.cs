@@ -64,8 +64,9 @@ namespace Fishing
             // TODO: use this.Content to load your game content here
 
             //Load the fish textures and add them to the list of textures
-            fishTextures.Add(Content.Load<Texture2D>("fish_placeholder"));
-            fishTextures.Add(Content.Load<Texture2D>("fish_placeholder2"));
+            fishTextures.Add(Content.Load<Texture2D>("angelfish"));
+            fishTextures.Add(Content.Load<Texture2D>("aquafish"));
+            fishTextures.Add(Content.Load<Texture2D>("flamefish"));
 
             //Loads fishing rod texture
             rodTexture = Content.Load<Texture2D>("rodPH");
