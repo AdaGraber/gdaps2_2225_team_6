@@ -22,6 +22,8 @@ namespace Fishing
         List<Texture2D> fishTextures;
         Texture2D rodTexture;
 
+        Texture2D menuButton;
+
         //Collectible manager
         CollectibleManager collectibleManager;
 
@@ -72,6 +74,9 @@ namespace Fishing
 
             //initializes fishing rod
             fishingRod = new FishingRod(rodTexture, 100, new Vector2(windowWidth / 2, 0)); //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
+
+            //load texture for menu button
+            menuButton = Content.Load<Texture2D>("menuButton");
         }
 
         protected override void Update(GameTime gameTime)
@@ -97,6 +102,7 @@ namespace Fishing
 
             //Draw the fish in the Collectible Manager
             collectibleManager.Draw(_spriteBatch);
+            _spriteBatch.Draw(menuButton, new Vector2(10, 10), Color.White);
 
             _spriteBatch.End();
 
