@@ -22,14 +22,15 @@ namespace Fishing
         List<Texture2D> fishTextures;
         Texture2D rodTexture;
 
-        Texture2D menuButton;
-
         //Collectible manager
         CollectibleManager collectibleManager;
 
         //Fishing rod class setup
         FishingRod fishingRod;
 
+
+        //buttons
+        private List<Button> buttonList;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -40,6 +41,7 @@ namespace Fishing
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            IsMouseVisible = true;
 
             //Initialize window width and height
             windowWidth = _graphics.GraphicsDevice.Viewport.Width;
@@ -76,7 +78,18 @@ namespace Fishing
             fishingRod = new FishingRod(rodTexture, 100, new Vector2(windowWidth / 2, 0)); //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
 
             //load texture for menu button
-            menuButton = Content.Load<Texture2D>("menuButton");
+            Button menuButton = new Button(Content.Load<Texture2D>("menuButton"), Content.Load<SpriteFont>("Font"))
+            {
+                Position = new Vector2(10, 10),
+                Text = "ball",
+            };
+            menuButton.Click += MenuButtonClick;
+
+
+            buttonList = new List<Button>()
+            {
+                menuButton,
+            };
         }
 
         protected override void Update(GameTime gameTime)
@@ -85,6 +98,10 @@ namespace Fishing
                 Exit();
 
             // TODO: Add your update logic here
+            foreach(Button btn in buttonList)
+            {
+                btn.Update(gameTime);
+            }
 
             collectibleManager.Update();
             
@@ -102,11 +119,20 @@ namespace Fishing
 
             //Draw the fish in the Collectible Manager
             collectibleManager.Draw(_spriteBatch);
-            _spriteBatch.Draw(menuButton, new Vector2(10, 10), Color.White);
+
+            foreach (Button btn in buttonList)
+            {
+                btn.Draw(gameTime, _spriteBatch);
+            }
 
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private void MenuButtonClick(object sender, System.EventArgs e)
+        {
+
         }
     }
 }

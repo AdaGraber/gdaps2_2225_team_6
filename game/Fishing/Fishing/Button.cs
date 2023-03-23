@@ -23,7 +23,7 @@ namespace Fishing
 
         public event EventHandler Click;
         public bool Clicked { get; private set; }
-        public ColorWriteChannels PenColor { get; private set; }
+        public Color PenColor { get; private set; }
         public Vector2 Position { get; set; }
         public Rectangle Rectangle
         {
@@ -34,6 +34,51 @@ namespace Fishing
         }
         public string Text { get; set; }
 
+        public Button(Texture2D texture, SpriteFont font)
+        {
+            this.texture = texture;
+            this.font = font;
+
+            PenColor = Color.Black;
+        }
+
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            Color color = Color.White;
+
+            if(isHovering)
+            {
+                color = Color.Gray;
+            }
+
+            spriteBatch.Draw(texture, Rectangle, color);
+
+            if(!string.IsNullOrEmpty(Text))
+            {
+                float x = (Rectangle.X + (Rectangle.Width / 2)) - (font.MeasureString(Text).X / 2);
+                float y = (Rectangle.Y + (Rectangle.Width / 2)) - (font.MeasureString(Text).Y / 2);
+            }
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            prevMState = mState;
+            mState = Mouse.GetState();
+
+            Rectangle mouseRectangle = new Rectangle(mState.X, mState.Y, 1, 1);
+
+            isHovering = false;
+
+            if(mouseRectangle.Intersects(Rectangle))
+            {
+                isHovering = true;
+
+                if(mState.LeftButton == ButtonState.Released && prevMState.LeftButton == ButtonState.Pressed)
+                {
+                    Click?.Invoke(this, new EventArgs());
+                }
+            }
+        }
 
     }
 }
