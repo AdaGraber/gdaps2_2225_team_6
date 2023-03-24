@@ -25,13 +25,26 @@ namespace Fishing
 
         protected int speed;
 
-        protected Vector2 position;
+        protected Rectangle position;
         protected Texture2D texture;
 
         //I'm not sure if this implementation for depth is going to stick,
         //but it can easily be changed if need be
         protected int minDepth;
         protected int maxDepth;
+
+        protected bool isCaught;
+
+        public Rectangle Position
+        {
+            get { return position; }
+        }
+
+        public bool IsCaught
+        {
+            get { return isCaught; }
+        }
+
 
         public Collectible (int speed, Texture2D texture, int minDepth, int maxDepth,
             int windowWidth, int windowHeight, Random rng)
@@ -59,7 +72,7 @@ namespace Fishing
                 this.speed = speed;
 
                 //Set the collectible's position just out of sight at a random y location within its min and max depth range
-                position = new Vector2(-texture.Width, rng.Next(minDepth, maxDepth + 1));
+                position = new Rectangle(-texture.Width, rng.Next(minDepth, maxDepth + 1), texture.Width, texture.Height);
             }
             else
             {
@@ -67,8 +80,18 @@ namespace Fishing
                 this.speed = -speed;
 
                 //Set the collectible's position just out of sight at a random y location within its min and max depth range
-                position = new Vector2(windowWidth, rng.Next(minDepth, maxDepth + 1));
+                position = new Rectangle(windowWidth, rng.Next(minDepth, maxDepth + 1), texture.Width, texture.Height);
             }
+        }
+
+        /// <summary>
+        /// Catches the fish by setting its position equal to that of the fishing rod.
+        /// </summary>
+        /// <param name="fishingRodPosition">The position of the fishing rod.</param>
+        public void Catch(Rectangle fishingRodPosition)
+        {
+            position = fishingRodPosition;
+            isCaught = true;
         }
 
         /// <summary>
@@ -76,8 +99,11 @@ namespace Fishing
         /// </summary>
         public void Update()
         {
-            //Move the collectible horizontally across the screen
-            position.X += speed;
+            if (!isCaught)
+            {
+                //Move the collectible horizontally across the screen
+                position.X += speed;
+            }
 
             //TODO: Remove collectible if it leaves the screen
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace Fishing
 {
+    public delegate void OnCollision();
+
     internal class CollectibleManager
     {
         /* FIELDS AND PROPERTIES */
@@ -24,10 +27,13 @@ namespace Fishing
         Dictionary<string, int[]> fishSpecies = new Dictionary<string, int[]>();
 
         //List of fish
-        List<Fish> fishes = new List<Fish>();
+        List<Fish> collectibles = new List<Fish>();
 
         //List of textures
         List<Texture2D> fishTextures = new List<Texture2D>();
+
+        //Reference to player
+        FishingRod fishingRod;
 
         //Variables for file reading
         StreamReader input = null;
@@ -37,12 +43,13 @@ namespace Fishing
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor
-        public CollectibleManager(Random rng, int windowWidth, int windowHeight, List<Texture2D> fishTextures)
+        public CollectibleManager(Random rng, int windowWidth, int windowHeight, List<Texture2D> fishTextures, FishingRod fishingRod)
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
             this.rng = rng;
             this.fishTextures = fishTextures;
+            this.fishingRod = fishingRod;
 
             ReadFishData();
         }
@@ -54,10 +61,62 @@ namespace Fishing
         { 
             SpawnFish();
 
-            //Update each fish
-            foreach (Fish n in fishes)
+            //Check each collectible
+            for (int i = 0; i < collectibles.Count; i++)
             {
-                n.Update();
+                //Update each collectible
+                collectibles[i].Update();
+
+                //Check to see if the collectible has left the screen on the left or right
+                if (collectibles[i].Position.X == windowWidth
+                    || collectibles[i].Position.X == 0 - collectibles[i].Position.Width)
+                {
+                    //Remove the collectible from the list of collectibles to improve performance
+                    collectibles.Remove(collectibles[i]);
+
+                    //Decrement i since a collectible was removed
+                    i--;
+
+                }
+
+                //Check to see if the player has caught a collectible
+                if (collectibles[i].Position.Intersects(fishingRod.Rect) && !fishingRod.HasItem)
+                {
+                    collectibles[i].Catch(fishingRod.Rect);
+                    fishingRod.HasItem = true;
+                }
+
+                //If the collectible is caught and the player made it to the top of the screen with it
+                if (collectibles[i].IsCaught && fishingRod.Rect.Y == 0)
+                {
+                    //If the collectible is a fish
+                    if (collectibles[i] is Fish)
+                    {
+                        //Check if the species of fish has never been caught before
+                        if (fishSpecies[collectibles[i].Name][fishSpecies[collectibles[i].Name].Count() - 1] == 0)
+                        {
+                            //If so, set the fish's caught value to true
+                            fishSpecies[collectibles[i].Name][fishSpecies[collectibles[i].Name].Count() - 1] = 1;
+                        }
+
+                        //Otherwise, do nothing
+                    }
+
+                    //If the collectible is a book
+                    else
+                    {
+
+                    }
+
+                    //The fishing rod no longer has an item
+                    fishingRod.HasItem = false;
+
+                    //Remove the collectible from the list of collectibles
+                    collectibles.Remove(collectibles[i]);
+
+                    //Decrement i since a collectible was removed
+                    i--;
+                }
             }
         }
 
@@ -86,7 +145,7 @@ namespace Fishing
                     key = lines[0];
 
                     //Create a new integer array for holding the remaining data
-                    int[] fishData = new int[lines.Count() - 1];
+                    int[] fishData = new int[lines.Count() + 1];
 
                     //Search the entire array, minus the no-longer-useful first piece of data
                     for (int i = 1; i < lines.Count(); i++)
@@ -94,6 +153,11 @@ namespace Fishing
                         //Put that data into the fish array
                         fishData[i - 1] = int.Parse(lines[i]);
                     }
+
+                    //Add a final value to track whether or not the fish has been caught before--
+                    //1 if caught and 0 if not
+                    //TODO: Add this value to file if saving is implemented
+                    fishData[lines.Count()] = 0;
 
                     //Add the fish to the list of species
                     fishSpecies.Add(key, fishData);
@@ -137,7 +201,7 @@ namespace Fishing
                 if (rng.Next(1001) <= spawnChance)
                 {
                     //Create a new fish using the data in the array in the dictionary
-                    fishes.Add(new Fish(n.Key, n.Value[1], fishTexture, n.Value[2], n.Value[3],
+                    collectibles.Add(new Fish(n.Key, n.Value[1], fishTexture, n.Value[2], n.Value[3],
                         windowWidth, windowHeight, rng));
                 }
 
@@ -153,7 +217,7 @@ namespace Fishing
         public void Draw(SpriteBatch _spriteBatch)
         {
             //Draw every fish
-            foreach (Fish n in fishes)
+            foreach (Fish n in collectibles)
             {
                 n.Draw(_spriteBatch);
             }

@@ -36,6 +36,21 @@ namespace Fishing
         private int minDepth;
         private int maxDepth;
 
+        private Dictionary<Fish, bool> fishes;
+
+        private bool hasItem;
+
+        public Rectangle Rect
+        {
+            get { return rect; }
+        }
+
+        public bool HasItem
+        {
+            get { return hasItem; }
+            set { hasItem = value; }
+        }
+
         //TODO: Add any other properties or fields needed
         public int Depth { get { return depth; } }
        
@@ -47,6 +62,25 @@ namespace Fishing
             this.pos = pos;
 
             rect = new Rectangle((int)pos.X, (int)pos.Y, 20, 40); //very temporary fix for compiler errors
+        }
+
+        public void Catch(Collectible itemCaught)
+        {
+            if (hasItem == true && rect.Y == 0)
+            {
+                if (itemCaught is Books)
+                {
+                    
+                }
+
+                if (itemCaught is Fish)
+                {
+                    //should remove fish from play, which is difficult for fishingRod to do
+
+                    // if the item caught has not been caught before, update the list
+                }
+            }
+            hasItem = true;
         }
 
         //TODO: Finish fishing rod update

@@ -52,7 +52,7 @@ namespace Fishing
             //If the fish is going to the right, draw it normally
             if (speed > 0)
             {
-                _spriteBatch.Draw(texture, position,
+                _spriteBatch.Draw(texture, new Vector2(position.X, position.Y),
                     new Rectangle(0, 0, texture.Width, texture.Height),
                     Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
             }
@@ -60,7 +60,7 @@ namespace Fishing
             //If the fish is going to the left, draw it flipped
             else
             {
-                _spriteBatch.Draw(texture, position,
+                _spriteBatch.Draw(texture, new Vector2(position.X, position.Y),
                     new Rectangle(0, 0, texture.Width, texture.Height),
                     Color.White, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0);
             }

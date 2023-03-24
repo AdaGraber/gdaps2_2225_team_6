@@ -78,13 +78,12 @@ namespace Fishing
             //Loads fishing rod texture
             rodTexture = Content.Load<Texture2D>("rodPH");
 
-            //Initialize the CollectibleManager
-            collectibleManager = new CollectibleManager(rng, windowWidth, windowHeight,
-                fishTextures);
-
             //initializes fishing rod
             fishingRod = new FishingRod(rodTexture, 100, new Vector2(windowWidth / 2, 0)); //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
 
+            //Initialize the CollectibleManager
+            collectibleManager = new CollectibleManager(rng, windowWidth, windowHeight,
+                fishTextures, fishingRod);
 
             /* MENU TEXTURES */
 
