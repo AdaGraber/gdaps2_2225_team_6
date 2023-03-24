@@ -34,6 +34,7 @@ namespace Fishing
         }
         public string Text { get; set; }
 
+        /* CONSTRUCTOR AND METHODS */
         public Button(Texture2D texture, SpriteFont font)
         {
             this.texture = texture;
@@ -42,7 +43,7 @@ namespace Fishing
             PenColor = Color.Black;
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Rectangle rect)
         {
             Color color = Color.White;
 
@@ -51,12 +52,22 @@ namespace Fishing
                 color = Color.Gray;
             }
             
-            spriteBatch.Draw(texture, Rectangle, color);
+            if(rect != null)
+            {
+                spriteBatch.Draw(texture, rect, color);
+            }
+            else
+            {
+                spriteBatch.Draw(texture, Rectangle, color);
+            }
+            
 
             if(!string.IsNullOrEmpty(Text))
             {
                 float x = (Rectangle.X + (Rectangle.Width / 2)) - (font.MeasureString(Text).X / 2);
                 float y = (Rectangle.Y + (Rectangle.Width / 2)) - (font.MeasureString(Text).Y / 2);
+
+                spriteBatch.DrawString(font, Text, new Vector2(x,y), PenColor);
             }
         }
 

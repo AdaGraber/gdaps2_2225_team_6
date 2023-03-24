@@ -92,7 +92,7 @@ namespace Fishing
             Button menuButton = new Button(Content.Load<Texture2D>("menuButton"), Content.Load<SpriteFont>("Font"))
             {
                 Position = new Vector2(10, 10),
-                Text = "ball",
+                Text = "",
             };
             menuButton.Click += MenuButtonClick;
 
@@ -115,6 +115,8 @@ namespace Fishing
             {
                 btn.Update(gameTime);
             }
+
+            menu.Update(gameTime);
 
             collectibleManager.Update();
             
