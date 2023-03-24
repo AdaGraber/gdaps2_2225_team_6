@@ -8,6 +8,14 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 
+/* Team Tranquil
+ * GDAPS 2 Project
+ * Class purpose: Parent class for items that can be picked up by the player, specifically Fish and Books
+ * 
+ * Known issues:
+ * 
+ */
+
 namespace Fishing
 {
     public delegate void OnCollision();
@@ -32,7 +40,7 @@ namespace Fishing
         //List of textures
         List<Texture2D> fishTextures = new List<Texture2D>();
 
-        //Reference to player
+        //Reference to fishing rod
         FishingRod fishingRod;
 
         //Variables for file reading
@@ -51,6 +59,7 @@ namespace Fishing
             this.fishTextures = fishTextures;
             this.fishingRod = fishingRod;
 
+            //Read the fish data
             ReadFishData();
         }
 
@@ -82,21 +91,27 @@ namespace Fishing
                 //Check to see if the player has caught a collectible
                 if (collectibles[i].Position.Intersects(fishingRod.Rect) && !fishingRod.HasItem)
                 {
+                    //If so, tell the collectible to be caught
                     collectibles[i].Catch(fishingRod.Rect);
+
+                    //Tell the fishing rod it has an item
                     fishingRod.HasItem = true;
                 }
 
-                //If the collectible is caught and the player made it to the top of the screen with it
+                //Check if the collectible is caught and the player made it to the top of the screen with it
                 if (collectibles[i].IsCaught && fishingRod.Rect.Y == 0)
                 {
                     //If the collectible is a fish
                     if (collectibles[i] is Fish)
                     {
+                        //For readability purposes, get a reference to the int array for the species of that fish
+                        int[] fishData = fishSpecies[collectibles[i].Name];
+
                         //Check if the species of fish has never been caught before
-                        if (fishSpecies[collectibles[i].Name][fishSpecies[collectibles[i].Name].Count() - 1] == 0)
+                        if (fishData[fishData.Count() - 1] == 0)
                         {
                             //If so, set the fish's caught value to true
-                            fishSpecies[collectibles[i].Name][fishSpecies[collectibles[i].Name].Count() - 1] = 1;
+                            fishData[fishData.Count() - 1] = 1;
                         }
 
                         //Otherwise, do nothing
@@ -108,10 +123,10 @@ namespace Fishing
 
                     }
 
-                    //The fishing rod no longer has an item
+                    //Make the fishing rod no longer have an item
                     fishingRod.HasItem = false;
 
-                    //Remove the collectible from the list of collectibles
+                    //Remove the caught collectible from the list of collectibles
                     collectibles.Remove(collectibles[i]);
 
                     //Decrement i since a collectible was removed
@@ -154,7 +169,7 @@ namespace Fishing
                         fishData[i - 1] = int.Parse(lines[i]);
                     }
 
-                    //Add a final value to track whether or not the fish has been caught before--
+                    //Add a final value to track whether or not the fish has been caught before --
                     //1 if caught and 0 if not
                     //TODO: Add this value to file if saving is implemented
                     fishData[lines.Count()] = 0;
@@ -217,7 +232,7 @@ namespace Fishing
         public void Draw(SpriteBatch _spriteBatch)
         {
             //Draw every fish
-            foreach (Fish n in collectibles)
+            foreach (Collectible n in collectibles)
             {
                 n.Draw(_spriteBatch);
             }

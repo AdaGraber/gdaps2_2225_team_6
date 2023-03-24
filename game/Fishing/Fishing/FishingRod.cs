@@ -35,14 +35,12 @@ namespace Fishing
         private KeyboardState kbState;
         private int minDepth;
         private int maxDepth;
-
-        private Dictionary<Fish, bool> fishes;
-
         private bool hasItem;
 
         public Rectangle Rect
         {
             get { return rect; }
+            //Get-only property
         }
 
         public bool HasItem
@@ -60,6 +58,8 @@ namespace Fishing
             this.rodDesign = rodDesign;
             this.depth = depth;
             this.pos = pos;
+
+            hasItem = false;
 
             rect = new Rectangle((int)pos.X, (int)pos.Y, 20, 40); //very temporary fix for compiler errors
         }

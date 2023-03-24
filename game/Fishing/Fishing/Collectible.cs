@@ -21,31 +21,35 @@ namespace Fishing
     {
         /* FIELDS AND PROPERTIES */
 
+        //Random object
         protected Random rng;
 
-        protected int speed;
-
+        //Rectangle and texture
         protected Rectangle position;
         protected Texture2D texture;
 
-        //I'm not sure if this implementation for depth is going to stick,
-        //but it can easily be changed if need be
+        //Stats
+        protected int speed;
         protected int minDepth;
         protected int maxDepth;
-
         protected bool isCaught;
 
         public Rectangle Position
         {
             get { return position; }
+            //Get-only property
         }
 
         public bool IsCaught
         {
             get { return isCaught; }
+            //Get-only property
         }
 
 
+        /* CONSTRUCTORS AND METHODS */
+
+        //Parameterized constructor
         public Collectible (int speed, Texture2D texture, int minDepth, int maxDepth,
             int windowWidth, int windowHeight, Random rng)
         {
@@ -85,12 +89,15 @@ namespace Fishing
         }
 
         /// <summary>
-        /// Catches the fish by setting its position equal to that of the fishing rod.
+        /// Catches the fish.
         /// </summary>
         /// <param name="fishingRodPosition">The position of the fishing rod.</param>
         public void Catch(Rectangle fishingRodPosition)
         {
+            //Set position equal to that of the fishing rod
             position = fishingRodPosition;
+
+            //Set isCaught to true
             isCaught = true;
         }
 
