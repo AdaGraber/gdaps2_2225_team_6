@@ -16,8 +16,12 @@ namespace Fishing
         Texture2D menuFrame;
         Texture2D menuOutline;
 
+        //save button
+        Button saveButton;
         Texture2D saveBtnTexture;
+        Texture2D saveBtnOutline;
 
+        //header
         SpriteFont menuHeader;
 
         private bool open = false;
@@ -25,13 +29,17 @@ namespace Fishing
         private int windowWidth;
         private int windowHeight;
         private List<Button> buttonList;
+        private List<Texture2D> buttonOutlines;
 
+        public List<Button> Buttons { get { return buttonList; } }
         public bool Open { get; set; }
 
         public Menu(int windowWidth, int windowHeight)
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
+
+            buttonOutlines= new List<Texture2D>();
         }
 
         public void Load(GraphicsDevice graphicsDevice, ContentManager content)
@@ -54,11 +62,14 @@ namespace Fishing
             //saveButton texture
             saveBtnTexture = new Texture2D(graphicsDevice, 1, 1);
             saveBtnTexture.SetData(new[] { Color.Bisque });
+            saveBtnOutline = new Texture2D(graphicsDevice, 1, 1);
+            saveBtnOutline.SetData(new[] { Color.Peru });
+            buttonOutlines.Add(saveBtnOutline);
+
 
             //button handler
-            Button saveButton = new Button(saveBtnTexture, content.Load<SpriteFont>("Font"))
+            saveButton = new Button(saveBtnTexture, content.Load<SpriteFont>("Font"))
             {
-                Rectangle = new Rectangle(0, 0, 500, 20),
                 Text = "Save Game",
             };
             saveButton.Position = new Vector2(windowWidth / 2 - saveButton.Rectangle.Width / 2, (windowHeight / 2 - saveButton.Rectangle.Height / 2)-100);
@@ -73,10 +84,7 @@ namespace Fishing
         }
         public void Update(GameTime gameTime)
         {
-            foreach(Button btn in buttonList)
-            {
-                btn.Update(gameTime);
-            }
+            saveButton.Update(gameTime);
         }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
@@ -85,9 +93,21 @@ namespace Fishing
             spriteBatch.Draw(menuOutline, new Rectangle((windowWidth / 2 - 307), (windowHeight / 2 - 207), 614, 414), Color.White);
             spriteBatch.Draw(menuFrame, new Rectangle((windowWidth/2 - 300), (windowHeight/2 - 200), 600, 400), Color.White);
 
+            int sizeX = 500;
+            int sizeY = 40;
+
+            foreach (Texture2D outline in buttonOutlines)
+            {
+                sizeX = 508;
+                sizeY = 48;
+                spriteBatch.Draw(outline, new Rectangle(windowWidth / 2 - sizeX / 2, (windowHeight / 2 - sizeY / 2) - 100, sizeX, sizeY), Color.White);
+            }
+
             foreach(Button btn in buttonList)
             {
-                btn.Draw(gameTime, spriteBatch);
+                sizeX = 500;
+                sizeY = 40;
+                btn.Draw(gameTime, spriteBatch, new Rectangle(windowWidth / 2 - sizeX / 2, (windowHeight / 2 - sizeY / 2) - 100, sizeX, sizeY));
             }
 
             spriteBatch.DrawString(menuHeader, "Menu", new Vector2((windowWidth / 2 - menuHeader.MeasureString("Menu").X / 2), (windowHeight / 2 - 180)), Color.Black);
@@ -96,7 +116,7 @@ namespace Fishing
 
         private void SaveButtonClick(object sender, System.EventArgs e)
         {
-
+            saveButton.Text = "Saved!";
         }
     }
 }

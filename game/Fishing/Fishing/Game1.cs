@@ -138,7 +138,7 @@ namespace Fishing
             //buttons
             foreach (Button btn in buttonList)
             {
-                btn.Draw(gameTime, _spriteBatch);
+                btn.Draw(gameTime, _spriteBatch, new Rectangle(0,0,0,0));
             }
 
             if (menu.Open)

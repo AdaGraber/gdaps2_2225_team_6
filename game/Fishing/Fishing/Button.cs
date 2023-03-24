@@ -52,7 +52,7 @@ namespace Fishing
                 color = Color.Gray;
             }
             
-            if(rect != null)
+            if(!rect.IsEmpty)
             {
                 spriteBatch.Draw(texture, rect, color);
             }
