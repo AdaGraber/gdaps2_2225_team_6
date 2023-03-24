@@ -31,6 +31,10 @@ namespace Fishing
 
         //buttons
         private List<Button> buttonList;
+
+        //Menu
+        Menu menu;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -52,6 +56,9 @@ namespace Fishing
 
             //Initialize the list of fish textures
             fishTextures = new List<Texture2D>();
+
+            //Initialize menu
+            menu = new Menu(windowWidth, windowHeight);
 
             //Initializes rod texture
             base.Initialize();
@@ -78,6 +85,9 @@ namespace Fishing
             //initializes fishing rod
             fishingRod = new FishingRod(rodTexture, 100, new Vector2(windowWidth / 2, 0)); //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
 
+
+            /* MENU TEXTURES */
+
             //load texture for menu button
             Button menuButton = new Button(Content.Load<Texture2D>("menuButton"), Content.Load<SpriteFont>("Font"))
             {
@@ -91,6 +101,8 @@ namespace Fishing
             {
                 menuButton,
             };
+
+            menu.Load(GraphicsDevice, Content);
         }
 
         protected override void Update(GameTime gameTime)
@@ -121,9 +133,16 @@ namespace Fishing
             //Draw the fish in the Collectible Manager
             collectibleManager.Draw(_spriteBatch);
 
+
+            //buttons
             foreach (Button btn in buttonList)
             {
                 btn.Draw(gameTime, _spriteBatch);
+            }
+
+            if (menu.Open)
+            {
+                menu.Draw(gameTime, _spriteBatch);
             }
 
             _spriteBatch.End();
@@ -133,7 +152,14 @@ namespace Fishing
 
         private void MenuButtonClick(object sender, System.EventArgs e)
         {
-
+            if(menu.Open)
+            {
+                menu.Open = false;
+            }
+            else
+            {
+                menu.Open = true;
+            }
         }
     }
 }

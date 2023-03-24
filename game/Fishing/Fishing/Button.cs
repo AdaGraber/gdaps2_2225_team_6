@@ -50,7 +50,7 @@ namespace Fishing
             {
                 color = Color.Gray;
             }
-
+            
             spriteBatch.Draw(texture, Rectangle, color);
 
             if(!string.IsNullOrEmpty(Text))
