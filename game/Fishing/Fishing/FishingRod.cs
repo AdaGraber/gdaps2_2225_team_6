@@ -116,5 +116,57 @@ namespace Fishing
             prevKbState = kbState;
             
         }
+
+        //Updates fishing rod's actions based on what may be seen in 
+        public void Draw()
+        {
+            //switch to update movement based on the state
+            //TODO: For future sprint, verify maximum window that fishing rod can reach, values are placeholder for now
+            //Additionally, maybe add a "float" mechanic when stationary to make the fishing rod float in the water
+            switch (direction)
+            {
+                case Direction.Stationary:
+
+                    break;
+                case Direction.Up:
+                    pos.Y--;
+                    if(pos.Y < 0)
+                    {
+                        pos.Y = 0;
+                        depth--;
+                    }
+                    break;
+                case Direction.Down:
+                    pos.Y++;
+                    if(pos.Y > 200)
+                    {
+                        pos.Y = 200;
+                        depth++;
+                    }
+                    break;
+                case Direction.Left:
+                    pos.X--;
+                    if(pos.X < 0)
+                    {
+                        pos.X = 0;
+                    }
+                    break;
+                case Direction.Right:
+                    pos.X++;
+                    if(pos.X > 200)
+                    {
+                        pos.X = 200;
+                    }
+                    break;
+                case Direction.Ascent:
+                    pos.Y -= 5;
+                    if(pos.Y < 0)
+                    {
+                        pos.Y = 0;
+                        depth -= 5;
+                    }
+                    break;
+            }
+        }
     }
 }
