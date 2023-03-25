@@ -16,8 +16,13 @@ namespace Fishing
         private MouseState mState;
         private MouseState prevMState;
 
+        Color mainColor = Color.White;
+        Color hoverColor = Color.Gray;
+        Color outlineColor;
+
         private SpriteFont font;
         private Texture2D texture;
+        private Texture2D outline;
 
         private bool isHovering;
 
@@ -42,30 +47,41 @@ namespace Fishing
 
             PenColor = Color.Black;
         }
-
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Rectangle rect)
+        //overload for colors
+        public Button(GraphicsDevice graphicsDevice, Texture2D texture, SpriteFont font, Color mainColor, Color hoverColor, Color outlineColor)
         {
-            Color color = Color.White;
+            this.texture = texture;
+            this.font = font;
+
+            this.mainColor = mainColor;
+            this.hoverColor = hoverColor;
+            this.outlineColor = outlineColor;
+
+            outline = new Texture2D(graphicsDevice, 1, 1);
+            outline.SetData(new[] { Color.Peru });
+
+            PenColor = Color.Black;
+        }
+
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            Color color = mainColor;
 
             if(isHovering)
             {
-                color = Color.Gray;
+                color = hoverColor;
             }
-            
-            if(!rect.IsEmpty)
-            {
-                spriteBatch.Draw(texture, rect, color);
-            }
-            else
-            {
-                spriteBatch.Draw(texture, Rectangle, color);
-            }
-            
 
+            if(outline != null)
+            {
+                spriteBatch.Draw(outline, new Rectangle((int)Position.X - 3, (int)Position.Y - 3, Rectangle.Width + 6, Rectangle.Height + 6), Color.White);
+            }
+            spriteBatch.Draw(texture, Rectangle, color);
+            
             if(!string.IsNullOrEmpty(Text))
             {
                 float x = (Rectangle.X + (Rectangle.Width / 2)) - (font.MeasureString(Text).X / 2);
-                float y = (Rectangle.Y + (Rectangle.Width / 2)) - (font.MeasureString(Text).Y / 2);
+                float y = (Rectangle.Y + (Rectangle.Height / 2)) - (font.MeasureString(Text).Y / 2);
 
                 spriteBatch.DrawString(font, Text, new Vector2(x,y), PenColor);
             }

@@ -19,7 +19,18 @@ namespace Fishing
         //save button
         Button saveButton;
         Texture2D saveBtnTexture;
-        Texture2D saveBtnOutline;
+
+        //stats button
+        Button statsButton;
+        Texture2D statsBtnTexture;
+
+        //achievements button
+        Button achieveButton;
+        Texture2D achieveBtnTexture;
+
+        //quit button
+        Button quitButton;
+        Texture2D quitBtnTexture;
 
         //header
         SpriteFont menuHeader;
@@ -29,7 +40,6 @@ namespace Fishing
         private int windowWidth;
         private int windowHeight;
         private List<Button> buttonList;
-        private List<Texture2D> buttonOutlines;
 
         public List<Button> Buttons { get { return buttonList; } }
         public bool Open { get; set; }
@@ -38,8 +48,6 @@ namespace Fishing
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
-
-            buttonOutlines= new List<Texture2D>();
         }
 
         public void Load(GraphicsDevice graphicsDevice, ContentManager content)
@@ -60,31 +68,63 @@ namespace Fishing
             menuHeader = content.Load<SpriteFont>("Header");
 
             //saveButton texture
-            saveBtnTexture = new Texture2D(graphicsDevice, 1, 1);
-            saveBtnTexture.SetData(new[] { Color.Bisque });
-            saveBtnOutline = new Texture2D(graphicsDevice, 1, 1);
-            saveBtnOutline.SetData(new[] { Color.Peru });
-            buttonOutlines.Add(saveBtnOutline);
+            saveBtnTexture = content.Load<Texture2D>("longButton");
+
+            //statsButton texture
+            statsBtnTexture = content.Load<Texture2D>("shortButton");
+
+            //achieveButton texture
+            achieveBtnTexture = content.Load<Texture2D>("shortButton");
+
+            //quit button
+            quitBtnTexture = content.Load<Texture2D>("longButton");
 
 
-            //button handler
-            saveButton = new Button(saveBtnTexture, content.Load<SpriteFont>("Font"))
+            /* BUTTON HANDLER */
+            //save button
+            saveButton = new Button(graphicsDevice, saveBtnTexture, content.Load<SpriteFont>("Font"), Color.Bisque, Color.Peru, Color.Peru)
             {
                 Text = "Save Game",
             };
             saveButton.Position = new Vector2(windowWidth / 2 - saveButton.Rectangle.Width / 2, (windowHeight / 2 - saveButton.Rectangle.Height / 2)-100);
-
             saveButton.Click += SaveButtonClick;
 
+            //stats button
+            statsButton = new Button(graphicsDevice, statsBtnTexture, content.Load<SpriteFont>("Font"), Color.Bisque, Color.Peru, Color.Peru)
+            {
+                Text = "Stats",
+            };
+            statsButton.Position = new Vector2(windowWidth / 2 - saveButton.Rectangle.Width / 2, (windowHeight / 2 - saveButton.Rectangle.Height / 2) - 50); //uses saveButton to cut in half while staying at the same point
+
+            //achieve button
+            achieveButton = new Button(graphicsDevice, achieveBtnTexture, content.Load<SpriteFont>("Font"), Color.Bisque, Color.Peru, Color.Peru)
+            {
+                Text = "Achievement",
+            };
+            achieveButton.Position = new Vector2(statsButton.Rectangle.Right+30, (windowHeight / 2 - saveButton.Rectangle.Height / 2) - 50);
+
+            //quit button
+            quitButton = new Button(graphicsDevice, quitBtnTexture, content.Load<SpriteFont>("Font"), Color.Bisque, Color.Peru, Color.Peru)
+            {
+                Text = "Quit",
+            };
+            quitButton.Position = new Vector2(windowWidth / 2 - quitButton.Rectangle.Width / 2, (windowHeight / 2 - quitButton.Rectangle.Height / 2) + 100);
+            quitButton.Click += QuitButtonClick;
 
             buttonList = new List<Button>()
             {
                 saveButton,
+                statsButton,
+                achieveButton,
+                quitButton,
             };
         }
         public void Update(GameTime gameTime)
         {
-            saveButton.Update(gameTime);
+            foreach(Button button in buttonList)
+            {
+                button.Update(gameTime);
+            }
         }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
@@ -93,30 +133,22 @@ namespace Fishing
             spriteBatch.Draw(menuOutline, new Rectangle((windowWidth / 2 - 307), (windowHeight / 2 - 207), 614, 414), Color.White);
             spriteBatch.Draw(menuFrame, new Rectangle((windowWidth/2 - 300), (windowHeight/2 - 200), 600, 400), Color.White);
 
-            int sizeX = 500;
-            int sizeY = 40;
-
-            foreach (Texture2D outline in buttonOutlines)
-            {
-                sizeX = 508;
-                sizeY = 48;
-                spriteBatch.Draw(outline, new Rectangle(windowWidth / 2 - sizeX / 2, (windowHeight / 2 - sizeY / 2) - 100, sizeX, sizeY), Color.White);
-            }
-
-            foreach(Button btn in buttonList)
-            {
-                sizeX = 500;
-                sizeY = 40;
-                btn.Draw(gameTime, spriteBatch, new Rectangle(windowWidth / 2 - sizeX / 2, (windowHeight / 2 - sizeY / 2) - 100, sizeX, sizeY));
+            for(int i = 0 ; i < buttonList.Count ; i++)
+            {     
+                buttonList[i].Draw(gameTime, spriteBatch);
             }
 
             spriteBatch.DrawString(menuHeader, "Menu", new Vector2((windowWidth / 2 - menuHeader.MeasureString("Menu").X / 2), (windowHeight / 2 - 180)), Color.Black);
-           
         }
 
         private void SaveButtonClick(object sender, System.EventArgs e)
         {
             saveButton.Text = "Saved!";
+        }
+
+        private void QuitButtonClick(object sender, System.EventArgs e)
+        {
+            Environment.Exit(0);
         }
     }
 }
