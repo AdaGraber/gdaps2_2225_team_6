@@ -4,8 +4,17 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+
+/* Team Tranquil
+ * GDAPS 2 Project
+ * Class purpose: Create the user-controlled fishing rod
+ * 
+ * Known issues:
+ * 
+ */
 
 namespace Fishing
 {
@@ -21,20 +30,23 @@ namespace Fishing
     }
     internal class FishingRod
     {
-        //What the player controls in order to catch fish and books
+        /* FIELDS AND PROPERTIES */
 
-        
-
-        //FIELDS and Properties
+        //Texture and position rectangle
         private Texture2D rodDesign;
-        private int depth;
-        private Vector2 pos;
         private Rectangle rect;
-        private Direction direction;
-        private KeyboardState prevKbState;
-        private KeyboardState kbState;
-        private int minDepth;
+
+        //Maximum depth
         private int maxDepth;
+
+        //Direction enum and keyboard state
+        private Direction direction;
+        private KeyboardState kbState;
+
+        //Width of the window
+        private int windowWidth;
+
+        //Whether or not the fishing rod has an item
         private bool hasItem;
 
         public Rectangle Rect
@@ -50,157 +62,125 @@ namespace Fishing
         }
 
         //TODO: Add any other properties or fields needed
-        public int Depth { get { return depth; } }
-       
-        //constructor TODO: Implement the rod's rectangle to print
-        public FishingRod(Texture2D rodDesign, int depth, Vector2 pos)
-        { 
-            this.rodDesign = rodDesign;
-            this.depth = depth;
-            this.pos = pos;
+        public int Depth { get { return maxDepth; } }
 
-            hasItem = false;
 
-            rect = new Rectangle((int)pos.X, (int)pos.Y, 20, 40); //very temporary fix for compiler errors
-        }
+        /* CONSTRUCTORS AND METHODS */
 
-        public void Catch(Collectible itemCaught)
+        //Parameterized constructor
+        public FishingRod(Texture2D rodDesign, int maxDepth, int x, int y, int windowWidth)
         {
-            if (hasItem == true && rect.Y == 0)
-            {
-                if (itemCaught is Books)
-                {
-                    
-                }
+            this.windowWidth = windowWidth;
+            this.rodDesign = rodDesign;
+            this.maxDepth = maxDepth;
 
-                if (itemCaught is Fish)
-                {
-                    //should remove fish from play, which is difficult for fishingRod to do
-
-                    // if the item caught has not been caught before, update the list
-                }
-            }
-            hasItem = true;
+            //Set the rectangle at the given x and y position and with the width and height of the texture
+            rect = new Rectangle(x, y, rodDesign.Width, rodDesign.Height);
         }
 
-        //TODO: Finish fishing rod update
+        /// <summary>
+        /// Updates the fishing rod and controls movement.
+        /// </summary>
         public void Update()
         {
-            //adds kbstate when updated
+            //Updates the keyboard state
             kbState = Keyboard.GetState();
 
             //Determines state switching
-            switch(direction)
+
+            //Ascent
+            if (kbState.IsKeyDown(Keys.Space))
             {
-                case Direction.Up:
-                    if (kbState.IsKeyUp(Keys.Up))
-                    {
-                        direction = Direction.Stationary;
-                    }
-                    break;
-                case Direction.Down:
-                    if (kbState.IsKeyUp(Keys.Down))
-                    {
-                        direction = Direction.Stationary;
-                    }
-                    break;
-                case Direction.Left:
-                    if (kbState.IsKeyUp(Keys.Left))
-                    { 
-                        direction = Direction.Stationary; 
-                    }
-                    break;
-                case Direction.Right:
-                    if (kbState.IsKeyUp(Keys.Right))
-                    {
-                        direction = Direction.Stationary;
-                    }
-                    break;
-                case Direction.Ascent:
-                    if(kbState.IsKeyUp(Keys.Space) && !prevKbState.IsKeyUp(Keys.Space))
-                    {
-                        direction = Direction.Stationary;
-                    }
-                    break;
-                case Direction.Stationary:
-                    if (kbState.IsKeyDown(Keys.Space))
-                    {
-                        direction = Direction.Ascent;
-                    }
-                    if (kbState.IsKeyDown(Keys.Down))
-                    {
-                        direction = Direction.Down;
-                    }
-                    if (kbState.IsKeyDown(Keys.Up))
-                    {
-                        direction = Direction.Up;
-                    }
-                    if (kbState.IsKeyDown(Keys.Left))
-                    {
-                        direction = Direction.Left;
-                    }
-                    if (kbState.IsKeyDown(Keys.Right))
-                    {
-                        direction = Direction.Right;
-                    }
-                    break;
+                direction = Direction.Ascent;
             }
 
-            //after everything in update is finished, update prevkbstate
-            prevKbState = kbState;
-            
-        }
+            //Down
+            else if (kbState.IsKeyDown(Keys.Down))
+            {
+                direction = Direction.Down;
+            }
 
-        //Updates fishing rod's actions based on what may be seen in 
-        public void Draw()
-        {
-            //switch to update movement based on the state
+            //Up
+            else if (kbState.IsKeyDown(Keys.Up))
+            {
+                direction = Direction.Up;
+            }
+
+            //Left
+            else if (kbState.IsKeyDown(Keys.Left))
+            {
+                direction = Direction.Left;
+            }
+
+            //Right
+            else if (kbState.IsKeyDown(Keys.Right))
+            {
+                direction = Direction.Right;
+            }
+
+            //Stationary
+            else
+            {
+                direction = Direction.Stationary;
+            }
+
+            //Switch to update movement based on the state
             //TODO: For future sprint, verify maximum window that fishing rod can reach, values are placeholder for now
             //Additionally, maybe add a "float" mechanic when stationary to make the fishing rod float in the water
             switch (direction)
             {
-                case Direction.Stationary:
+                //Ascent
+                case Direction.Ascent:
+                    if (rect.Y > 0)
+                    {
+                        rect.Y -= 4;
+                    }
+                    break;
+
+                //Up
+                case Direction.Up:
+                    if (rect.Y > 0)
+                    {
+                        rect.Y--;
+                    }
+                    break;
+
+                //Down
+                case Direction.Down:
+                    if (rect.Y < maxDepth)
+                    {
+                        rect.Y++;
+                    }
+                    break;
+
+                //Left
+                case Direction.Left:
+                    if (rect.X > 0)
+                    {
+                        rect.X--;
+                    }
+                    break;
+
+                //Right
+                case Direction.Right:
+                    if (rect.X < windowWidth)
+                    {
+                        rect.X++;
+                    }
 
                     break;
-                case Direction.Up:
-                    pos.Y--;
-                    if(pos.Y < 0)
-                    {
-                        pos.Y = 0;
-                        depth--;
-                    }
-                    break;
-                case Direction.Down:
-                    pos.Y++;
-                    if(pos.Y > 200)
-                    {
-                        pos.Y = 200;
-                        depth++;
-                    }
-                    break;
-                case Direction.Left:
-                    pos.X--;
-                    if(pos.X < 0)
-                    {
-                        pos.X = 0;
-                    }
-                    break;
-                case Direction.Right:
-                    pos.X++;
-                    if(pos.X > 200)
-                    {
-                        pos.X = 200;
-                    }
-                    break;
-                case Direction.Ascent:
-                    pos.Y -= 5;
-                    if(pos.Y < 0)
-                    {
-                        pos.Y = 0;
-                        depth -= 5;
-                    }
-                    break;
+
+                //Stationary/anything else -- do nothing
             }
+        }
+
+        /// <summary>
+        /// Draws the fishing rod.
+        /// </summary>
+        /// <param name="_spriteBatch">The sprite batch.</param>
+        public void Draw(SpriteBatch _spriteBatch)
+        {
+            _spriteBatch.Draw(rodDesign, rect, Color.White);
         }
     }
 }

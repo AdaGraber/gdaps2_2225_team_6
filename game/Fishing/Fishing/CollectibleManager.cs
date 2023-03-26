@@ -78,11 +78,17 @@ namespace Fishing
                 //Update each collectible
                 collectibles[i].Update();
 
-                //KNOWN ERROR: IF A FISH REMOVED FROM THE LIST IS AT INDEX 0
-                //AN ERROR WILL OCCUR DUE TO INDEX = -1
-                //I WILL FIX THIS I PROMISE
+                //Check to see if the player has caught a collectible
+                if (collectibles[i].Position.Intersects(fishingRod.Rect) && !fishingRod.HasItem
+                    || collectibles[i].IsCaught)
+                {
+                    //If so, set the collectible's position to that of the fishing rod
+                    collectibles[i].FollowFishingRod(fishingRod.Rect);
 
-                //ALSO, FISH DOES NOT FOLLOW THE FISHING ROD
+                    //And tell the fishing rod it has an item
+                    fishingRod.HasItem = true;
+                }
+
 
                 //Check to see if the collectible has left the screen on the left or right
                 if (collectibles[i].Position.X == windowWidth
@@ -91,22 +97,13 @@ namespace Fishing
                     //Remove the collectible from the list of collectibles to improve performance
                     collectibles.Remove(collectibles[i]);
 
-                    //Decrement i since a collectible was removed
+                    //Decrement i since a collectible was removed, as long as the
+                    //current index =/= 0 (since then i would equal -1 and cause problems)
                     if (i > 0)
                     {
                         i--;
                     }
 
-                }
-
-                //Check to see if the player has caught a collectible
-                if (collectibles[i].Position.Intersects(fishingRod.Rect) && !fishingRod.HasItem)
-                {
-                    //If so, tell the collectible to be caught
-                    collectibles[i].Catch(fishingRod.Rect);
-
-                    //Tell the fishing rod it has an item
-                    fishingRod.HasItem = true;
                 }
 
                 //Check if the collectible is caught and the player made it to the top of the screen with it

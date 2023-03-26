@@ -92,7 +92,7 @@ namespace Fishing
         /// Catches the fish.
         /// </summary>
         /// <param name="fishingRodPosition">The position of the fishing rod.</param>
-        public void Catch(Rectangle fishingRodPosition)
+        public void FollowFishingRod(Rectangle fishingRodPosition)
         {
             //Set position equal to that of the fishing rod
             position = fishingRodPosition;
