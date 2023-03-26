@@ -128,7 +128,7 @@ namespace Fishing
                 btn.Draw(gameTime, _spriteBatch);
             }
 
-            if (true menu.Open)
+            if (menu.Open)
             {
                 menu.Draw(gameTime, _spriteBatch);
             }
