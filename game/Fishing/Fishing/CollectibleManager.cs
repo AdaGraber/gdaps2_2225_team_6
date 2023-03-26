@@ -68,6 +68,8 @@ namespace Fishing
         /// </summary>
         public void Update()
         { 
+
+            // Spawn the fish
             SpawnFish();
 
             //Check each collectible
@@ -75,6 +77,12 @@ namespace Fishing
             {
                 //Update each collectible
                 collectibles[i].Update();
+
+                //KNOWN ERROR: IF A FISH REMOVED FROM THE LIST IS AT INDEX 0
+                //AN ERROR WILL OCCUR DUE TO INDEX = -1
+                //I WILL FIX THIS I PROMISE
+
+                //ALSO, FISH DOES NOT FOLLOW THE FISHING ROD
 
                 //Check to see if the collectible has left the screen on the left or right
                 if (collectibles[i].Position.X == windowWidth
@@ -84,7 +92,10 @@ namespace Fishing
                     collectibles.Remove(collectibles[i]);
 
                     //Decrement i since a collectible was removed
-                    i--;
+                    if (i > 0)
+                    {
+                        i--;
+                    }
 
                 }
 

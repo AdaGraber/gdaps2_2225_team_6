@@ -79,7 +79,7 @@ namespace Fishing
             rodTexture = Content.Load<Texture2D>("rodPH");
 
             //initializes fishing rod
-            fishingRod = new FishingRod(rodTexture, 100, new Vector2(windowWidth / 2, 1)); //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
+            fishingRod = new FishingRod(rodTexture, 100, new Vector2(windowWidth / 2, 1), windowWidth); //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
 
             //Initialize the CollectibleManager
             collectibleManager = new CollectibleManager(rng, windowWidth, windowHeight,
@@ -117,7 +117,11 @@ namespace Fishing
 
             menu.Update(gameTime);
 
+            //Update the collectibles
             collectibleManager.Update();
+
+            //Update the fishing rod
+            fishingRod.Update();
             
 
             base.Update(gameTime);
@@ -131,9 +135,11 @@ namespace Fishing
 
             // TODO: Add your drawing code here
 
+            //Draw the fishing rod
+            //fishingRod.Draw(_spriteBatch);
+
             //Draw the collectibles in the Collectible Manager
             collectibleManager.Draw(_spriteBatch);
-
 
             //buttons
             foreach (Button btn in buttonList)
