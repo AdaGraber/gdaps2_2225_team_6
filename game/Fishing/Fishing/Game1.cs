@@ -85,22 +85,7 @@ namespace Fishing
             collectibleManager = new CollectibleManager(rng, windowWidth, windowHeight,
                 fishTextures, fishingRod);
 
-            /* MENU TEXTURES */
-
-            //load texture for menu button
-            Button menuButton = new Button(Content.Load<Texture2D>("menuButton"), Content.Load<SpriteFont>("Font"))
-            {
-                Position = new Vector2(10, 10),
-                Text = "",
-            };
-            menuButton.Click += MenuButtonClick;
-
-
-            buttonList = new List<Button>()
-            {
-                menuButton,
-            };
-
+            //load textures for menu
             menu.Load(GraphicsDevice, Content);
         }
 
@@ -110,16 +95,10 @@ namespace Fishing
                 Exit();
 
             // TODO: Add your update logic here
-            foreach(Button btn in buttonList)
-            {
-                btn.Update(gameTime);
-            }
-
             menu.Update(gameTime);
 
             collectibleManager.Update();
             
-
             base.Update(gameTime);
         }
 
@@ -134,33 +113,12 @@ namespace Fishing
             //Draw the collectibles in the Collectible Manager
             collectibleManager.Draw(_spriteBatch);
 
-
-            //buttons
-            foreach (Button btn in buttonList)
-            {
-                btn.Draw(gameTime, _spriteBatch);
-            }
-
-            if (menu.Open)
-            {
-                menu.Draw(gameTime, _spriteBatch);
-            }
+            //draw menu
+            menu.Draw(gameTime, _spriteBatch);
 
             _spriteBatch.End();
 
             base.Draw(gameTime);
-        }
-
-        private void MenuButtonClick(object sender, System.EventArgs e)
-        {
-            if(menu.Open)
-            {
-                menu.Open = false;
-            }
-            else
-            {
-                menu.Open = true;
-            }
         }
     }
 }
