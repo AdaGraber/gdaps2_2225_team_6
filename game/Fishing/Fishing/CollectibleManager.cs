@@ -148,11 +148,14 @@ namespace Fishing
                     //If the collectible is a book
                     else
                     {
-                        if (collectibles[i].Spell != null)
+                        // Create a temporary instance of the book collectible
+                        Books tempBook = (Books)collectibles[i];
+
+                        if (tempBook.Spell != null) // If the book actually has a spell
                         {
-                            spells.Add(collectibles[i].Spell);
+                            spells.Add(tempBook.Spell);
                         }
-                        else
+                        else // If there is no spell then it is a skill book
                         {
                             skillPoints++;
                         }
