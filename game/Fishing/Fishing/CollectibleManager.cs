@@ -43,6 +43,9 @@ namespace Fishing
         //List of textures
         List<Texture2D> fishTextures = new List<Texture2D>();
 
+        // Texture for the books
+        Texture2D bookTexture;
+
         //Reference to fishing rod
         FishingRod fishingRod;
 
@@ -68,12 +71,13 @@ namespace Fishing
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor
-        public CollectibleManager(Random rng, int windowWidth, int windowHeight, List<Texture2D> fishTextures, FishingRod fishingRod)
+        public CollectibleManager(Random rng, int windowWidth, int windowHeight, List<Texture2D> fishTextures, Texture2D bookTexture, FishingRod fishingRod)
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
             this.rng = rng;
             this.fishTextures = fishTextures;
+            this.bookTexture = bookTexture;
             this.fishingRod = fishingRod;
 
             //Read the fish data
