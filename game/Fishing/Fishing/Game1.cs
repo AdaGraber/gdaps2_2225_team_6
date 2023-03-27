@@ -28,10 +28,6 @@ namespace Fishing
         //Fishing rod class setup
         FishingRod fishingRod;
 
-
-        //buttons
-        private List<Button> buttonList;
-
         //Menu
         Menu menu;
 
@@ -103,8 +99,6 @@ namespace Fishing
             //Update the fishing rod
             fishingRod.Update();
             
-
-            
             base.Update(gameTime);
         }
 
@@ -122,16 +116,6 @@ namespace Fishing
             //Draw the collectibles in the Collectible Manager
             collectibleManager.Draw(_spriteBatch);
 
-            //buttons
-            foreach (Button btn in buttonList)
-            {
-                btn.Draw(gameTime, _spriteBatch);
-            }
-
-            if (menu.Open)
-            {
-                menu.Draw(gameTime, _spriteBatch);
-            }
             //draw menu
            menu.Draw(gameTime, _spriteBatch);
 
