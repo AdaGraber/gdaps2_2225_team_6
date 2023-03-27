@@ -37,7 +37,7 @@ namespace Fishing
         private List<Button> mainButtonList;
         private List<Button> statsButtonList;
         private List<Button> achievementsButtonList;
-        private State currentState;
+        private MenuState currentState;
 
         private bool open = false;
 
@@ -57,7 +57,7 @@ namespace Fishing
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
 
-            currentState = State.Closed;
+            currentState = MenuState.Closed;
         }
 
         public void Load(GraphicsDevice graphicsDevice, ContentManager content)
@@ -146,16 +146,16 @@ namespace Fishing
 
         public void Update(GameTime gameTime)
         {
-            if(currentState != State.Closed)
+            if(currentState != MenuState.Closed)
             {
                 List<Button> updateButton;
                 switch (currentState)
                 {
-                    case State.Stats:
+                    case MenuState.Stats:
                         updateButton = statsButtonList;
                         break;
 
-                    case State.Achievements:
+                    case MenuState.Achievements:
                         updateButton = achievementsButtonList;
                         break;
 
@@ -175,14 +175,14 @@ namespace Fishing
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             string headerText = "";
-            if(currentState != State.Closed)
+            if(currentState != MenuState.Closed)
             {
                 spriteBatch.Draw(outerShade, new Rectangle(0, 0, windowWidth, windowHeight), Color.White * 0.5f);
                 spriteBatch.Draw(menuOutline, new Rectangle((windowWidth / 2 - 307), (windowHeight / 2 - 207), 614, 414), Color.White);
                 spriteBatch.Draw(menuFrame, new Rectangle((windowWidth / 2 - 300), (windowHeight / 2 - 200), 600, 400), Color.White);
                 
 
-                if (currentState == State.Main)
+                if (currentState == MenuState.Main)
                 {
                     headerText = "Menu";
                     for (int i = 0; i < mainButtonList.Count; i++)
@@ -190,7 +190,7 @@ namespace Fishing
                         mainButtonList[i].Draw(gameTime, spriteBatch);
                     }
                 }
-                else if (currentState == State.Stats)
+                else if (currentState == MenuState.Stats)
                 {
                     headerText = "Stats";
                     for (int i = 0; i < statsButtonList.Count; i++)
@@ -198,7 +198,7 @@ namespace Fishing
                         statsButtonList[i].Draw(gameTime, spriteBatch);
                     }
                 }
-                else if (currentState == State.Achievements)
+                else if (currentState == MenuState.Achievements)
                 {
                     headerText = "Achievements";
                     for (int i = 0; i < achievementsButtonList.Count; i++)
@@ -214,13 +214,13 @@ namespace Fishing
 
         private void MenuButtonClick(object sender, System.EventArgs e)
         {
-            if (currentState == State.Closed)
+            if (currentState == MenuState.Closed)
             {
-                currentState = State.Main;
+                currentState = MenuState.Main;
             }
             else
             {
-                currentState = State.Closed;
+                currentState = MenuState.Closed;
             }
         }
         private void SaveButtonClick(object sender, System.EventArgs e)
@@ -229,11 +229,11 @@ namespace Fishing
         }
         private void StatsButtonClick(object sender, System.EventArgs e)
         {
-            currentState = State.Stats;
+            currentState = MenuState.Stats;
         }
         private void AchievementButtonClick(object sender, System.EventArgs e)
         {
-            currentState = State.Achievements;
+            currentState = MenuState.Achievements;
         }
         private void QuitButtonClick(object sender, System.EventArgs e)
         {
@@ -241,7 +241,7 @@ namespace Fishing
         }
         private void BackButtonClick(object sender, System.EventArgs e)
         {
-            currentState = State.Main;
+            currentState = MenuState.Main;
             
         }
     }

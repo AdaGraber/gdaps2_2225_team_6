@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Fishing
 {
     //Game state enum
-    enum State
+    enum MenuState
     {
         Closed,
         Main,
@@ -21,7 +21,7 @@ namespace Fishing
         private SpriteBatch _spriteBatch;
 
         //Game state
-        State gameState;
+        MenuState menuState;
 
         //Window dimensions
         private int windowWidth;
@@ -71,6 +71,9 @@ namespace Fishing
             //Initialize menu
             menu = new Menu(windowWidth, windowHeight);
 
+            //Set the initial menuState to be closed
+            menuState = MenuState.Closed;
+
             //Initializes rod texture
             base.Initialize();
         }
@@ -108,7 +111,7 @@ namespace Fishing
             // TODO: Add your update logic here
 
             //If the game is running
-            if (gameState == State.Closed)
+            if (menuState == MenuState.Closed)
             {
                 //Update the collectibles
                 collectibleManager.Update();
