@@ -6,10 +6,22 @@ using System.Collections.Generic;
 
 namespace Fishing
 {
+    //Game state enum
+    enum State
+    {
+        Closed,
+        Main,
+        Stats,
+        Achievements
+    }
+
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
+        //Game state
+        State gameState;
 
         //Window dimensions
         private int windowWidth;
@@ -27,7 +39,6 @@ namespace Fishing
 
         //Fishing rod class setup
         FishingRod fishingRod;
-
 
         //buttons
         private List<Button> buttonList;
@@ -95,16 +106,19 @@ namespace Fishing
                 Exit();
 
             // TODO: Add your update logic here
+
+            //If the game is running
+            if (gameState == State.Closed)
+            {
+                //Update the collectibles
+                collectibleManager.Update();
+
+                //Update the fishing rod
+                fishingRod.Update();
+            }
+
             menu.Update(gameTime);
 
-            //Update the collectibles
-            collectibleManager.Update();
-
-            //Update the fishing rod
-            fishingRod.Update();
-            
-
-            
             base.Update(gameTime);
         }
 
@@ -122,18 +136,18 @@ namespace Fishing
             //Draw the collectibles in the Collectible Manager
             collectibleManager.Draw(_spriteBatch);
 
-            //buttons
-            foreach (Button btn in buttonList)
-            {
-                btn.Draw(gameTime, _spriteBatch);
-            }
-
             if (menu.Open)
             {
                 menu.Draw(gameTime, _spriteBatch);
+
+                //buttons
+                foreach (Button btn in menu.Buttons)
+                {
+                    btn.Draw(gameTime, _spriteBatch);
+                }
             }
             //draw menu
-           menu.Draw(gameTime, _spriteBatch);
+            menu.Draw(gameTime, _spriteBatch);
 
             _spriteBatch.End();
 

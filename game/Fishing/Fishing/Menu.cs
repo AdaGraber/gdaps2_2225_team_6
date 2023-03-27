@@ -12,6 +12,8 @@ namespace Fishing
 {
     internal class Menu
     {
+        /* FIELDS AND PROPERTIES */
+
         //menu textures
         Texture2D outerShade;
         Texture2D menuFrame;
@@ -33,17 +35,19 @@ namespace Fishing
         private List<Button> buttonList;
         private State currentState;
 
-        enum State //FSM
+        private bool open = false;
+
+        public bool Open
         {
-            Closed,
-            Main,
-            Stats,
-            Achievements
+            get { return open; }
         }
 
-        /* PROPERTIES AND CONSTRUCTOR */
         public List<Button> Buttons { get { return buttonList; } } 
+
+
+        /* CONSTRUCTORS AND METHODS */
         
+        //Parameterized constructor
         public Menu(int windowWidth, int windowHeight)
         {
             this.windowWidth = windowWidth;
@@ -128,11 +132,18 @@ namespace Fishing
 
         public void Update(GameTime gameTime)
         {
-            foreach(Button button in buttonList)
+            if (currentState == State.Main)
             {
-                button.Update(gameTime);
+                foreach (Button button in buttonList)
+                {
+                    button.Update(gameTime);
+                }
             }
-            backButton.Update(gameTime);
+            else if (currentState == State.Stats || currentState == State.Achievements)
+            {
+                backButton.Update(gameTime);
+            }
+
             menuButton.Update(gameTime);
         }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
