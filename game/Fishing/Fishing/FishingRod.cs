@@ -36,7 +36,8 @@ namespace Fishing
         private Texture2D rodDesign;
         private Rectangle rect;
 
-        //Maximum depth
+        // SKILL TREE STUFF
+        private int maxSpeed;
         private int maxDepth;
 
         //Direction enum and keyboard state
@@ -48,6 +49,18 @@ namespace Fishing
 
         //Whether or not the fishing rod has an item
         private bool hasItem;
+
+        // SKILL TREE PROPERTIES
+
+        public int Speed
+        {
+            get => maxSpeed;
+        }
+
+        public int Depth
+        {
+            get => maxDepth;
+        }
 
         public Rectangle Rect
         {
@@ -62,8 +75,6 @@ namespace Fishing
         }
 
         //TODO: Add any other properties or fields needed
-        public int Depth { get { return maxDepth; } }
-
 
         /* CONSTRUCTORS AND METHODS */
 

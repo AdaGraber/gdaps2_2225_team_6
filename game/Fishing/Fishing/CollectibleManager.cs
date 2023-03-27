@@ -34,8 +34,11 @@ namespace Fishing
         //Dictionary to hold the data for individual fish species
         Dictionary<string, int[]> fishSpecies = new Dictionary<string, int[]>();
 
-        //List of fish
-        List<Fish> collectibles = new List<Fish>();
+        //List of collectibles
+        List<Collectible> collectibles = new List<Collectible>();
+
+        //List of known spells
+        List<string> spells = new List<string>();
 
         //List of textures
         List<Texture2D> fishTextures = new List<Texture2D>();
@@ -47,7 +50,21 @@ namespace Fishing
         StreamReader input = null;
         string fishData = "../../../Content/FishData.txt";
 
-        
+        // TEMPORARY variable to hold skill points until skills are properly implemented
+        private int skillPoints = 0;
+
+        // Property for the spells so the player can have access (not sure if needed yet)
+        public List<string> Spells
+        {
+            get => spells;
+        }
+
+        // Property for the SP so the player can "see" when the number of points increases
+        public int SkillPoints
+        {
+            get => skillPoints;
+        }
+
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor
@@ -128,7 +145,14 @@ namespace Fishing
                     //If the collectible is a book
                     else
                     {
-
+                        if (collectibles[i].Spell != null)
+                        {
+                            spells.Add(collectibles[i].Spell);
+                        }
+                        else
+                        {
+                            skillPoints++;
+                        }
                     }
 
                     //Make the fishing rod no longer have an item

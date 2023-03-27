@@ -32,7 +32,10 @@ namespace Fishing
 
         private int windowWidth;
         private int windowHeight;
-        private List<Button> buttonList;
+
+        private List<Button> mainButtonList;
+        private List<Button> statsButtonList;
+        private List<Button> achievementsButtonList;
         private State currentState;
 
         private bool open = false;
@@ -121,29 +124,51 @@ namespace Fishing
             backButton.Position = new Vector2(windowWidth / 2 - backButton.Rectangle.Width / 2, (windowHeight / 2 - backButton.Rectangle.Height / 2) + 100);
             backButton.Click += BackButtonClick;
 
-            buttonList = new List<Button>()
+            mainButtonList = new List<Button>()
             {
                 saveButton,
                 statsButton,
                 achieveButton,
                 quitButton,
             };
+
+            statsButtonList = new List<Button>()
+            {
+                backButton,
+            };
+
+            achievementsButtonList = new List<Button>()
+            {
+                backButton,
+            };
         }
 
         public void Update(GameTime gameTime)
         {
-            if (currentState == State.Main)
+            if(currentState != State.Closed)
             {
-                foreach (Button button in buttonList)
+                List<Button> updateButton;
+                switch (currentState)
                 {
-                    button.Update(gameTime);
+                    case State.Stats:
+                        updateButton = statsButtonList;
+                        break;
+
+                    case State.Achievements:
+                        updateButton = achievementsButtonList;
+                        break;
+
+                    default:
+                        updateButton = mainButtonList;
+                        break;
+                }
+
+                foreach (Button btn in updateButton)
+                {
+                    btn.Update(gameTime);
                 }
             }
-            else if (currentState == State.Stats || currentState == State.Achievements)
-            {
-                backButton.Update(gameTime);
-            }
-
+            
             menuButton.Update(gameTime);
         }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -159,20 +184,26 @@ namespace Fishing
                 if (currentState == State.Main)
                 {
                     headerText = "Menu";
-                    for (int i = 0; i < buttonList.Count; i++)
+                    for (int i = 0; i < mainButtonList.Count; i++)
                     {
-                        buttonList[i].Draw(gameTime, spriteBatch);
+                        mainButtonList[i].Draw(gameTime, spriteBatch);
                     }
                 }
                 else if (currentState == State.Stats)
                 {
                     headerText = "Stats";
-                    backButton.Draw(gameTime, spriteBatch);
+                    for (int i = 0; i < statsButtonList.Count; i++)
+                    {
+                        statsButtonList[i].Draw(gameTime, spriteBatch);
+                    }
                 }
                 else if (currentState == State.Achievements)
                 {
                     headerText = "Achievements";
-                    backButton.Draw(gameTime, spriteBatch);
+                    for (int i = 0; i < achievementsButtonList.Count; i++)
+                    {
+                        achievementsButtonList[i].Draw(gameTime, spriteBatch);
+                    }
                 }
 
                 spriteBatch.DrawString(menuHeader, headerText, new Vector2((windowWidth / 2 - menuHeader.MeasureString(headerText).X / 2), (windowHeight / 2 - 180)), Color.Black);
@@ -210,6 +241,7 @@ namespace Fishing
         private void BackButtonClick(object sender, System.EventArgs e)
         {
             currentState = State.Main;
+            
         }
     }
 }
