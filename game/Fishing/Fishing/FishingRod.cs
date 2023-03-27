@@ -51,6 +51,7 @@ namespace Fishing
         private bool hasItem;
 
         // SKILL TREE PROPERTIES
+        //--------------------------------------------------
 
         public int Speed
         {
@@ -61,6 +62,7 @@ namespace Fishing
         {
             get => maxDepth;
         }
+        //---------------------------------------------------
 
         public Rectangle Rect
         {
