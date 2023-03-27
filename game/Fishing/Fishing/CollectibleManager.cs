@@ -129,8 +129,11 @@ namespace Fishing
                     //If the collectible is a fish
                     if (collectibles[i] is Fish)
                     {
+                        //Cast the collectible to a fish
+                        Fish currentFish = (Fish)collectibles[i];
+
                         //For readability purposes, get a reference to the int array for the species of that fish
-                        int[] fishData = fishSpecies[collectibles[i].Name];
+                        int[] fishData = fishSpecies[currentFish.Name];
 
                         //Check if the species of fish has never been caught before
                         if (fishData[fishData.Count() - 1] == 0)

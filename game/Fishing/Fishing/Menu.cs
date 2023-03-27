@@ -33,6 +33,7 @@ namespace Fishing
         private int windowWidth;
         private int windowHeight;
 
+        private List<Button> buttonList;
         private List<Button> mainButtonList;
         private List<Button> statsButtonList;
         private List<Button> achievementsButtonList;
