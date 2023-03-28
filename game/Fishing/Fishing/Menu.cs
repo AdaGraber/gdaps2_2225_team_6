@@ -63,8 +63,8 @@ namespace Fishing
         public void Load(GraphicsDevice graphicsDevice, ContentManager content)
         {
             //background shade
-            outerShade = new Texture2D(graphicsDevice, 1, 1);
-            outerShade.SetData(new[] { Color.Gray });
+            outerShade = new Texture2D(graphicsDevice, 1, 1); //initialize a 1x1 texture
+            outerShade.SetData(new[] { Color.Gray }); //color the texture
 
             //frame
             menuFrame = new Texture2D(graphicsDevice, 1, 1);
@@ -78,7 +78,7 @@ namespace Fishing
             menuHeader = content.Load<SpriteFont>("Header");
 
             /* BUTTON HANDLER */
-            menuButton = new Button(content.Load<Texture2D>("menuButton"), content.Load<SpriteFont>("Font"))
+            menuButton = new Button(content.Load<Texture2D>("menuButton"), content.Load<SpriteFont>("Font")) //creates new button and loads texture and pos
             {
                 Position = new Vector2(10, 10),
                 Text = "",
@@ -125,7 +125,9 @@ namespace Fishing
             backButton.Position = new Vector2(windowWidth / 2 - backButton.Rectangle.Width / 2, (windowHeight / 2 - backButton.Rectangle.Height / 2) + 100);
             backButton.Click += BackButtonClick;
 
-            mainButtonList = new List<Button>()
+
+            //button lists
+            mainButtonList = new List<Button>() //for the main menu
             {
                 saveButton,
                 statsButton,
@@ -133,12 +135,12 @@ namespace Fishing
                 quitButton,
             };
 
-            statsButtonList = new List<Button>()
+            statsButtonList = new List<Button>() //stats menu
             {
                 backButton,
             };
 
-            achievementsButtonList = new List<Button>()
+            achievementsButtonList = new List<Button>() //achievements menu
             {
                 backButton,
             };
@@ -146,9 +148,9 @@ namespace Fishing
 
         public void Update(GameTime gameTime)
         {
-            if(currentState != MenuState.Closed)
+            if(currentState != MenuState.Closed) //menu is open
             {
-                List<Button> updateButton;
+                List<Button> updateButton; //general list to reference the desired list
                 switch (currentState)
                 {
                     case MenuState.Stats:
@@ -166,82 +168,83 @@ namespace Fishing
 
                 foreach (Button btn in updateButton)
                 {
-                    btn.Update(gameTime);
+                    btn.Update(gameTime); //update buttons
                 }
             }
             
-            menuButton.Update(gameTime);
+            menuButton.Update(gameTime); //hamburger
         }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            string headerText = "";
-            if(currentState != MenuState.Closed)
+            string headerText = ""; //top text
+            if(currentState != MenuState.Closed) //menu is open
             {
+                //draw background shade, outline and menu frame
                 spriteBatch.Draw(outerShade, new Rectangle(0, 0, windowWidth, windowHeight), Color.White * 0.5f);
                 spriteBatch.Draw(menuOutline, new Rectangle((windowWidth / 2 - 307), (windowHeight / 2 - 207), 614, 414), Color.White);
                 spriteBatch.Draw(menuFrame, new Rectangle((windowWidth / 2 - 300), (windowHeight / 2 - 200), 600, 400), Color.White);
                 
 
-                if (currentState == MenuState.Main)
+                if (currentState == MenuState.Main) //main menu state
                 {
                     headerText = "Menu";
                     for (int i = 0; i < mainButtonList.Count; i++)
                     {
-                        mainButtonList[i].Draw(gameTime, spriteBatch);
+                        mainButtonList[i].Draw(gameTime, spriteBatch); //load buttons for main menu
                     }
                 }
-                else if (currentState == MenuState.Stats)
+                else if (currentState == MenuState.Stats) //stats menu state
                 {
                     headerText = "Stats";
                     for (int i = 0; i < statsButtonList.Count; i++)
                     {
-                        statsButtonList[i].Draw(gameTime, spriteBatch);
+                        statsButtonList[i].Draw(gameTime, spriteBatch); //load buttons for stats menu
                     }
                 }
-                else if (currentState == MenuState.Achievements)
+                else if (currentState == MenuState.Achievements) //achievements menu state
                 {
                     headerText = "Achievements";
                     for (int i = 0; i < achievementsButtonList.Count; i++)
                     {
-                        achievementsButtonList[i].Draw(gameTime, spriteBatch);
+                        achievementsButtonList[i].Draw(gameTime, spriteBatch); //load buttons for achievements state
                     }
                 }
-
+                //header text
                 spriteBatch.DrawString(menuHeader, headerText, new Vector2((windowWidth / 2 - menuHeader.MeasureString(headerText).X / 2), (windowHeight / 2 - 180)), Color.Black);
             }  
-            menuButton.Draw(gameTime, spriteBatch);
+            menuButton.Draw(gameTime, spriteBatch); //hamburger btn
         }
 
         private void MenuButtonClick(object sender, System.EventArgs e)
         {
-            if (currentState == MenuState.Closed)
+            if (currentState == MenuState.Closed) //closed
             {
-                currentState = MenuState.Main;
+                currentState = MenuState.Main; //open menu
             }
             else
             {
-                currentState = MenuState.Closed;
+                currentState = MenuState.Closed; //close menu
             }
         }
         private void SaveButtonClick(object sender, System.EventArgs e)
         {
-            saveButton.Text = "Saved!";
+            saveButton.Text = "Saved!"; //add actual fileio later
         }
         private void StatsButtonClick(object sender, System.EventArgs e)
         {
-            currentState = MenuState.Stats;
+            currentState = MenuState.Stats; //change menu to stats
         }
         private void AchievementButtonClick(object sender, System.EventArgs e)
         {
-            currentState = MenuState.Achievements;
+            currentState = MenuState.Achievements; //change menu to achievements
         }
         private void QuitButtonClick(object sender, System.EventArgs e)
         {
-            Environment.Exit(0);
+            Environment.Exit(0); //quit
         }
         private void BackButtonClick(object sender, System.EventArgs e)
         {
-            currentState = MenuState.Main;
+            currentState = MenuState.Main; //back to main menu
             
         }
     }
