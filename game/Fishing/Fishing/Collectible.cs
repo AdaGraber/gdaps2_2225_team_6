@@ -104,7 +104,7 @@ namespace Fishing
         /// <summary>
         /// Updates the collectible.
         /// </summary>
-        public void Update()
+        public virtual void Update()
         {
             if (!isCaught)
             {

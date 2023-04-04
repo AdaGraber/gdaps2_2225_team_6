@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 /* Team Tranquil
  * GDAPS 2 Project
@@ -18,11 +19,15 @@ using System.Threading.Tasks;
 
 namespace Fishing
 {
-    public delegate void OnCollision();
+    //Delegate for mythical fishes' powers
+    internal delegate void EffectedByPower(Fish sender);
 
     internal class CollectibleManager
     {
         /* FIELDS AND PROPERTIES */
+
+        //Event for handling mythical powers
+        public event EffectedByPower UsingPower;
 
         //Random object
         Random rng;
@@ -110,6 +115,12 @@ namespace Fishing
                     fishingRod.HasItem = true;
                 }
 
+                //If the collectible is a fish and is mythical
+                if (collectibles[i] is Fish && ((Fish)collectibles[i]).IsMythical)
+                {
+                    //Have the fish use its power
+                    UsingPower((Fish)collectibles[i]);
+                }
 
                 //Check to see if the collectible has left the screen on the left or right
                 if (collectibles[i].Position.X == windowWidth
@@ -258,8 +269,16 @@ namespace Fishing
                 if (rng.Next(1001) <= spawnChance)
                 {
                     //Create a new fish using the data in the array in the dictionary
-                    collectibles.Add(new Fish(n.Key, n.Value[1], fishTexture, n.Value[2], n.Value[3],
-                        windowWidth, windowHeight, rng));
+                    Fish newFish = new Fish(n.Key, n.Value[1], fishTexture, n.Value[2], n.Value[3],
+                        windowWidth, windowHeight, rng);
+
+                    if (!newFish.IsMythical)
+                    {
+                        UsingPower += newFish.PowerEffect;
+                    }
+
+                    // Add that fish to the list
+                    collectibles.Add(newFish);
                 }
 
                 //Add one to the index

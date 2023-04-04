@@ -89,6 +89,7 @@ namespace Fishing
             fishTextures.Add(Content.Load<Texture2D>("angelfish"));
             fishTextures.Add(Content.Load<Texture2D>("aquafish"));
             fishTextures.Add(Content.Load<Texture2D>("flamefish"));
+            fishTextures.Add(Content.Load<Texture2D>("siren"));
 
             //Loads fishing rod texture
             rodTexture = Content.Load<Texture2D>("rodPH");
