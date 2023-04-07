@@ -27,13 +27,16 @@ namespace Fishing
         Button quitButton;
         Button backButton;
 
+        //stats menu
+        Texture2D statsFrame;
+        Texture2D statsOutline;
+
         //header
         SpriteFont menuHeader;
 
         private int windowWidth;
         private int windowHeight;
 
-        private List<Button> buttonList;
         private List<Button> mainButtonList;
         private List<Button> statsButtonList;
         private List<Button> achievementsButtonList;
@@ -45,8 +48,6 @@ namespace Fishing
         {
             get { return open; }
         }
-
-        public List<Button> Buttons { get { return buttonList; } } 
 
 
         /* CONSTRUCTORS AND METHODS */
@@ -69,10 +70,14 @@ namespace Fishing
             //frame
             menuFrame = new Texture2D(graphicsDevice, 1, 1);
             menuFrame.SetData(new[] { Color.BurlyWood });
+            statsFrame = new Texture2D(graphicsDevice, 1, 1); //stats frame
+            statsFrame.SetData(new[] { Color.Bisque });
 
             //frame outline
             menuOutline = new Texture2D(graphicsDevice, 1, 1);
             menuOutline.SetData(new[] { Color.Chocolate });
+            statsOutline = new Texture2D(graphicsDevice, 1, 1); //stats frame
+            statsOutline.SetData(new[] { Color.Peru });
 
             //menu header
             menuHeader = content.Load<SpriteFont>("Header");
@@ -200,6 +205,9 @@ namespace Fishing
                     {
                         statsButtonList[i].Draw(gameTime, spriteBatch); //load buttons for stats menu
                     }
+
+                    spriteBatch.Draw(statsOutline, new Rectangle((windowWidth / 2 - 252), (windowHeight / 2 - 100), 504, 150), Color.White);
+                    spriteBatch.Draw(statsFrame, new Rectangle((windowWidth / 2 - 249), (windowHeight / 2 - 97), 498, 144), Color.White);
                 }
                 else if (currentState == MenuState.Achievements) //achievements menu state
                 {
@@ -244,8 +252,7 @@ namespace Fishing
         }
         private void BackButtonClick(object sender, System.EventArgs e)
         {
-            currentState = MenuState.Main; //back to main menu
-            
+            currentState = MenuState.Main; //back to main menu 
         }
     }
 }

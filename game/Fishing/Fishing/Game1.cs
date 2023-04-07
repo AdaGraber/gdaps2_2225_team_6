@@ -144,16 +144,6 @@ namespace Fishing
             //Draw the collectibles in the Collectible Manager
             collectibleManager.Draw(_spriteBatch);
 
-            if (menu.Open)
-            {
-                menu.Draw(gameTime, _spriteBatch);
-
-                //buttons
-                foreach (Button btn in menu.Buttons)
-                {
-                    btn.Draw(gameTime, _spriteBatch);
-                }
-            }
             //draw menu
             menu.Draw(gameTime, _spriteBatch);
 
