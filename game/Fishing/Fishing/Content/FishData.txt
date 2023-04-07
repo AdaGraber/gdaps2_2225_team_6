@@ -1,4 +1,4 @@
-angelfish,5,3,0,100
-aquafish,2,1,10,300
-flamefish,2,4,200,500
-siren,3,1,400,500
+angelfish,5,3,0,100,0
+aquafish,2,1,10,300,1
+flamefish,2,4,200,500,2
+siren,3,1,400,500,0

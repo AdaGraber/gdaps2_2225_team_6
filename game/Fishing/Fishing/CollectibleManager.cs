@@ -2,8 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,14 +22,14 @@ using System.Xml.Linq;
 namespace Fishing
 {
     //Delegate for mythical fishes' powers
-    internal delegate void EffectedByPower(Fish sender);
+    internal delegate void AffectedByPower(Fish sender, int index);
 
     internal class CollectibleManager
     {
         /* FIELDS AND PROPERTIES */
 
         //Event for handling mythical powers
-        public event EffectedByPower UsingPower;
+        public event AffectedByPower UsingPower;
 
         //Random object
         Random rng;
@@ -78,6 +80,7 @@ namespace Fishing
         //Parameterized constructor
         public CollectibleManager(Random rng, int windowWidth, int windowHeight, List<Texture2D> fishTextures, Texture2D bookTexture, FishingRod fishingRod)
         {
+            //Initialize given values
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
             this.rng = rng;
@@ -119,7 +122,10 @@ namespace Fishing
                 if (collectibles[i] is Fish && ((Fish)collectibles[i]).IsMythical)
                 {
                     //Have the fish use its power
-                    UsingPower((Fish)collectibles[i]);
+                    if (UsingPower != null)
+                    {
+                        UsingPower((Fish)collectibles[i], i);
+                    }
                 }
 
                 //Check to see if the collectible has left the screen on the left or right
@@ -135,7 +141,6 @@ namespace Fishing
                     {
                         i--;
                     }
-
                 }
 
                 //Check if the collectible is caught and the player made it to the top of the screen with it

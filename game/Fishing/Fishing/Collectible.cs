@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Fishing
 {
+
     internal class Collectible
     {
         /* FIELDS AND PROPERTIES */
@@ -111,8 +112,6 @@ namespace Fishing
                 //Move the collectible horizontally across the screen
                 position.X += speed;
             }
-
-            //TODO: Remove collectible if it leaves the screen
         }
 
         /// <summary>

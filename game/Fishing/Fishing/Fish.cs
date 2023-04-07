@@ -70,42 +70,27 @@ namespace Fishing
         /// Causes a mythical fish's powers to affect fish.
         /// </summary>
         /// <param name="sender">The mythical fish that used its powers.</param>
-        public void PowerEffect(Fish sender)
+        public void PowerEffect(Fish sender, int index)
         {
             //If the one using the power is a siren
             if (sender.Name == "siren")
             {
-                //Move towards the siren if the siren is to the right
-                if (sender.Position.X > position.X)
+                //If the fish is within range of the siren
+                if (sender.Position.Y > position.Y - 5 && sender.Position.Y < position.Y + 5)
                 {
-                    position.X++;
-                }
+                    //The fish is no longer caught
+                    isCaught = false;
 
-                //Move towards the siren if the siren is to the left
-                else if (sender.Position.X < position.X)
-                {
-                    position.X--;
+                    //Move the fish towards the siren
+                    if (sender.Position.X > position.X)
+                    {
+                        position.X++;
+                    }
+                    else if (sender.Position.X < position.X)
+                    {
+                        position.X--;
+                    }
                 }
-
-                //Move towards the siren if the siren is below
-                if (sender.Position.Y > position.Y)
-                {
-                    position.Y++;
-                }
-
-                //Move towards the siren if the siren is above
-                else if (sender.Position.Y < position.Y)
-                {
-                    position.Y--;
-                }
-
-                //If the fish collides with the siren
-                if (sender.Position.Intersects(position))
-                {
-                    //Nothing happens right now -- in the future, the fish will
-                    //be removed from the list of collectibles
-                }
-
             }
         }
 
