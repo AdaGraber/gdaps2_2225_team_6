@@ -35,6 +35,9 @@ namespace Fishing
         protected int maxDepth;
         protected bool isCaught;
 
+        //Boolean to allow collectible to recognize if it should be removed from play
+        protected bool isDead;
+
         public Rectangle Position
         {
             get { return position; }
@@ -47,6 +50,13 @@ namespace Fishing
             //Get-only property
         }
 
+        public bool IsDead
+        {
+            get { return isDead; }
+
+            //Should not be able to bring a dead fish back to life
+            set { isDead = true; }
+        }
 
         /* CONSTRUCTORS AND METHODS */
 

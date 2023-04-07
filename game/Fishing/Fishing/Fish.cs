@@ -21,8 +21,10 @@ namespace Fishing
     {
         /* FIELDS AND PROPERTIES */
 
+        // Window width
         int windowWidth;
 
+        //Fish information
         private string name;
         private bool isMythical;
 
@@ -76,20 +78,29 @@ namespace Fishing
             if (sender.Name == "siren")
             {
                 //If the fish is within range of the siren
-                if (sender.Position.Y > position.Y - 5 && sender.Position.Y < position.Y + 5)
+                if (sender.Position.Y + sender.texture.Height + 40 > position.Y
+                    && sender.Position.Y - 40 < position.Y)
                 {
                     //The fish is no longer caught
                     isCaught = false;
 
-                    //Move the fish towards the siren
+                    //Slow the fish down if swimming away from the siren,
+                    //or speed it up if swimming towards it
                     if (sender.Position.X > position.X)
                     {
                         position.X++;
                     }
-                    else if (sender.Position.X < position.X)
+                    else /*if (sender.Position.X < position.X)*/
                     {
                         position.X--;
                     }
+                }
+
+                //If the fish's position intersects that of the siren
+                if (position.Intersects(sender.Position))
+                {
+                    //The fish should be removed from play
+                    isDead = true;
                 }
             }
         }
@@ -111,7 +122,7 @@ namespace Fishing
                 {
                     position.X++;
                 }
-                else if (position.X > windowWidth - 20)
+                else if (position.X > windowWidth - texture.Width - 20)
                 {
                     position.X--;
                 }

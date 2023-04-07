@@ -88,6 +88,9 @@ namespace Fishing
             this.bookTexture = bookTexture;
             this.fishingRod = fishingRod;
 
+            //Give skillPoints a starting value of 0
+            skillPoints = 0;
+
             //Read the fish data
             ReadFishData();
         }
@@ -108,10 +111,20 @@ namespace Fishing
                 collectibles[i].Update();
 
                 //Check to see if the player has caught a collectible
-                if (collectibles[i].Position.Intersects(fishingRod.Rect) && !fishingRod.HasItem
-                    || collectibles[i].IsCaught)
+                if (
+                    //If the collectible is caught already
+                    collectibles[i].IsCaught
+                    //OR if the collectible is overlapping the fishing rod
+                    || (collectibles[i].Position.Intersects(fishingRod.Rect)
+                    //and the fishing rod does not already have an item
+                    && !fishingRod.HasItem
+                    //And if the collectible is either a book
+                    && ((collectibles[i] is Books)
+                    //or a fish whose required skill points are lower than the player's skill points
+                    || (collectibles[i] is Fish && skillPoints >= fishSpecies[((Fish)collectibles[i]).Name][4]))))
                 {
-                    //If so, set the collectible's position to that of the fishing rod
+                    //If the above conditions are met,
+                    //set the collectible's position to that of the fishing rod
                     collectibles[i].FollowFishingRod(fishingRod.Rect);
 
                     //And tell the fishing rod it has an item
@@ -132,15 +145,8 @@ namespace Fishing
                 if (collectibles[i].Position.X == windowWidth
                     || collectibles[i].Position.X == 0 - collectibles[i].Position.Width)
                 {
-                    //Remove the collectible from the list of collectibles to improve performance
-                    collectibles.Remove(collectibles[i]);
-
-                    //Decrement i since a collectible was removed, as long as the
-                    //current index =/= 0 (since then i would equal -1 and cause problems)
-                    if (i > 0)
-                    {
-                        i--;
-                    }
+                    //The collectible should be destroyed
+                    collectibles[i].IsDead = true;
                 }
 
                 //Check if the collectible is caught and the player made it to the top of the screen with it
@@ -184,8 +190,15 @@ namespace Fishing
                     //Make the fishing rod no longer have an item
                     fishingRod.HasItem = false;
 
+                    //The collectible should be destroyed
+                    collectibles[i].IsDead = true;
+                }
+
+                //If the collectible is dead
+                if (collectibles[i].IsDead)
+                {
                     //Remove the caught collectible from the list of collectibles
-                    collectibles.Remove(collectibles[i]);
+                    collectibles.RemoveAt(i);
 
                     //Decrement i since a collectible was removed
                     i--;
