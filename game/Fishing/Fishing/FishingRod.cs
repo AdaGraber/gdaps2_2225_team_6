@@ -37,6 +37,7 @@ namespace Fishing
         private Rectangle rect;
 
         // SKILL TREE STUFF
+        private int skillPoints;
         private int maxSpeed;
         private int maxDepth;
 
@@ -86,6 +87,8 @@ namespace Fishing
             this.windowWidth = windowWidth;
             this.rodDesign = rodDesign;
             this.maxDepth = maxDepth;
+
+            skillPoints = 0;
 
             //Set the rectangle at the given x and y position and with the width and height of the texture
             rect = new Rectangle(x, y, rodDesign.Width, rodDesign.Height);
@@ -194,6 +197,22 @@ namespace Fishing
         public void Draw(SpriteBatch _spriteBatch)
         {
             _spriteBatch.Draw(rodDesign, rect, Color.White);
+        }
+
+        /// <summary>
+        /// Checks for a change in skill points by accepting an int value
+        /// </summary>
+        public void skillPointChange(int value)
+        {
+            // If the passed value (from the collectible manager) is higher
+            if(skillPoints < value)
+            {
+                // Set the new numebr of skill points to be the passed value
+                skillPoints = value;
+
+                // Prompt the user to use the new skill point
+
+            }
         }
     }
 }

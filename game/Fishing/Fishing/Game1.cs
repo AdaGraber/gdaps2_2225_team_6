@@ -123,6 +123,9 @@ namespace Fishing
 
                 //Update the fishing rod
                 fishingRod.Update();
+
+                // Check for a change in the number of skill points
+                fishingRod.skillPointChange(collectibleManager.SkillPoints);
             }
 
             menu.Update(gameTime);
