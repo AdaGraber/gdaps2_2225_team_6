@@ -31,8 +31,9 @@ namespace Fishing
         Texture2D statsFrame;
         Texture2D statsOutline;
 
-        //header
+        //fonts
         SpriteFont menuHeader;
+        SpriteFont menuFooter;
 
         private int windowWidth;
         private int windowHeight;
@@ -79,8 +80,9 @@ namespace Fishing
             statsOutline = new Texture2D(graphicsDevice, 1, 1); //stats frame
             statsOutline.SetData(new[] { Color.Peru });
 
-            //menu header
+            //menu fonts
             menuHeader = content.Load<SpriteFont>("Header");
+            menuFooter = content.Load<SpriteFont>("Foot");
 
             /* BUTTON HANDLER */
             menuButton = new Button(content.Load<Texture2D>("menuButton"), content.Load<SpriteFont>("Font")) //creates new button and loads texture and pos
@@ -208,6 +210,10 @@ namespace Fishing
 
                     spriteBatch.Draw(statsOutline, new Rectangle((windowWidth / 2 - 252), (windowHeight / 2 - 100), 504, 150), Color.White);
                     spriteBatch.Draw(statsFrame, new Rectangle((windowWidth / 2 - 249), (windowHeight / 2 - 97), 498, 144), Color.White);
+
+                    //stats text
+                    string footText = "Skill Level: 0\nMax:Dpeth: 0\nStrength: 0";
+                    spriteBatch.DrawString(menuFooter, footText, new Vector2((windowWidth / 2 - 239), (windowHeight / 2 - 87)), Color.Black);
                 }
                 else if (currentState == MenuState.Achievements) //achievements menu state
                 {
