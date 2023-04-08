@@ -210,7 +210,7 @@ namespace Fishing
                 // Set the new numebr of skill points to be the passed value
                 skillPoints = value;
 
-                // Prompt the user to use the new skill point
+                // TODO: Prompt the user to use the new skill point
 
             }
         }
