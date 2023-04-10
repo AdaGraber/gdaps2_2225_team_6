@@ -118,6 +118,13 @@ namespace Fishing
                 //Update each collectible
                 collectibles[i].Update();
 
+                Books tempBook = null;
+                // If the collectible is a book it will need a reference so the spell can be checked
+                if (collectibles[i] is Books)
+                {
+                    tempBook = (Books)collectibles[i];
+                }
+
                 //Check to see if the player has caught a collectible
                 if (
                     //If the collectible is caught already
@@ -128,6 +135,8 @@ namespace Fishing
                     && !fishingRod.HasItem
                     //And if the collectible is either a book
                     && ((collectibles[i] is Books)
+                    //and isn't the siren call spell book (isn't in itself catchable)
+                    && (tempBook.Spell != "sirencall")
                     //or a fish whose required skill points are lower than the player's skill points
                     || (collectibles[i] is Fish && skillPoints >= fishSpecies[((Fish)collectibles[i]).Name][4]))))
                 {
@@ -174,6 +183,13 @@ namespace Fishing
                         {
                             //If so, set the fish's caught value to true
                             fishData[fishData.Count() - 1] = 1;
+
+                            // If the caught fish is a siren, the player gains the siren call spell
+                            if(currentFish.Name == "siren")
+                            {
+                                spells.Add("sirencall");
+                                books.Remove("sirencall");
+                            }
                         }
 
                         //Otherwise, do nothing
@@ -182,9 +198,8 @@ namespace Fishing
                     //If the collectible is a book
                     else
                     {
-                        // Create a temporary instance of the book collectible
-                        Books tempBook = (Books)collectibles[i];
-
+                        // A temporary instance of the book collectible was created earlier for testing purposes,
+                        // so no need to create a new one
                         if (tempBook.Spell != null) // If the book actually has a spell
                         {
                             spells.Add(tempBook.Spell);
@@ -311,6 +326,15 @@ namespace Fishing
                         UsingPower += newFish.PowerEffect;
                     }
 
+                    if(newFish.Name == "siren")
+                    {
+                        // Create a new book that will follow the siren, and give the siren call spell if teh player doesn't have it already
+                        Books sirenCall = new Books("sirencall", books["sirencall"][1], bookTexture, books["sirencall"][2], books["sirencall"][3], 
+                            windowWidth, windowHeight, rng, newFish);
+
+                        collectibles.Add(sirenCall);
+                    }
+
                     // Add that fish to the list
                     collectibles.Add(newFish);
                 }
@@ -341,7 +365,7 @@ namespace Fishing
                 {
                     //Create a new book using the data in the array in the dictionary
                     Books newBook = new Books(n.Key, n.Value[1], bookTexture, n.Value[2], n.Value[3],
-                        windowWidth, windowHeight, rng);
+                        windowWidth, windowHeight, rng, null);
 
                     // Add that book to the list
                     collectibles.Add(newBook);
