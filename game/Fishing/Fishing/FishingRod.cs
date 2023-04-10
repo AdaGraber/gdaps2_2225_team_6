@@ -55,6 +55,7 @@ namespace Fishing
 
         // Timer variables to be used for spells
         private float sirenCallUptime;
+        private float sirenCallCooldown;
 
         // SKILL TREE PROPERTIES
         //--------------------------------------------------
@@ -212,26 +213,33 @@ namespace Fishing
                 //Stationary/anything else -- do nothing
             }
 
-            // Have the catch radius rectangle follow the player
+            // Have the catch radius rectangle follow the player based on the midpoints
             Point rectMiddle = new Point(rect.X + rect.Width/2, rect.Y + rect.Height/2);
             catchRadius.X = rectMiddle.X - catchRadius.Width/2;
             catchRadius.Y = rectMiddle.Y - catchRadius.Height/2;
 
-            // Handling for spells
+            // Handling for spells ----------------------------------------------------------------------
+            
+            // Siren call (currently bound to E)
             if(kbState.IsKeyUp(Keys.E) && prevKBState.IsKeyDown(Keys.E) 
                 // Check if the player has the spell and it is not currently in use
-                && spells.Contains("sirencall") && sirenCallUptime == 0)
+                && spells.Contains("sirencall") && sirenCallUptime == 0
+                // Make sure the spell isn't on cooldown
+                && sirenCallCooldown <= 0)
             {
-                catchRadius.Width *= 2;
-                catchRadius.Height *= 2;
+                // Triple the player's catch radius for 5 seconds
+                catchRadius.Width *= 3;
+                catchRadius.Height *= 3;
                 sirenCallUptime = 5f;
             }
 
+            // If the spell is currently in use, decrease the time left based on the game time in seconds
             if(sirenCallUptime > 0)
             {
                 sirenCallUptime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             
+            // If the spell has either just ended or is inactive
             if(sirenCallUptime <= 0)
             {
                 sirenCallUptime = 0; // Just in case it somehow becomes less than 0
@@ -239,8 +247,18 @@ namespace Fishing
                 // If the catch radius is larger than the player sprite (aka the spell has just ended) then change the radius back to normal
                 if(catchRadius.Width != rect.Width)
                 {
+                    // Reset the catch radius
                     catchRadius.Width = rect.Width;
                     catchRadius.Height = rect.Height;
+
+                    // Reset the cooldown to 15 seconds (can be modified)
+                    sirenCallCooldown = 15f;
+                }
+
+                // If the spell is inactive then the cooldown for said spell will hac to ne incremented assuming the cooldown isn't over
+                if(sirenCallCooldown > 0)
+                {
+                    sirenCallCooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                 }
             }
 
