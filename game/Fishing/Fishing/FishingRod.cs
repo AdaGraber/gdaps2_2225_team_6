@@ -35,6 +35,7 @@ namespace Fishing
         //Texture and position rectangle
         private Texture2D rodDesign;
         private Rectangle rect;
+        private Rectangle catchRadius; // Will change with spells
 
         // SKILL TREE STUFF
         private int skillPoints;
@@ -44,12 +45,16 @@ namespace Fishing
         //Direction enum and keyboard state
         private Direction direction;
         private KeyboardState kbState;
+        private KeyboardState prevKBState;
 
         //Width of the window
         private int windowWidth;
 
         //Whether or not the fishing rod has an item
         private bool hasItem;
+
+        // Timer variables to be used for spells
+        private float sirenCallUptime;
 
         // SKILL TREE PROPERTIES
         //--------------------------------------------------
@@ -65,10 +70,24 @@ namespace Fishing
         }
         //---------------------------------------------------
 
+        // List of known spells
+        List<string> spells = new List<string>();
+
+        // Property for the spells for access in the collectible manager
+        public List<string> Spells
+        {
+            get => spells;
+        }
+
         public Rectangle Rect
         {
             get { return rect; }
             //Get-only property
+        }
+
+        public Rectangle CatchRadius
+        {
+            get => catchRadius;
         }
 
         public bool HasItem
@@ -92,12 +111,16 @@ namespace Fishing
 
             //Set the rectangle at the given x and y position and with the width and height of the texture
             rect = new Rectangle(x, y, rodDesign.Width, rodDesign.Height);
+            catchRadius = rect;
+
+            // TEMPORARY give the player the siren call spell since it cannot be obtained in game currently
+            spells.Add("sirencall");
         }
 
         /// <summary>
         /// Updates the fishing rod and controls movement.
         /// </summary>
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             //Updates the keyboard state
             kbState = Keyboard.GetState();
@@ -188,6 +211,41 @@ namespace Fishing
 
                 //Stationary/anything else -- do nothing
             }
+
+            // Have the catch radius rectangle follow the player
+            Point rectMiddle = new Point(rect.X + rect.Width/2, rect.Y + rect.Height/2);
+            catchRadius.X = rectMiddle.X - catchRadius.Width/2;
+            catchRadius.Y = rectMiddle.Y - catchRadius.Height/2;
+
+            // Handling for spells
+            if(kbState.IsKeyUp(Keys.E) && prevKBState.IsKeyDown(Keys.E) 
+                // Check if the player has the spell and it is not currently in use
+                && spells.Contains("sirencall") && sirenCallUptime == 0)
+            {
+                catchRadius.Width *= 2;
+                catchRadius.Height *= 2;
+                sirenCallUptime = 5f;
+            }
+
+            if(sirenCallUptime > 0)
+            {
+                sirenCallUptime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            
+            if(sirenCallUptime <= 0)
+            {
+                sirenCallUptime = 0; // Just in case it somehow becomes less than 0
+
+                // If the catch radius is larger than the player sprite (aka the spell has just ended) then change the radius back to normal
+                if(catchRadius.Width != rect.Width)
+                {
+                    catchRadius.Width = rect.Width;
+                    catchRadius.Height = rect.Height;
+                }
+            }
+
+            // Update the previous keyboard state
+            prevKBState = kbState;
         }
 
         /// <summary>

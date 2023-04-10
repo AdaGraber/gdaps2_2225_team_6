@@ -59,9 +59,17 @@ namespace Fishing
             }
             else // If it needs to follow a fish
             {
-                // Will stay at the same position as the fish + half the width or the height (to stay underneath it)
-                position.X = fish.Position.X + fish.Position.Width/2;
-                position.Y = fish.Position.Y + fish.Position.Height;
+                // Will stay at roughly the same position as the fish
+                position.Y = fish.Position.Y + fish.Position.Height/2;
+                int xOffset = fish.Position.Width / 2;
+                if (fish.Direction)
+                {
+                    position.X = fish.Position.X + xOffset;
+                }
+                else
+                {
+                    position.X = fish.Position.X - xOffset;
+                }
 
                 if (fish.IsDead)
                 {

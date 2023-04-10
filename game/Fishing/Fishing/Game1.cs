@@ -122,7 +122,7 @@ namespace Fishing
                 collectibleManager.Update();
 
                 //Update the fishing rod
-                fishingRod.Update();
+                fishingRod.Update(gameTime);
 
                 // Check for a change in the number of skill points
                 fishingRod.skillPointChange(collectibleManager.SkillPoints);

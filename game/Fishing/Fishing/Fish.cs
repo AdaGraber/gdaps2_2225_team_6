@@ -28,6 +28,9 @@ namespace Fishing
         private string name;
         private bool isMythical;
 
+        // Fish direction (for use with some book handling) (true is right, false is left)
+        private bool direction;
+
         public string Name
         {
             get { return name; }
@@ -39,6 +42,13 @@ namespace Fishing
         {
             get { return isMythical; }
 
+            //Get-only property
+        }
+
+        public bool Direction
+        {
+            get { return direction; }
+            
             //Get-only property
         }
 
@@ -142,6 +152,8 @@ namespace Fishing
                 _spriteBatch.Draw(texture, new Vector2(position.X, position.Y),
                     new Rectangle(0, 0, texture.Width, texture.Height),
                     Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+
+                direction = true;
             }
 
             //If the fish is going to the left, draw it flipped
@@ -150,6 +162,8 @@ namespace Fishing
                 _spriteBatch.Draw(texture, new Vector2(position.X, position.Y),
                     new Rectangle(0, 0, texture.Width, texture.Height),
                     Color.White, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0);
+
+                direction = false;
             }
 
             //TODO: Add animation

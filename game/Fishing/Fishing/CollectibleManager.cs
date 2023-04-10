@@ -47,9 +47,6 @@ namespace Fishing
         //List of collectibles
         List<Collectible> collectibles = new List<Collectible>();
 
-        //List of known spells
-        List<string> spells = new List<string>();
-
         //List of textures
         List<Texture2D> fishTextures = new List<Texture2D>();
 
@@ -66,12 +63,6 @@ namespace Fishing
 
         // TEMPORARY variable to hold skill points until skills are properly implemented
         private int skillPoints = 0;
-
-        // Property for the spells so the player can have access (not sure if needed yet)
-        public List<string> Spells
-        {
-            get => spells;
-        }
 
         // Property for the SP so the player can "see" when the number of points increases
         public int SkillPoints
@@ -129,8 +120,8 @@ namespace Fishing
                 if (
                     //If the collectible is caught already
                     collectibles[i].IsCaught
-                    //OR if the collectible is overlapping the fishing rod
-                    || (collectibles[i].Position.Intersects(fishingRod.Rect)
+                    //OR if the collectible is overlapping the fishing rod's catch radius
+                    || (collectibles[i].Position.Intersects(fishingRod.CatchRadius)
                     //and the fishing rod does not already have an item
                     && !fishingRod.HasItem
                     //And if the collectible is either a book
@@ -187,7 +178,7 @@ namespace Fishing
                             // If the caught fish is a siren, the player gains the siren call spell
                             if(currentFish.Name == "siren")
                             {
-                                spells.Add("sirencall");
+                                fishingRod.Spells.Add("sirencall");
                                 books.Remove("sirencall");
                             }
                         }
@@ -202,7 +193,9 @@ namespace Fishing
                         // so no need to create a new one
                         if (tempBook.Spell != null) // If the book actually has a spell
                         {
-                            spells.Add(tempBook.Spell);
+                            fishingRod.Spells.Add(tempBook.Spell);
+                            // Can only get a spell once, so once obtained the book will no longer spawn
+                            books.Remove(tempBook.Spell);
                         }
                         else // If there is no spell then it is a skill book
                         {
