@@ -49,11 +49,6 @@
 /processorParam:TextureFormat=Color
 /build:Book.png;book.png
 
-#begin BookData.txt
-/importer:
-/processor:
-/build:BookData.txt
-
 #begin flamefish.png
 /importer:TextureImporter
 /processor:TextureProcessor
