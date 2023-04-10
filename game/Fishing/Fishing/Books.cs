@@ -31,18 +31,18 @@ namespace Fishing
             get { return spell; }
         }
 
-        // Paramaterized constructor for skill books (doesn't contain a spell)
-        public Books(int speed, Texture2D texture, int minDepth, int maxDepth, int windowWidth, int windowHeight, Random rng)
-            : base(speed, texture, minDepth, maxDepth, windowWidth, windowHeight, rng)
-        {
-            spell = null;
-        }
-
-        // Paramaterized constructor for spell books (contains a spell)
+        // Paramaterized constructor for books (if it is a skill book the spell value will be null)
         public Books(string spell, int speed, Texture2D texture, int minDepth, int maxDepth, int windowWidth, int windowHeight, Random rng)
             : base(speed, texture, minDepth, maxDepth, windowWidth, windowHeight, rng)
         {
-            this.spell = spell;
+            if(spell == "skill")
+            {
+                this.spell = null;
+            }
+            else
+            {
+                this.spell = spell;
+            }
         }
     }
 }

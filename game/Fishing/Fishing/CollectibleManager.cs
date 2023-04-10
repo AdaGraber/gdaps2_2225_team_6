@@ -41,6 +41,9 @@ namespace Fishing
         //Dictionary to hold the data for individual fish species
         Dictionary<string, int[]> fishSpecies = new Dictionary<string, int[]>();
 
+        // Dictionary to hold the different books (skill / spells)
+        Dictionary<string, int[]> books = new Dictionary<string, int[]>();
+
         //List of collectibles
         List<Collectible> collectibles = new List<Collectible>();
 
@@ -59,6 +62,7 @@ namespace Fishing
         //Variables for file reading
         StreamReader input = null;
         string fishData = "../../../Content/FishData.txt";
+        string bookData = "../../../Content/BookData.txt";
 
         // TEMPORARY variable to hold skill points until skills are properly implemented
         private int skillPoints = 0;
@@ -92,7 +96,8 @@ namespace Fishing
             skillPoints = 0;
 
             //Read the fish data
-            ReadFishData();
+            ReadData(fishData);
+            ReadData(bookData);
         }
 
         /// <summary>
@@ -103,6 +108,9 @@ namespace Fishing
 
             // Spawn the fish
             SpawnFish();
+
+            // Spawn books
+            SpawnBooks();
 
             //Check each collectible
             for (int i = 0; i < collectibles.Count; i++)
@@ -209,14 +217,14 @@ namespace Fishing
         /// <summary>
         /// Reads the data for the fish species from a text file.
         /// </summary>
-        public void ReadFishData()
+        public void ReadData(string data)
         {
             try
             {
                 string line = null;
                 string[] lines;
 
-                input = new StreamReader(fishData);
+                input = new StreamReader(data);
 
                 //Loop through every line in the file
                 while ((line = input.ReadLine()) != null)
@@ -231,22 +239,30 @@ namespace Fishing
                     key = lines[0];
 
                     //Create a new integer array for holding the remaining data
-                    int[] fishData = new int[lines.Count() + 1];
+                    int[] collectibleData = new int[lines.Count() + 1];
 
                     //Search the entire array, minus the no-longer-useful first piece of data
                     for (int i = 1; i < lines.Count(); i++)
                     {
-                        //Put that data into the fish array
-                        fishData[i - 1] = int.Parse(lines[i]);
+                        //Put that data into the array
+                        collectibleData[i - 1] = int.Parse(lines[i]);
                     }
 
-                    //Add a final value to track whether or not the fish has been caught before --
-                    //1 if caught and 0 if not
-                    //TODO: Add this value to file if saving is implemented
-                    fishData[lines.Count()] = 0;
+                    // If we are reading the fish data
+                    if(data == fishData)
+                    {
+                        //Add a final value to track whether or not the fish has been caught before --
+                        //1 if caught and 0 if not
+                        //TODO: Add this value to file if saving is implemented
+                        collectibleData[lines.Count()] = 0;
 
-                    //Add the fish to the list of species
-                    fishSpecies.Add(key, fishData);
+                        //Add the fish to the list of species
+                        fishSpecies.Add(key, collectibleData);
+                    }
+                    else // If we are reading the book data
+                    {
+                        books.Add(key, collectibleData);
+                    }
                 }
             }
 
@@ -262,7 +278,7 @@ namespace Fishing
             {
                 input.Close();
             }
-        }
+        }        
 
         /// <summary>
         /// Has a random chance of spawning each species of fish every frame.
@@ -301,6 +317,38 @@ namespace Fishing
 
                 //Add one to the index
                 fishTextureIndex++;
+            }
+        }
+
+        /// <summary>
+        /// Random chance to spawn different books each frame
+        /// </summary>
+        public void SpawnBooks()
+        {
+            int bookTextureIndex = 0;
+
+            //Check each fish in the dictionary
+            foreach (KeyValuePair<string, int[]> n in books)
+            {
+                //TODO: Will add implementation for depth later
+
+                //Get the chance of the fish spawning
+                int spawnChance = n.Value[0];
+
+                //Give the fish a spawnChance-in-10000 chance of spawning -- the higher the spawnChance,
+                //the more likely it is to spawn
+                if (rng.Next(10001) <= spawnChance)
+                {
+                    //Create a new book using the data in the array in the dictionary
+                    Books newBook = new Books(n.Key, n.Value[1], bookTexture, n.Value[2], n.Value[3],
+                        windowWidth, windowHeight, rng);
+
+                    // Add that book to the list
+                    collectibles.Add(newBook);
+                }
+
+                //Add one to the index
+                bookTextureIndex++;
             }
         }
 
