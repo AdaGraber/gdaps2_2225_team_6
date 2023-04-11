@@ -48,15 +48,14 @@ namespace Fishing
         public bool Direction
         {
             get { return direction; }
-            
+
             //Get-only property
         }
-
 
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor, pass neccessary parameters to parent class
-        public Fish(string name, int speed, Texture2D texture, int minDepth, int maxDepth, int windowWidth, int windowHeight, Random rng) 
+        public Fish(string name, int speed, Texture2D texture, int minDepth, int maxDepth, int windowWidth, int windowHeight, Random rng)
             : base(speed, texture, minDepth, maxDepth, windowWidth, windowHeight, rng)
         {
             //Initialize name field
@@ -91,18 +90,18 @@ namespace Fishing
                 if (sender.Position.Y + sender.texture.Height + 40 > position.Y
                     && sender.Position.Y - 40 < position.Y)
                 {
-                    //The fish is no longer caught
-                    isCaught = false;
+                    //The fish is affected by the siren power
+                    affectedByPower = true;
 
                     //Slow the fish down if swimming away from the siren,
                     //or speed it up if swimming towards it
                     if (sender.Position.X > position.X)
                     {
-                        position.X++;
+                        position.X += (speed - 1) / 2;
                     }
-                    else /*if (sender.Position.X < position.X)*/
+                    else
                     {
-                        position.X--;
+                        position.X -= (speed - 1) / 2;
                     }
                 }
 

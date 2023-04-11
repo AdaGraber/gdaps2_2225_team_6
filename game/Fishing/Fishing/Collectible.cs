@@ -38,6 +38,9 @@ namespace Fishing
         //Boolean to allow collectible to recognize if it should be removed from play
         protected bool isDead;
 
+        //Whether or not the collectible is being affected by a mythical power
+        protected bool affectedByPower;
+
         public Rectangle Position
         {
             get { return position; }
@@ -54,14 +57,22 @@ namespace Fishing
         {
             get { return isDead; }
 
-            //Should not be able to bring a dead fish back to life
+            //Should not be able to bring a dead collectible back to life
             set { isDead = true; }
         }
+
+        public bool AffectedByPower
+        {
+            get { return affectedByPower; }
+
+            //Get-only property
+        }
+
 
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor
-        public Collectible (int speed, Texture2D texture, int minDepth, int maxDepth,
+        public Collectible(int speed, Texture2D texture, int minDepth, int maxDepth,
             int windowWidth, int windowHeight, Random rng)
         {
             // Initiallizing fields

@@ -84,7 +84,7 @@ namespace Fishing
             this.fishingRod = fishingRod;
 
             //Give skillPoints a starting value of 0
-            skillPoints = 0;
+            skillPoints = 4;
 
             //Read the fish data
             ReadData(fishData);
@@ -95,7 +95,7 @@ namespace Fishing
         /// Updates the collectibles.
         /// </summary>
         public void Update()
-        { 
+        {
 
             // Spawn the fish
             SpawnFish();
@@ -119,7 +119,7 @@ namespace Fishing
                 //Check to see if the player has caught a collectible
                 if (
                     //If the collectible is caught already
-                    collectibles[i].IsCaught
+                    (collectibles[i].IsCaught && !collectibles[i].AffectedByPower)
                     //OR if the collectible is overlapping the fishing rod's catch radius
                     || (collectibles[i].Position.Intersects(fishingRod.CatchRadius)
                     //and the fishing rod does not already have an item
@@ -176,7 +176,7 @@ namespace Fishing
                             fishData[fishData.Count() - 1] = 1;
 
                             // If the caught fish is a siren, the player gains the siren call spell
-                            if(currentFish.Name == "siren")
+                            if (currentFish.Name == "siren")
                             {
                                 fishingRod.Spells.Add("sirencall");
                                 books.Remove("sirencall");
@@ -213,6 +213,13 @@ namespace Fishing
                 //If the collectible is dead
                 if (collectibles[i].IsDead)
                 {
+                    //If the collectible is being affected by a power and is caught
+                    if (collectibles[i].AffectedByPower && collectibles[i].IsCaught)
+                    {
+                        //Then the fishing rod no longer has the collectible
+                        fishingRod.HasItem = false;
+                    }
+
                     //Remove the caught collectible from the list of collectibles
                     collectibles.RemoveAt(i);
 
@@ -257,7 +264,7 @@ namespace Fishing
                     }
 
                     // If we are reading the fish data
-                    if(data == fishData)
+                    if (data == fishData)
                     {
                         //Add a final value to track whether or not the fish has been caught before --
                         //1 if caught and 0 if not
@@ -286,7 +293,7 @@ namespace Fishing
             {
                 input.Close();
             }
-        }        
+        }
 
         /// <summary>
         /// Has a random chance of spawning each species of fish every frame.
@@ -319,10 +326,10 @@ namespace Fishing
                         UsingPower += newFish.PowerEffect;
                     }
 
-                    if(newFish.Name == "siren")
+                    if (newFish.Name == "siren")
                     {
                         // Create a new book that will follow the siren, and give the siren call spell if teh player doesn't have it already
-                        Books sirenCall = new Books("sirencall", books["sirencall"][1], bookTexture, books["sirencall"][2], books["sirencall"][3], 
+                        Books sirenCall = new Books("sirencall", books["sirencall"][1], bookTexture, books["sirencall"][2], books["sirencall"][3],
                             windowWidth, windowHeight, rng, newFish);
 
                         collectibles.Add(sirenCall);
