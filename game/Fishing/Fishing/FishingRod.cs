@@ -59,7 +59,10 @@ namespace Fishing
 
         // SKILL TREE PROPERTIES
         //--------------------------------------------------
-
+        public int SkillPoints 
+        {
+            get => skillPoints;
+        }
         public int MaxSpeed
         {
             get => maxSpeed;

@@ -128,7 +128,7 @@ namespace Fishing
                 fishingRod.skillPointChange(collectibleManager.SkillPoints);
             }
 
-            menu.Update(gameTime);
+            menu.Update(gameTime, fishingRod);
 
             base.Update(gameTime);
         }

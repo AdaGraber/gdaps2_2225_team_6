@@ -30,6 +30,17 @@ namespace Fishing
         //stats menu
         Texture2D statsFrame;
         Texture2D statsOutline;
+        int skillLevel = 0; //actual stats
+        int maxDepth = 0;
+        int maxSpeed = 0;
+
+        //achievements menu
+        Texture2D flavorFrame;
+        Texture2D flavorOutline;
+        Texture2D clipFrame;
+        Rectangle clipRect; //rect for clip frame
+        RasterizerState rsEnabled = new RasterizerState() { ScissorTestEnable = true }; //scissoring enabled
+        //RasterizerState rsDisabled = new RasterizerState() { ScissorTestEnable = false }; //scissoring disabled
 
         //fonts
         SpriteFont menuHeader;
@@ -42,14 +53,6 @@ namespace Fishing
         private List<Button> statsButtonList;
         private List<Button> achievementsButtonList;
         private MenuState currentState;
-
-        private bool open = false;
-
-        public bool Open
-        {
-            get { return open; }
-        }
-
 
         /* CONSTRUCTORS AND METHODS */
         
@@ -68,17 +71,29 @@ namespace Fishing
             outerShade = new Texture2D(graphicsDevice, 1, 1); //initialize a 1x1 texture
             outerShade.SetData(new[] { Color.Gray }); //color the texture
 
-            //frame
+            //frames
             menuFrame = new Texture2D(graphicsDevice, 1, 1);
             menuFrame.SetData(new[] { Color.BurlyWood });
-            statsFrame = new Texture2D(graphicsDevice, 1, 1); //stats frame
+            //stats frame
+            statsFrame = new Texture2D(graphicsDevice, 1, 1); 
             statsFrame.SetData(new[] { Color.Bisque });
+            //achievements frame
+            flavorFrame = new Texture2D(graphicsDevice, 1, 1);
+            flavorFrame.SetData(new[] { Color.Bisque });
+            clipFrame = new Texture2D(graphicsDevice, 1, 1);
+            clipFrame.SetData(new[] { Color.Bisque });
+            clipRect = new Rectangle((windowWidth / 2 - 249), (windowHeight / 2 - 120), 498, 144);
 
-            //frame outline
+            //frame outlines
             menuOutline = new Texture2D(graphicsDevice, 1, 1);
             menuOutline.SetData(new[] { Color.Chocolate });
-            statsOutline = new Texture2D(graphicsDevice, 1, 1); //stats frame
+            //stats frame
+            statsOutline = new Texture2D(graphicsDevice, 1, 1); 
             statsOutline.SetData(new[] { Color.Peru });
+            //achievements frame
+            flavorOutline = new Texture2D(graphicsDevice, 1, 1);
+            flavorOutline.SetData(new[] { Color.Peru });
+
 
             //menu fonts
             menuHeader = content.Load<SpriteFont>("Header");
@@ -153,7 +168,7 @@ namespace Fishing
             };
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, FishingRod fishingRod)
         {
             if(currentState != MenuState.Closed) //menu is open
             {
@@ -162,6 +177,10 @@ namespace Fishing
                 {
                     case MenuState.Stats:
                         updateButton = statsButtonList;
+                        skillLevel = fishingRod.SkillPoints; //skill level
+                        maxDepth = fishingRod.MaxDepth; //depth
+                        maxSpeed = fishingRod.MaxSpeed; //speed
+
                         break;
 
                     case MenuState.Achievements:
@@ -212,7 +231,7 @@ namespace Fishing
                     spriteBatch.Draw(statsFrame, new Rectangle((windowWidth / 2 - 249), (windowHeight / 2 - 97), 498, 144), Color.White);
 
                     //stats text
-                    string footText = "Skill Level: 0\nMax:Dpeth: 0\nStrength: 0";
+                    string footText = String.Format("Skill Level: {0}\nMax:Depth: {1}\nSpeed: {2}", skillLevel, maxDepth, maxSpeed);
                     spriteBatch.DrawString(menuFooter, footText, new Vector2((windowWidth / 2 - 239), (windowHeight / 2 - 87)), Color.Black);
                 }
                 else if (currentState == MenuState.Achievements) //achievements menu state
@@ -222,6 +241,26 @@ namespace Fishing
                     {
                         achievementsButtonList[i].Draw(gameTime, spriteBatch); //load buttons for achievements state
                     }
+
+                    spriteBatch.End(); //END SPRITEBATCH
+                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, rsEnabled); //got this from StackExchange, ENABLE SCISSORING/CLIPPING
+
+                    Rectangle currentRect = spriteBatch.GraphicsDevice.ScissorRectangle; //save current rect to restore later
+                    spriteBatch.GraphicsDevice.ScissorRectangle = clipRect; //replace with the rect of the frame
+
+
+                    spriteBatch.Draw(clipFrame, clipRect, Color.White); //draw the frame to clip
+
+                    spriteBatch.GraphicsDevice.ScissorRectangle = currentRect;
+                    spriteBatch.End(); //end clipping
+
+                    spriteBatch.Begin(); //draw normally again
+                    //flavor frame
+                    spriteBatch.Draw(flavorOutline, new Rectangle((windowWidth / 2 - 252), (windowHeight / 2 + 30), 504, 40), Color.White);
+                    spriteBatch.Draw(flavorFrame, new Rectangle((windowWidth / 2 - 249), (windowHeight / 2 + 33), 498, 34), Color.White);
+
+                    string flavorText = "Flavor text";
+                    spriteBatch.DrawString(menuFooter, flavorText, new Vector2((windowWidth / 2 - menuFooter.MeasureString(flavorText).X / 2), (windowHeight / 2 + 38)), Color.Black);
                 }
                 //header text
                 spriteBatch.DrawString(menuHeader, headerText, new Vector2((windowWidth / 2 - menuHeader.MeasureString(headerText).X / 2), (windowHeight / 2 - 180)), Color.Black);
