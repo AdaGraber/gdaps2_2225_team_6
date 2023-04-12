@@ -174,40 +174,50 @@ namespace Fishing
         /// </summary>
         private void UpdateBackground()
         {
+            //If the fishing rod is at the bottom of the window, is not below its max depth,
+            //and is going down
             if (fishingRod.Rect.Y >= windowHeight - fishingRod.Rect.Height
                 && fishingRod.CurrentDepth < fishingRod.MaxDepth
                 && fishingRod.PlayerDirection == Direction.Down)
             {
+                //As long as the background red color is not too dark, subtract from it
                 if (backgroundColor.R > 10)
                 {
                     backgroundColor.R--;
                 }
 
+                //As long as the background green color is not too dark, subtract from it
                 if (backgroundColor.G > 10)
                 {
                     backgroundColor.G--;
                 }
 
+                //As long as the background blue color is not too dark, subtract from it
                 if (backgroundColor.B > 20)
                 {
                     backgroundColor.B--;
                 }
             }
 
+            //If the fishing rod is at the top of the window, its current depth is not above zero,
+            //and is going up
             else if (fishingRod.Rect.Y <= 0
                 && fishingRod.CurrentDepth > 0
                 && fishingRod.PlayerDirection == Direction.Up)
             {
+                //As long as the background red color is not too bright, add to it
                 if (backgroundColor.R < 87)
                 {
                     backgroundColor.R++;
                 }
 
+                //As long as the background green color is not too bright, add to it
                 if (backgroundColor.G < 165)
                 {
                     backgroundColor.G++;
                 }
 
+                //As long as the background blue color is not too bright, add to it
                 if (backgroundColor.B < 255)
                 {
                     backgroundColor.B++;

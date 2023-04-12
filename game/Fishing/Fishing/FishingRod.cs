@@ -244,18 +244,9 @@ namespace Fishing
                             rect.Y++;
                         }
 
-                        if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
-                        {
-                            rect.Y += 3;
-                        }
-                        else
-                        {
-                            rect.Y++;
-                        }
-
                         //Update the current depth separately here, since currentDepth can go
                         //deeper than the y value
-                        if (currentDepth < maxDepth && (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
+                        if (currentDepth < maxDepth && (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift)))
                         {
                             currentDepth += 3;
                         }
@@ -264,7 +255,6 @@ namespace Fishing
                         {
                             currentDepth++;
                         }
-                        rect.Y++;
                     }
                     break;
 
