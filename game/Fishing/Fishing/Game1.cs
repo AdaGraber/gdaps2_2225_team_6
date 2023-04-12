@@ -173,7 +173,7 @@ namespace Fishing
         {
             //If the fishing rod is at the bottom of the window, is not below its max depth,
             //and is going down
-            if (fishingRod.Rect.Y >= windowHeight - fishingRod.Rect.Height
+            /*if (fishingRod.Rect.Y >= windowHeight - fishingRod.Rect.Height
                 && fishingRod.CurrentDepth < fishingRod.MaxDepth
                 && fishingRod.PlayerDirection == Direction.Down)
             {
@@ -219,7 +219,7 @@ namespace Fishing
                 {
                     backgroundColor.B++;
                 }
-            }
+            }*/
 
         }
     }
