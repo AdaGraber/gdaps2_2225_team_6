@@ -34,6 +34,7 @@ namespace Fishing
         List<Texture2D> fishTextures;
         Texture2D rodTexture;
         Texture2D bookTexture;
+        Texture2D rodLineTexture;
 
         //Collectible manager
         CollectibleManager collectibleManager;
@@ -91,14 +92,15 @@ namespace Fishing
             fishTextures.Add(Content.Load<Texture2D>("flamefish"));
             fishTextures.Add(Content.Load<Texture2D>("siren"));
 
-            //Loads fishing rod texture
-            rodTexture = Content.Load<Texture2D>("rodPH");
+            //Loads fishing rod and line texture
+            rodTexture = Content.Load<Texture2D>("fishingHook");
+            rodLineTexture = Content.Load<Texture2D>("rodLine");
 
             // Load book texture
             bookTexture = Content.Load<Texture2D>("book");
 
             //initializes fishing rod
-            fishingRod = new FishingRod(rodTexture, 400, windowWidth / 2, 1, windowWidth); //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
+            fishingRod = new FishingRod(rodTexture,rodLineTexture, 400, windowWidth / 2, 1, windowWidth); //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
 
             //Initialize the CollectibleManager
             collectibleManager = new CollectibleManager(rng, windowWidth, windowHeight,

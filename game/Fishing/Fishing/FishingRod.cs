@@ -36,6 +36,7 @@ namespace Fishing
         private Texture2D rodDesign;
         private Rectangle rect;
         private Rectangle catchRadius; // Will change with spells
+        private Texture2D rodWire;
 
         // SKILL TREE STUFF
         private int skillPoints;
@@ -119,17 +120,18 @@ namespace Fishing
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor
-        public FishingRod(Texture2D rodDesign, int maxDepth, int x, int y, int windowWidth)
+        public FishingRod(Texture2D rodDesign, Texture2D rodLine, int maxDepth, int x, int y, int windowWidth)
         {
             this.windowWidth = windowWidth;
             this.rodDesign = rodDesign;
             this.maxDepth = maxDepth;
+            this.rodWire = rodLine;
 
             skillPoints = 0;
             totalExp = 0;
 
             //Set the rectangle at the given x and y position and with the width and height of the texture
-            rect = new Rectangle(x, y, rodDesign.Width, rodDesign.Height);
+            rect = new Rectangle(x, y, 50, 50);
             catchRadius = rect;
 
             // TEMPORARY give the player the siren call spell since it cannot be obtained in game currently
@@ -191,7 +193,7 @@ namespace Fishing
                 case Direction.Ascent:
                     if (rect.Y > 0)
                     {
-                        rect.Y -= 4;
+                        rect.Y -= 5;
                     }
                     break;
 
@@ -199,7 +201,14 @@ namespace Fishing
                 case Direction.Up:
                     if (rect.Y > 0)
                     {
-                        rect.Y--;
+                        if(kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
+                        {
+                            rect.Y -= 2;
+                        }
+                        else
+                        {
+                            rect.Y--;
+                        }
                     }
                     break;
 
@@ -207,25 +216,51 @@ namespace Fishing
                 case Direction.Down:
                     if (rect.Y < maxDepth)
                     {
-                        rect.Y++;
+                        if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
+                        {
+                            rect.Y += 3;
+                        }
+                        else
+                        {
+                            rect.Y++;
+                        }
+                        
                     }
+                   
                     break;
 
                 //Left
                 case Direction.Left:
                     if (rect.X > 0)
                     {
-                        rect.X--;
+                        if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
+                        {
+                            rect.X -= 3;
+                        }
+                        else
+                        {
+                            rect.X--;
+                        }
+                        
                     }
+                    
                     break;
 
                 //Right
                 case Direction.Right:
                     if (rect.X < windowWidth)
                     {
-                        rect.X++;
+                        if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
+                        {
+                            rect.X += 3;
+                        }
+                        else
+                        {
+                            rect.X++;
+                        }
+                        
                     }
-
+                  
                     break;
 
                 //Stationary/anything else -- do nothing
@@ -291,6 +326,7 @@ namespace Fishing
         public void Draw(SpriteBatch _spriteBatch)
         {
             _spriteBatch.Draw(rodDesign, rect, Color.White);
+            _spriteBatch.Draw(rodWire, new Rectangle(rect.X, rect.Y-(rect.Y/2), 1000,100), Color.White); //TODO: This shows sometimes but not always, find the right values for this to work
         }
 
         /// <summary>
