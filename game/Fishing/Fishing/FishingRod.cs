@@ -36,6 +36,7 @@ namespace Fishing
         private Texture2D rodDesign;
         private Rectangle rect;
         private Rectangle catchRadius; // Will change with spells
+        private Texture2D rodWire;
 
         // SKILL TREE STUFF
         private int skillPoints;
@@ -134,18 +135,19 @@ namespace Fishing
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor
-        public FishingRod(Texture2D rodDesign, int maxDepth, int x, int y, int windowWidth, int windowHeight)
+        public FishingRod(Texture2D rodDesign, Texture 2D rodLine, int maxDepth, int x, int y, int windowWidth)
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
             this.rodDesign = rodDesign;
             this.maxDepth = maxDepth;
+            this.rodWire = rodLine;
 
             skillPoints = 0;
             totalExp = 0;
 
             //Set the rectangle at the given x and y position and with the width and height of the texture
-            rect = new Rectangle(x, y, rodDesign.Width, rodDesign.Height);
+            rect = new Rectangle(x, y, 50, 50);
             catchRadius = rect;
 
             // TEMPORARY give the player the siren call spell since it cannot be obtained in game currently
@@ -207,8 +209,8 @@ namespace Fishing
                 case Direction.Ascent:
                     if (rect.Y > 0)
                     {
-                        rect.Y -= 4;
-                        currentDepth -= 4;
+                        rect.Y -= 5;
+                        currentDepth -= 5;
                     }
                     break;
 
@@ -216,8 +218,16 @@ namespace Fishing
                 case Direction.Up:
                     if (rect.Y > 0)
                     {
-                        rect.Y--;
-                        currentDepth--;
+                        if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
+                        {
+                            rect.Y -= 2;
+                            currentDepth -=2;
+                        }
+                        else
+                        {
+                            rect.Y--;
+                            currentDepth--;
+                        }
                     }
                     break;
 
@@ -225,14 +235,36 @@ namespace Fishing
                 case Direction.Down:
                     if (rect.Y < windowHeight - rect.Height)
                     {
-                        rect.Y++;
-                    }
+                        if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
+                        {
+                            rect.Y += 3;
+                        }
+                        else
+                        {
+                            rect.Y++;
+                        }
 
-                    //Update the current depth separately here, since currentDepth can go
-                    //deeper than the y value
-                    if (currentDepth < maxDepth)
-                    {
-                        currentDepth++;
+                        if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
+                        {
+                            rect.Y += 3;
+                        }
+                        else
+                        {
+                            rect.Y++;
+                        }
+
+                        //Update the current depth separately here, since currentDepth can go
+                        //deeper than the y value
+                        if (currentDepth < maxDepth && (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
+                        {
+                            currentDepth += 3;
+                        }
+
+                        else if (currentDepth < maxDepth)
+                        {
+                            currentDepth++;
+                        }
+                        rect.Y++;
                     }
                     break;
 
@@ -240,17 +272,34 @@ namespace Fishing
                 case Direction.Left:
                     if (rect.X > 0)
                     {
-                        rect.X--;
+                        if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
+                        {
+                            rect.X -= 3;
+                        }
+                        else
+                        {
+                            rect.X--;
+                        }
+                        
                     }
+                    
                     break;
 
                 //Right
                 case Direction.Right:
                     if (rect.X < windowWidth)
                     {
-                        rect.X++;
+                        if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
+                        {
+                            rect.X += 3;
+                        }
+                        else
+                        {
+                            rect.X++;
+                        }
+                        
                     }
-
+                  
                     break;
 
                 //Stationary/anything else -- do nothing
@@ -316,6 +365,7 @@ namespace Fishing
         public void Draw(SpriteBatch _spriteBatch)
         {
             _spriteBatch.Draw(rodDesign, rect, Color.White);
+            _spriteBatch.Draw(rodWire, new Rectangle(rect.X, rect.Y-(rect.Y/2), 1000,100), Color.White); //TODO: This shows sometimes but not always, find the right values for this to work
         }
 
         /// <summary>
