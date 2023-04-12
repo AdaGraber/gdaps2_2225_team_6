@@ -170,7 +170,7 @@ namespace Fishing
         }
 
         /// <summary>
-        /// Updates the background color of the screen.
+        /// Updates the background color of the screen. Commented out due to incompleteness.
         /// </summary>
         private void UpdateBackground()
         {

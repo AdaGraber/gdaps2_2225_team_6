@@ -56,8 +56,8 @@ namespace Fishing
         //Whether or not the fishing rod has an item
         private bool hasItem;
 
-        //Variable for fishing rod's current depth
-        //private int currentDepth;
+        //Variable for fishing rod's current depth -- currently unused outside of FishingRod
+        private int currentDepth;
 
         // Timer variables to be used for spells
         private float sirenCallUptime;
@@ -97,10 +97,10 @@ namespace Fishing
             get { return direction; }
         }
 
-        /*public int CurrentDepth
+        public int CurrentDepth
         {
             get => currentDepth;
-        }*/
+        }
 
         //---------------------------------------------------
 
@@ -210,7 +210,7 @@ namespace Fishing
                     if (rect.Y > 0)
                     {
                         rect.Y -= 5;
-                        //currentDepth -= 5;
+                        currentDepth -= 5;
                     }
                     break;
 
@@ -221,12 +221,12 @@ namespace Fishing
                         if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
                         {
                             rect.Y -= 2;
-                            //currentDepth -=2;
+                            currentDepth -=2;
                         }
                         else
                         {
                             rect.Y--;
-                            //currentDepth--;
+                            currentDepth--;
                         }
                     }
                     break;
@@ -246,7 +246,7 @@ namespace Fishing
 
                         //Update the current depth separately here, since currentDepth can go
                         //deeper than the y value
-                        /*if (currentDepth < maxDepth && (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift)))
+                        if (currentDepth < maxDepth && (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift)))
                         {
                             currentDepth += 3;
                         }
@@ -254,7 +254,7 @@ namespace Fishing
                         else if (currentDepth < maxDepth)
                         {
                             currentDepth++;
-                        }*/
+                        }
                     }
                     break;
 
