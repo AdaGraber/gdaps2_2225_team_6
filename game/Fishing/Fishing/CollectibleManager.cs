@@ -157,8 +157,8 @@ namespace Fishing
                     collectibles[i].IsDead = true;
                 }
 
-                //Check if the collectible is caught and the player made it to the top of the screen with it
-                if (collectibles[i].IsCaught && fishingRod.Rect.Y == 0)
+                //Check if the collectible is caught and the player made it to the top of the level with it
+                if (collectibles[i].IsCaught && fishingRod.CurrentDepth == 0)
                 {
                     //If the collectible is a fish
                     if (collectibles[i] is Fish)
@@ -315,9 +315,9 @@ namespace Fishing
                 //Get the chance of the fish spawning
                 int spawnChance = n.Value[0];
 
-                //Give the fish a spawnChance-in-1000 chance of spawning -- the higher the spawnChance,
+                //Give the fish a spawnChance-in-2000 chance of spawning -- the higher the spawnChance,
                 //the more likely it is to spawn
-                if (rng.Next(1001) <= spawnChance)
+                if (rng.Next(2001) <= spawnChance)
                 {
                     //Create a new fish using the data in the array in the dictionary
                     Fish newFish = new Fish(n.Key, n.Value[1], fishTexture, n.Value[2], n.Value[3],

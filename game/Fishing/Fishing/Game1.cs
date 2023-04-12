@@ -27,10 +27,14 @@ namespace Fishing
         private int windowWidth;
         private int windowHeight;
 
+        //Background
+        Color backgroundColor;
+
         //Random object
         private Random rng;
 
         //Textures
+        Texture2D backgroundTexture;
         List<Texture2D> fishTextures;
         Texture2D rodTexture;
         Texture2D bookTexture;
@@ -62,6 +66,8 @@ namespace Fishing
             //Initialize window width and height
             windowWidth = _graphics.GraphicsDevice.Viewport.Width;
             windowHeight = _graphics.GraphicsDevice.Viewport.Height;
+
+            backgroundColor = new Color(87, 165, 255);
 
             //Initialize Random object
             rng = new Random();
@@ -98,11 +104,14 @@ namespace Fishing
             bookTexture = Content.Load<Texture2D>("book");
 
             //initializes fishing rod
-            fishingRod = new FishingRod(rodTexture, 400, windowWidth / 2, 1, windowWidth); //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
+            fishingRod = new FishingRod(rodTexture, 1000, windowWidth / 2, 1, windowWidth, windowHeight); //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
 
             //Initialize the CollectibleManager
             collectibleManager = new CollectibleManager(rng, windowWidth, windowHeight,
                 fishTextures, bookTexture, fishingRod);
+
+            //Initialize the background
+            //bg = new Background(windowWidth, windowHeight, GraphicsDevice, fishingRod, backgroundTexture);
 
             //load textures for menu
             menu.Load(GraphicsDevice, Content);
@@ -128,6 +137,9 @@ namespace Fishing
                 fishingRod.skillPointChange(collectibleManager.SkillPoints);
             }
 
+            //Update the background color
+            UpdateBackground();
+
             menu.Update(gameTime, fishingRod);
 
             base.Update(gameTime);
@@ -135,7 +147,7 @@ namespace Fishing
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(backgroundColor);
 
             _spriteBatch.Begin();
 
@@ -153,6 +165,53 @@ namespace Fishing
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        /// <summary>
+        /// Updates the background color of the screen.
+        /// </summary>
+        private void UpdateBackground()
+        {
+            if (fishingRod.Rect.Y >= windowHeight - fishingRod.Rect.Height
+                && fishingRod.CurrentDepth < fishingRod.MaxDepth
+                && fishingRod.PlayerDirection == Direction.Down)
+            {
+                if (backgroundColor.R > 10)
+                {
+                    backgroundColor.R--;
+                }
+
+                if (backgroundColor.G > 10)
+                {
+                    backgroundColor.G--;
+                }
+
+                if (backgroundColor.B > 20)
+                {
+                    backgroundColor.B--;
+                }
+            }
+
+            else if (fishingRod.Rect.Y <= 0
+                && fishingRod.CurrentDepth > 0
+                && fishingRod.PlayerDirection == Direction.Up)
+            {
+                if (backgroundColor.R < 87)
+                {
+                    backgroundColor.R++;
+                }
+
+                if (backgroundColor.G < 165)
+                {
+                    backgroundColor.G++;
+                }
+
+                if (backgroundColor.B < 255)
+                {
+                    backgroundColor.B++;
+                }
+            }
+
         }
     }
 }

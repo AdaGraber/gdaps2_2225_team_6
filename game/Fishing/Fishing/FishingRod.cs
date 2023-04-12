@@ -48,11 +48,15 @@ namespace Fishing
         private KeyboardState kbState;
         private KeyboardState prevKBState;
 
-        //Width of the window
+        //Dimensions of the window
         private int windowWidth;
+        private int windowHeight;
 
         //Whether or not the fishing rod has an item
         private bool hasItem;
+
+        //Variable for fishing rod's current depth
+        private int currentDepth;
 
         // Timer variables to be used for spells
         private float sirenCallUptime;
@@ -86,6 +90,17 @@ namespace Fishing
         {
             get => maxDepth;
         }
+
+        public Direction PlayerDirection
+        {
+            get { return direction; }
+        }
+
+        public int CurrentDepth
+        {
+            get => currentDepth;
+        }
+
         //---------------------------------------------------
 
         // List of known spells
@@ -119,9 +134,10 @@ namespace Fishing
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor
-        public FishingRod(Texture2D rodDesign, int maxDepth, int x, int y, int windowWidth)
+        public FishingRod(Texture2D rodDesign, int maxDepth, int x, int y, int windowWidth, int windowHeight)
         {
             this.windowWidth = windowWidth;
+            this.windowHeight = windowHeight;
             this.rodDesign = rodDesign;
             this.maxDepth = maxDepth;
 
@@ -192,6 +208,7 @@ namespace Fishing
                     if (rect.Y > 0)
                     {
                         rect.Y -= 4;
+                        currentDepth -= 4;
                     }
                     break;
 
@@ -200,14 +217,22 @@ namespace Fishing
                     if (rect.Y > 0)
                     {
                         rect.Y--;
+                        currentDepth--;
                     }
                     break;
 
                 //Down
                 case Direction.Down:
-                    if (rect.Y < maxDepth)
+                    if (rect.Y < windowHeight - rect.Height)
                     {
                         rect.Y++;
+                    }
+
+                    //Update the current depth separately here, since currentDepth can go
+                    //deeper than the y value
+                    if (currentDepth < maxDepth)
+                    {
+                        currentDepth++;
                     }
                     break;
 

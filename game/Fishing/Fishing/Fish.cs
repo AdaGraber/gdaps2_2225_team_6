@@ -114,31 +114,6 @@ namespace Fishing
             }
         }
 
-        public override void Update()
-        {
-            //If the fish isn't mythical
-            if (!isMythical)
-            {
-                //Update like normal
-                base.Update();
-            }
-
-            //If the fish is a siren
-            else if (name == "siren")
-            {
-                //Move only if not in the correct position on the edge of the screen
-                if (position.X < 20)
-                {
-                    position.X++;
-                }
-                else if (position.X > windowWidth - texture.Width - 20)
-                {
-                    position.X--;
-                }
-
-            }
-        }
-
         /// <summary>
         /// Override of Collectible's Draw that draws the fish.
         /// </summary>
