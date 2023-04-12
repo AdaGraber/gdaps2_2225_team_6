@@ -54,8 +54,11 @@ namespace Fishing
         private List<Button> achievementsButtonList;
         private MenuState currentState;
 
+        //fish achievements
+        Dictionary<string, int[]> fishSpecies; // copy CollectibleManager reference of dict to menu for display purposes
+
         /* CONSTRUCTORS AND METHODS */
-        
+
         //Parameterized constructor
         public Menu(int windowWidth, int windowHeight)
         {
@@ -65,7 +68,7 @@ namespace Fishing
             currentState = MenuState.Closed;
         }
 
-        public void Load(GraphicsDevice graphicsDevice, ContentManager content)
+        public void Load(GraphicsDevice graphicsDevice, ContentManager content, CollectibleManager collectibleManager)
         {
             //background shade
             outerShade = new Texture2D(graphicsDevice, 1, 1); //initialize a 1x1 texture
@@ -166,6 +169,8 @@ namespace Fishing
             {
                 backButton,
             };
+
+            fishSpecies = collectibleManager.FishSpecies; //Reference existing FileIo dict
         }
 
         public void Update(GameTime gameTime, FishingRod fishingRod)

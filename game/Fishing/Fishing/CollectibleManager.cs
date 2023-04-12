@@ -69,7 +69,11 @@ namespace Fishing
         {
             get => skillPoints;
         }
-
+        // Property to get the dictionary over to the achievments menu
+        public Dictionary<string, int[]> FishSpecies
+        {
+            get => fishSpecies;
+        }
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor
