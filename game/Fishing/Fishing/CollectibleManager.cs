@@ -162,7 +162,7 @@ namespace Fishing
                 }
 
                 //Check if the collectible is caught and the player made it to the top of the level with it
-                if (collectibles[i].IsCaught && fishingRod.Rect.Y == 0)
+                if (collectibles[i].IsCaught && fishingRod.Rect.Y <= 0)
                 {
                     //If the collectible is a fish
                     if (collectibles[i] is Fish)
@@ -332,7 +332,7 @@ namespace Fishing
                         UsingPower += newFish.PowerEffect;
                     }
 
-                    if (newFish.Name == "siren")
+                    if (newFish.Name == "siren" && books.ContainsKey("sirencall"))
                     {
                         // Create a new book that will follow the siren, and give the siren call spell if teh player doesn't have it already
                         Books sirenCall = new Books("sirencall", books["sirencall"][1], bookTexture, books["sirencall"][2], books["sirencall"][3],
