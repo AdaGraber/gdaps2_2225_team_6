@@ -158,7 +158,7 @@ namespace Fishing
                 }
 
                 //Check if the collectible is caught and the player made it to the top of the level with it
-                if (collectibles[i].IsCaught && fishingRod.CurrentDepth == 0)
+                if (collectibles[i].IsCaught && fishingRod.Rect.Y == 0)
                 {
                     //If the collectible is a fish
                     if (collectibles[i] is Fish)

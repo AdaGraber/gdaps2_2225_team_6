@@ -44,7 +44,8 @@ namespace Fishing
         public Rectangle Position
         {
             get { return position; }
-            //Get-only property
+
+            set { value = position; }
         }
 
         public bool IsCaught

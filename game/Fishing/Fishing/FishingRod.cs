@@ -135,7 +135,7 @@ namespace Fishing
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor
-        public FishingRod(Texture2D rodDesign, Texture 2D rodLine, int maxDepth, int x, int y, int windowWidth)
+        public FishingRod(Texture2D rodDesign, Texture2D rodLine, int maxDepth, int x, int y, int windowWidth, int windowHeight)
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
