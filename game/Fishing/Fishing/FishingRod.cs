@@ -39,6 +39,7 @@ namespace Fishing
 
         // SKILL TREE STUFF
         private int skillPoints;
+        private int totalExp;
         private int maxSpeed;
         private int maxDepth;
 
@@ -63,6 +64,19 @@ namespace Fishing
         {
             get => skillPoints;
         }
+
+        public int TotalExp
+        {
+            get => totalExp;
+
+            set { totalExp = value; }
+        }
+
+        public int Level
+        {
+            get { return (int)Math.Sqrt(totalExp / 10); }
+        }
+
         public int MaxSpeed
         {
             get => maxSpeed;
@@ -112,6 +126,7 @@ namespace Fishing
             this.maxDepth = maxDepth;
 
             skillPoints = 0;
+            totalExp = 0;
 
             //Set the rectangle at the given x and y position and with the width and height of the texture
             rect = new Rectangle(x, y, rodDesign.Width, rodDesign.Height);

@@ -97,11 +97,11 @@ namespace Fishing
                     //or speed it up if swimming towards it
                     if (sender.Position.X > position.X)
                     {
-                        position.X += (speed - 1) / 2;
+                        position.X += speed - 1;
                     }
                     else
                     {
-                        position.X -= (speed - 1) / 2;
+                        position.X -= speed - 1;
                     }
                 }
 

@@ -128,8 +128,8 @@ namespace Fishing
                     && ((collectibles[i] is Books)
                     //and isn't the siren call spell book (isn't in itself catchable)
                     && (tempBook.Spell != "sirencall")
-                    //or a fish whose required skill points are lower than the player's skill points
-                    || (collectibles[i] is Fish && skillPoints >= fishSpecies[((Fish)collectibles[i]).Name][4]))))
+                    //or a fish whose required level is lower than the player's level
+                    || (collectibles[i] is Fish && fishingRod.Level >= fishSpecies[((Fish)collectibles[i]).Name][4]))))
                 {
                     //If the above conditions are met,
                     //set the collectible's position to that of the fishing rod
@@ -169,6 +169,9 @@ namespace Fishing
                         //For readability purposes, get a reference to the int array for the species of that fish
                         int[] fishData = fishSpecies[currentFish.Name];
 
+                        //Give the player exp
+                        fishingRod.TotalExp += fishData[5];
+
                         //Check if the species of fish has never been caught before
                         if (fishData[fishData.Count() - 1] == 0)
                         {
@@ -182,7 +185,6 @@ namespace Fishing
                                 books.Remove("sirencall");
                             }
                         }
-
                         //Otherwise, do nothing
                     }
 
@@ -359,7 +361,7 @@ namespace Fishing
                 //Get the chance of the fish spawning
                 int spawnChance = n.Value[0];
 
-                //Give the fish a spawnChance-in-10000 chance of spawning -- the higher the spawnChance,
+                //Give the fish a spawnChance-in-1000 chance of spawning -- the higher the spawnChance,
                 //the more likely it is to spawn
                 if (rng.Next(10001) <= spawnChance)
                 {
