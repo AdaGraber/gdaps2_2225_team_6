@@ -34,6 +34,9 @@ namespace Fishing
         //Random object
         Random rng;
 
+        //Background
+        Background bg;
+
         //Window width and height
         int windowWidth;
         int windowHeight;
@@ -77,12 +80,13 @@ namespace Fishing
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor
-        public CollectibleManager(Random rng, int windowWidth, int windowHeight, List<Texture2D> fishTextures, Texture2D bookTexture, FishingRod fishingRod)
+        public CollectibleManager(Random rng, Background bg, int windowWidth, int windowHeight, List<Texture2D> fishTextures, Texture2D bookTexture, FishingRod fishingRod)
         {
             //Initialize given values
+            this.rng = rng;
+            this.bg = bg;
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
-            this.rng = rng;
             this.fishTextures = fishTextures;
             this.bookTexture = bookTexture;
             this.fishingRod = fishingRod;
@@ -219,8 +223,8 @@ namespace Fishing
                 //If the collectible is dead
                 if (collectibles[i].IsDead)
                 {
-                    //If the collectible is being affected by a power and is caught
-                    if (collectibles[i].AffectedByPower && collectibles[i].IsCaught)
+                    //If the collectible is caught
+                    if (collectibles[i].IsCaught)
                     {
                         //Then the fishing rod no longer has the collectible
                         fishingRod.HasItem = false;
@@ -242,6 +246,7 @@ namespace Fishing
         {
             try
             {
+                //Variables for file reading
                 string line = null;
                 string[] lines;
 

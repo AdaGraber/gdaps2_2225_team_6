@@ -21,36 +21,36 @@ namespace Fishing
         private SpriteBatch _spriteBatch;
 
         //Game state
-        MenuState menuState;
+        private MenuState menuState;
 
         //Window dimensions
         private int windowWidth;
         private int windowHeight;
 
         //Background
-        Color backgroundColor;
+        private Background bg;
 
         //Random object
         private Random rng;
 
         //Textures
-        Texture2D backgroundTexture;
-        List<Texture2D> fishTextures;
-        Texture2D rodTexture;
-        Texture2D bookTexture;
-        Texture2D rodLineTexture;
+        private Texture2D backgroundTexture;
+        private List<Texture2D> fishTextures;
+        private Texture2D rodTexture;
+        private Texture2D bookTexture;
+        private Texture2D rodLineTexture;
 
         //Collectible manager
-        CollectibleManager collectibleManager;
+        private CollectibleManager collectibleManager;
 
         //Fishing rod class setup
-        FishingRod fishingRod;
+        private FishingRod fishingRod;
 
         //buttons
         private List<Button> buttonList;
 
         //Menu
-        Menu menu;
+        private Menu menu;
 
         public Game1()
         {
@@ -68,7 +68,7 @@ namespace Fishing
             windowWidth = _graphics.GraphicsDevice.Viewport.Width;
             windowHeight = _graphics.GraphicsDevice.Viewport.Height;
 
-            backgroundColor = new Color(87, 165, 255);
+            //Initialize background color
 
             //Initialize Random object
             rng = new Random();
@@ -92,6 +92,9 @@ namespace Fishing
 
             // TODO: use this.Content to load your game content here
 
+            //Load background
+            backgroundTexture = Content.Load<Texture2D>("backgroundTexture");
+
             //Load the fish textures and add them to the list of textures
             fishTextures.Add(Content.Load<Texture2D>("angelfish"));
             fishTextures.Add(Content.Load<Texture2D>("aquafish"));
@@ -105,15 +108,15 @@ namespace Fishing
             // Load book texture
             bookTexture = Content.Load<Texture2D>("book");
 
+            //Initialize the background
+            bg = new Background(backgroundTexture, windowWidth, windowHeight);
+
             //initializes fishing rod
-            fishingRod = new FishingRod(rodTexture, rodLineTexture, 400, windowWidth / 2, 1, windowWidth, windowHeight); //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
+            fishingRod = new FishingRod(rodTexture, rodLineTexture, 1000, windowWidth / 2, 1, windowWidth, windowHeight); //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
 
             //Initialize the CollectibleManager
-            collectibleManager = new CollectibleManager(rng, windowWidth, windowHeight,
+            collectibleManager = new CollectibleManager(rng, bg, windowWidth, windowHeight,
                 fishTextures, bookTexture, fishingRod);
-
-            //Initialize the background
-            //bg = new Background(windowWidth, windowHeight, GraphicsDevice, fishingRod, backgroundTexture);
 
             //load textures for menu
             menu.Load(GraphicsDevice, Content, collectibleManager);
@@ -140,7 +143,7 @@ namespace Fishing
             }
 
             //Update the background color
-            UpdateBackground();
+            bg.Update(fishingRod);
 
             menu.Update(gameTime, fishingRod);
 
@@ -149,11 +152,14 @@ namespace Fishing
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(backgroundColor);
+            GraphicsDevice.Clear(Color.White);
 
             _spriteBatch.Begin();
 
             // TODO: Add your drawing code here
+
+            //Draw the background
+            bg.Draw(_spriteBatch);
 
             //Draw the fishing rod
             fishingRod.Draw(_spriteBatch);
@@ -169,61 +175,5 @@ namespace Fishing
             base.Draw(gameTime);
         }
 
-        /// <summary>
-        /// Updates the background color of the screen. Commented out due to incompleteness.
-        /// </summary>
-        private void UpdateBackground()
-        {
-            //If the fishing rod is at the bottom of the window, is not below its max depth,
-            //and is going down
-            /*if (fishingRod.Rect.Y >= windowHeight - fishingRod.Rect.Height
-                && fishingRod.CurrentDepth < fishingRod.MaxDepth
-                && fishingRod.PlayerDirection == Direction.Down)
-            {
-                //As long as the background red color is not too dark, subtract from it
-                if (backgroundColor.R > 10)
-                {
-                    backgroundColor.R--;
-                }
-
-                //As long as the background green color is not too dark, subtract from it
-                if (backgroundColor.G > 10)
-                {
-                    backgroundColor.G--;
-                }
-
-                //As long as the background blue color is not too dark, subtract from it
-                if (backgroundColor.B > 20)
-                {
-                    backgroundColor.B--;
-                }
-            }
-
-            //If the fishing rod is at the top of the window, its current depth is not above zero,
-            //and is going up
-            else if (fishingRod.Rect.Y <= 0
-                && fishingRod.CurrentDepth > 0
-                && fishingRod.PlayerDirection == Direction.Up)
-            {
-                //As long as the background red color is not too bright, add to it
-                if (backgroundColor.R < 87)
-                {
-                    backgroundColor.R++;
-                }
-
-                //As long as the background green color is not too bright, add to it
-                if (backgroundColor.G < 165)
-                {
-                    backgroundColor.G++;
-                }
-
-                //As long as the background blue color is not too bright, add to it
-                if (backgroundColor.B < 255)
-                {
-                    backgroundColor.B++;
-                }
-            }*/
-
-        }
     }
 }

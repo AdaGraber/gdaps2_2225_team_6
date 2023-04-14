@@ -56,7 +56,7 @@ namespace Fishing
         //Whether or not the fishing rod has an item
         private bool hasItem;
 
-        //Variable for fishing rod's current depth -- currently unused outside of FishingRod
+        //Variable for fishing rod's current depth
         private int currentDepth;
 
         // Timer variables to be used for spells
@@ -233,7 +233,9 @@ namespace Fishing
 
                 //Down
                 case Direction.Down:
-                    if (rect.Y < windowHeight - rect.Height)
+
+                    //As long as the player isn't going off the edge of the screen
+                    if (rect.Y < windowHeight - rect.Height && rect.Y < maxDepth)
                     {
                         if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
                         {
@@ -243,19 +245,20 @@ namespace Fishing
                         {
                             rect.Y++;
                         }
-
-                        //Update the current depth separately here, since currentDepth can go
-                        //deeper than the y value
-                        if (currentDepth < maxDepth && (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift)))
-                        {
-                            currentDepth += 3;
-                        }
-
-                        else if (currentDepth < maxDepth)
-                        {
-                            currentDepth++;
-                        }
                     }
+
+                    //Update the current depth separately here, since currentDepth can go
+                    //deeper than the y value
+                    if (currentDepth < maxDepth && (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift)))
+                    {
+                        currentDepth += 3;
+                    }
+
+                    else if (currentDepth < maxDepth)
+                    {
+                        currentDepth++;
+                    }
+
                     break;
 
                 //Left

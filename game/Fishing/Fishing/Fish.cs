@@ -87,8 +87,8 @@ namespace Fishing
             if (sender.Name == "siren")
             {
                 //If the fish is within range of the siren
-                if (sender.Position.Y + sender.texture.Height + 40 > position.Y
-                    && sender.Position.Y - 40 < position.Y)
+                if (sender.Position.Y + sender.texture.Height > position.Y
+                    && sender.Position.Y < position.Y)
                 {
                     //The fish is affected by the siren power
                     affectedByPower = true;
