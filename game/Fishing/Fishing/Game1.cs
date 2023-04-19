@@ -109,10 +109,10 @@ namespace Fishing
             bookTexture = Content.Load<Texture2D>("book");
 
             //Initialize the background
-            bg = new Background(backgroundTexture, windowWidth, windowHeight);
+            bg = new Background(backgroundTexture, windowWidth);
 
             //initializes fishing rod
-            fishingRod = new FishingRod(rodTexture, rodLineTexture, 1000, windowWidth / 2, 1, windowWidth, windowHeight); //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
+            fishingRod = new FishingRod(rodTexture, rodLineTexture, 1000, windowWidth / 2, 1, windowWidth, windowHeight, bg); //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
 
             //Initialize the CollectibleManager
             collectibleManager = new CollectibleManager(rng, bg, windowWidth, windowHeight,

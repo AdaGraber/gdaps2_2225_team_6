@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework.Input;
 
 /* Team Tranquil
@@ -25,12 +26,16 @@ namespace Fishing
         //Random object
         protected Random rng;
 
+        //Background
+        Background bg;
+
         //Rectangle and texture
         protected Rectangle position;
         protected Texture2D texture;
 
         //Stats
         protected int speed;
+        protected int spawnDepth;
         protected int minDepth;
         protected int maxDepth;
         protected bool isCaught;
@@ -74,11 +79,12 @@ namespace Fishing
 
         //Parameterized constructor
         public Collectible(int speed, Texture2D texture, int minDepth, int maxDepth,
-            int windowWidth, int windowHeight, Random rng)
+            int windowWidth, int windowHeight, Random rng, Background bg)
         {
-            // Initiallizing fields
-            this.texture = texture;
+            // Initializing fields
+            this.bg = bg;
             this.rng = rng;
+            this.texture = texture;
             this.minDepth = minDepth;
 
             //Error handling in case maxDepth's value is invalid
@@ -106,8 +112,10 @@ namespace Fishing
                 //Set the speed equal to the negative of the given speed, so that it travels right to left
                 this.speed = -speed;
 
+                spawnDepth = rng.Next(minDepth, maxDepth + 1);
+
                 //Set the collectible's position just out of sight at a random y location within its min and max depth range
-                position = new Rectangle(windowWidth, rng.Next(minDepth, maxDepth + 1), texture.Width, texture.Height);
+                position = new Rectangle(windowWidth, spawnDepth + bg.Position.Y, texture.Width, texture.Height);
             }
         }
 
@@ -133,6 +141,9 @@ namespace Fishing
             {
                 //Move the collectible horizontally across the screen
                 position.X += speed;
+
+                //Move the collectible with the background
+                position.Y = spawnDepth + bg.Position.Y;
             }
         }
 

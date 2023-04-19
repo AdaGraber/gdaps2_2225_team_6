@@ -35,8 +35,8 @@ namespace Fishing
         }
 
         // Paramaterized constructor for books (if it is a skill book the spell value will be null)
-        public Books(string spell, int speed, Texture2D texture, int minDepth, int maxDepth, int windowWidth, int windowHeight, Random rng, Fish fish)
-            : base(speed, texture, minDepth, maxDepth, windowWidth, windowHeight, rng)
+        public Books(string spell, int speed, Texture2D texture, int minDepth, int maxDepth, int windowWidth, int windowHeight, Random rng, Background bg, Fish fish)
+            : base(speed, texture, minDepth, maxDepth, windowWidth, windowHeight, rng, bg)
         {
             if(spell == "skill")
             {

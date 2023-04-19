@@ -55,14 +55,14 @@ namespace Fishing
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor, pass neccessary parameters to parent class
-        public Fish(string name, int speed, Texture2D texture, int minDepth, int maxDepth, int windowWidth, int windowHeight, Random rng)
-            : base(speed, texture, minDepth, maxDepth, windowWidth, windowHeight, rng)
+        public Fish(string name, int speed, Texture2D texture, int minDepth, int maxDepth, int windowWidth, int windowHeight, Random rng, Background bg)
+            : base(speed, texture, minDepth, maxDepth, windowWidth, windowHeight, rng, bg)
         {
             //Initialize name field
             this.name = name;
 
             //If the fish is mythical, set isMythical to true
-            if (name == "siren" /*|| add any other mythical creature names here*/)
+            if (name == "siren")
             {
                 this.isMythical = true;
             }

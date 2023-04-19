@@ -330,7 +330,7 @@ namespace Fishing
                 {
                     //Create a new fish using the data in the array in the dictionary
                     Fish newFish = new Fish(n.Key, n.Value[1], fishTexture, n.Value[2], n.Value[3],
-                        windowWidth, windowHeight, rng);
+                        windowWidth, windowHeight, rng, bg);
 
                     if (!newFish.IsMythical)
                     {
@@ -341,7 +341,7 @@ namespace Fishing
                     {
                         // Create a new book that will follow the siren, and give the siren call spell if teh player doesn't have it already
                         Books sirenCall = new Books("sirencall", books["sirencall"][1], bookTexture, books["sirencall"][2], books["sirencall"][3],
-                            windowWidth, windowHeight, rng, newFish);
+                            windowWidth, windowHeight, rng, bg, newFish);
 
                         collectibles.Add(sirenCall);
                     }
@@ -376,7 +376,7 @@ namespace Fishing
                 {
                     //Create a new book using the data in the array in the dictionary
                     Books newBook = new Books(n.Key, n.Value[1], bookTexture, n.Value[2], n.Value[3],
-                        windowWidth, windowHeight, rng, null);
+                        windowWidth, windowHeight, rng, bg, null);
 
                     // Add that book to the list
                     collectibles.Add(newBook);

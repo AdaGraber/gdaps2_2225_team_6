@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,9 @@ namespace Fishing
     internal class FishingRod
     {
         /* FIELDS AND PROPERTIES */
+
+        //Background
+        Background bg;
 
         //Texture and position rectangle
         private Texture2D rodDesign;
@@ -135,8 +139,10 @@ namespace Fishing
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor
-        public FishingRod(Texture2D rodDesign, Texture2D rodLine, int maxDepth, int x, int y, int windowWidth, int windowHeight)
+        public FishingRod(Texture2D rodDesign, Texture2D rodLine, int maxDepth, int x, int y, int windowWidth, int windowHeight, Background bg)
         {
+            this.bg = bg;
+
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
             this.rodDesign = rodDesign;
@@ -145,6 +151,9 @@ namespace Fishing
 
             skillPoints = 0;
             totalExp = 0;
+
+            // Initialize currentDepth
+            currentDepth = x;
 
             //Set the rectangle at the given x and y position and with the width and height of the texture
             rect = new Rectangle(x, y, 50, 50);
@@ -209,53 +218,96 @@ namespace Fishing
                 case Direction.Ascent:
                     if (rect.Y > 0)
                     {
-                        rect.Y -= 5;
+                        if (currentDepth <= windowHeight / 2 || rect.Y > windowHeight / 2)
+                        {
+                            rect.Y -= 5;
+                        }
+
                         currentDepth -= 5;
                     }
                     break;
 
                 //Up
                 case Direction.Up:
+
+                    //As long as the y position is less than 0
                     if (rect.Y > 0)
                     {
+                        //Only allow the player to leave the center of the window if they're close to the top
+                        if (currentDepth <= windowHeight / 2 || rect.Y > windowHeight / 2)
+                        {
+                            //If the player is holding down shift, double their speed
+                            if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
+                            {
+                                rect.Y -= 2;
+                            }
+
+                            //Otherwise, move up normally
+                            else
+                            {
+                                rect.Y--;
+                            }
+                        }
+
+                        //Update the current depth separately here, since currentDepth can go
+                        //deeper than the y value
                         if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
                         {
-                            rect.Y -= 2;
-                            currentDepth -=2;
+                            currentDepth -= 2;
                         }
+
                         else
                         {
-                            rect.Y--;
                             currentDepth--;
                         }
+
                     }
                     break;
 
                 //Down
                 case Direction.Down:
 
-                    //As long as the player isn't going off the edge of the screen
-                    if (rect.Y < windowHeight - rect.Height && rect.Y < maxDepth)
+                    if (
+                        //As long as the player isn't going off the edge of the screen
+                        rect.Y < windowHeight - rect.Height
+                        //And isn't centered, or is near the bottom of the level
+                        && (rect.Y < windowHeight / 2 || currentDepth >= bg.TextureHeight + bg.Position.Y - windowHeight / 2))
                     {
+                        //If the shift key is being held down
                         if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
                         {
+                            //Move down at a higher rate than normal
                             rect.Y += 3;
                         }
                         else
                         {
+                            //Otherwise, move down at a regular rate
                             rect.Y++;
                         }
                     }
 
                     //Update the current depth separately here, since currentDepth can go
                     //deeper than the y value
-                    if (currentDepth < maxDepth && (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift)))
+                    if (
+                        //If the current depth does not exceed max depth
+                        currentDepth < maxDepth
+                        //And the current depth does not exceed bottom of level
+                        && currentDepth < bg.TextureHeight + bg.Position.Y
+                        //And the shift key is being held down
+                        && (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift)))
                     {
+                        //Add to the current depth at a faster rate than usual
                         currentDepth += 3;
                     }
 
-                    else if (currentDepth < maxDepth)
+                    //Otherwise
+                    else if (
+                        //If the current depth does not exceed max depth
+                        currentDepth < maxDepth
+                        //And the current depth does not exceed bottom of level
+                        && currentDepth < bg.TextureHeight + bg.Position.Y)
                     {
+                        //Add to the current depth
                         currentDepth++;
                     }
 
