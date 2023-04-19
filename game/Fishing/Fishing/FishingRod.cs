@@ -153,7 +153,7 @@ namespace Fishing
             totalExp = 0;
 
             // Initialize currentDepth
-            currentDepth = x;
+            currentDepth = y;
 
             //Set the rectangle at the given x and y position and with the width and height of the texture
             rect = new Rectangle(x, y, 50, 50);

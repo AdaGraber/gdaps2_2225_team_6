@@ -86,17 +86,9 @@ namespace Fishing
             this.rng = rng;
             this.texture = texture;
             this.minDepth = minDepth;
+            this.maxDepth = maxDepth;
 
-            //Error handling in case maxDepth's value is invalid
-            if (maxDepth > minDepth)
-            {
-                this.maxDepth = maxDepth;
-            }
-            //If it is, set the maxDepth to 10000 as a placeholder
-            else
-            {
-                maxDepth = 10000;
-            }
+            spawnDepth = rng.Next(minDepth, maxDepth + 1);
 
             //Give the collectible a 50-50 chance of moving left or right
             if (rng.Next(2) == 0)
@@ -105,17 +97,15 @@ namespace Fishing
                 this.speed = speed;
 
                 //Set the collectible's position just out of sight at a random y location within its min and max depth range
-                position = new Rectangle(-texture.Width, rng.Next(minDepth, maxDepth + 1), texture.Width, texture.Height);
+                position = new Rectangle(-texture.Width, spawnDepth, texture.Width, texture.Height);
             }
             else
             {
                 //Set the speed equal to the negative of the given speed, so that it travels right to left
                 this.speed = -speed;
 
-                spawnDepth = rng.Next(minDepth, maxDepth + 1);
-
                 //Set the collectible's position just out of sight at a random y location within its min and max depth range
-                position = new Rectangle(windowWidth, spawnDepth + bg.Position.Y, texture.Width, texture.Height);
+                position = new Rectangle(windowWidth, spawnDepth, texture.Width, texture.Height);
             }
         }
 

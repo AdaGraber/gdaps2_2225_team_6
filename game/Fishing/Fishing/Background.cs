@@ -29,6 +29,7 @@ namespace Fishing
 
         public int TextureHeight
         {
+            //Note: Texture height is currently 1080, which is the maximum height of the level
             get { return texture.Height; }
 
             //Get-only property

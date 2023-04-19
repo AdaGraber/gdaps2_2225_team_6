@@ -319,14 +319,12 @@ namespace Fishing
                 //Set the texture of the fish to the texture stored at the proper index
                 Texture2D fishTexture = fishTextures[fishTextureIndex];
 
-                //TODO: Will add implementation for depth later
-
                 //Get the chance of the fish spawning
                 int spawnChance = n.Value[0];
 
-                //Give the fish a spawnChance-in-2000 chance of spawning -- the higher the spawnChance,
+                //Give the fish a spawnChance-in-1000 chance of spawning -- the higher the spawnChance,
                 //the more likely it is to spawn
-                if (rng.Next(2001) <= spawnChance)
+                if (rng.Next(1001) <= spawnChance)
                 {
                     //Create a new fish using the data in the array in the dictionary
                     Fish newFish = new Fish(n.Key, n.Value[1], fishTexture, n.Value[2], n.Value[3],
