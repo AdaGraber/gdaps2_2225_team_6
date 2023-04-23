@@ -48,6 +48,16 @@ namespace Fishing
             PenColor = Color.Black;
         }
         //overload for colors
+        public Button(GraphicsDevice graphicsDevice, Texture2D texture, SpriteFont font, Color mainColor, Color hoverColor)
+        {
+            this.texture = texture;
+            this.font = font;
+
+            this.mainColor = mainColor;
+            this.hoverColor = hoverColor;
+
+            PenColor = Color.Black;
+        }
         public Button(GraphicsDevice graphicsDevice, Texture2D texture, SpriteFont font, Color mainColor, Color hoverColor, Color outlineColor)
         {
             this.texture = texture;
@@ -58,7 +68,7 @@ namespace Fishing
             this.outlineColor = outlineColor;
 
             outline = new Texture2D(graphicsDevice, 1, 1);
-            outline.SetData(new[] { Color.Peru });
+            outline.SetData(new[] { outlineColor });
 
             PenColor = Color.Black;
         }

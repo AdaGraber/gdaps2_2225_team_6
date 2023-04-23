@@ -26,6 +26,8 @@ namespace Fishing
         Button achieveButton;
         Button quitButton;
         Button backButton;
+        Button rightArrowButton;
+        Button leftArrowButton;
 
         //stats menu
         Texture2D statsFrame;
@@ -38,6 +40,7 @@ namespace Fishing
         Texture2D flavorFrame;
         Texture2D flavorOutline;
         Texture2D clipFrame;
+        Texture2D arrow;
         Rectangle clipRect; //rect for clip frame
         RasterizerState rsEnabled = new RasterizerState() { ScissorTestEnable = true }; //scissoring enabled
         //RasterizerState rsDisabled = new RasterizerState() { ScissorTestEnable = false }; //scissoring disabled
@@ -56,6 +59,9 @@ namespace Fishing
 
         //fish achievements
         Dictionary<string, int[]> fishSpecies; // copy CollectibleManager reference of dict to menu for display purposes
+        List<Texture2D> fishTextures = new List<Texture2D>();
+        int offsetX; //for displaying the fish
+        int currentFish = 0;
 
         /* CONSTRUCTORS AND METHODS */
 
@@ -85,6 +91,7 @@ namespace Fishing
             flavorFrame.SetData(new[] { Color.Bisque });
             clipFrame = new Texture2D(graphicsDevice, 1, 1);
             clipFrame.SetData(new[] { Color.Bisque });
+            arrow = content.Load<Texture2D>("ARROW");
             clipRect = new Rectangle((windowWidth / 2 - 249), (windowHeight / 2 - 120), 498, 144);
 
             //frame outlines
@@ -150,6 +157,21 @@ namespace Fishing
             backButton.Position = new Vector2(windowWidth / 2 - backButton.Rectangle.Width / 2, (windowHeight / 2 - backButton.Rectangle.Height / 2) + 100);
             backButton.Click += BackButtonClick;
 
+            //right arrow button (for achievements)
+            rightArrowButton = new Button(graphicsDevice, content.Load<Texture2D>("ARROW"), content.Load<SpriteFont>("Font"), Color.Peru, Color.SaddleBrown)
+            {
+                Text = "",
+            };
+            rightArrowButton.Position = new Vector2(clipRect.Right + 10, (clipRect.Center.Y - arrow.Height / 2));
+            rightArrowButton.Click += RightArrowButtonClick;
+            //left
+            leftArrowButton = new Button(graphicsDevice, content.Load<Texture2D>("leftArrow"), content.Load<SpriteFont>("Font"), Color.Peru, Color.SaddleBrown)
+            {
+                Text = "",
+            };
+            leftArrowButton.Position = new Vector2(clipRect.Left - 40, (clipRect.Center.Y - arrow.Height / 2));
+            leftArrowButton.Click += LeftArrowButtonClick;
+
 
             //button lists
             mainButtonList = new List<Button>() //for the main menu
@@ -168,9 +190,15 @@ namespace Fishing
             achievementsButtonList = new List<Button>() //achievements menu
             {
                 backButton,
+                rightArrowButton,
+                leftArrowButton,
             };
 
             fishSpecies = collectibleManager.FishSpecies; //Reference existing FileIo dict
+            foreach(KeyValuePair<string, int[]> pair in fishSpecies)
+            {
+                fishTextures.Add(content.Load<Texture2D>(pair.Key));
+            }
         }
 
         public void Update(GameTime gameTime, FishingRod fishingRod)
@@ -251,20 +279,47 @@ namespace Fishing
                     spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, rsEnabled); //got this from StackExchange, ENABLE SCISSORING/CLIPPING
 
                     Rectangle currentRect = spriteBatch.GraphicsDevice.ScissorRectangle; //save current rect to restore later
+
                     spriteBatch.GraphicsDevice.ScissorRectangle = clipRect; //replace with the rect of the frame
 
-
+                    
                     spriteBatch.Draw(clipFrame, clipRect, Color.White); //draw the frame to clip
+
+                    //DRAW STUFF TO CLIP HERE 
+
+                    //FISH TEXTURES
+                    for (int i = 0; i < fishTextures.Count; i++)
+                    {
+                        spriteBatch.Draw(fishTextures[i], new Vector2((clipRect.Center.X - fishTextures[i].Width / 2) + (offsetX +100*i), clipRect.Center.Y - fishTextures[i].Height / 2), Color.White);
+                    }
 
                     spriteBatch.GraphicsDevice.ScissorRectangle = currentRect;
                     spriteBatch.End(); //end clipping
 
                     spriteBatch.Begin(); //draw normally again
+
+                    //arrows
                     //flavor frame
                     spriteBatch.Draw(flavorOutline, new Rectangle((windowWidth / 2 - 252), (windowHeight / 2 + 30), 504, 40), Color.White);
                     spriteBatch.Draw(flavorFrame, new Rectangle((windowWidth / 2 - 249), (windowHeight / 2 + 33), 498, 34), Color.White);
 
-                    string flavorText = "Flavor text";
+                    string flavorText = "";
+                    string currentFishName = fishTextures[currentFish].Name;
+                    int caught = fishSpecies[currentFishName][6];
+
+                    string firstLetter = currentFishName.Substring(0, 1);
+                    firstLetter = firstLetter.ToUpper();
+                    currentFishName = currentFishName.Remove(0, 1);
+                    currentFishName = currentFishName.Insert(0, firstLetter);
+                    if (caught == 1) {
+                        flavorText = currentFishName + " - Caught";
+                    }
+                    else if(caught == 0)
+                    {
+                        
+                        flavorText = currentFishName + " - Not Caught";
+                    }
+                    
                     spriteBatch.DrawString(menuFooter, flavorText, new Vector2((windowWidth / 2 - menuFooter.MeasureString(flavorText).X / 2), (windowHeight / 2 + 38)), Color.Black);
                 }
                 //header text
@@ -303,6 +358,24 @@ namespace Fishing
         private void BackButtonClick(object sender, System.EventArgs e)
         {
             currentState = MenuState.Main; //back to main menu 
+        }
+        private void RightArrowButtonClick(object sender, System.EventArgs e)
+        {
+            if(currentFish < fishTextures.Count-1)
+            {
+                offsetX -= 100;
+                currentFish++;
+            }
+           
+        }
+        private void LeftArrowButtonClick(object sender, System.EventArgs e)
+        {
+            if(currentFish > 0)
+            {
+                offsetX += 100;
+                currentFish--;
+            }
+            
         }
     }
 }
