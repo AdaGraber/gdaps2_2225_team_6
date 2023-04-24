@@ -13,7 +13,7 @@ using System.Threading.Tasks;
  * GDAPS 2 Project
  * Class purpose: Create the user-controlled fishing rod
  * 
- * Known issues:
+ * Known issues: Rod fishing line is unaligned
  * 
  */
 
@@ -29,6 +29,15 @@ namespace Fishing
         Ascent,
         Stationary
     }
+
+    //enum of keybinds states
+    enum Keybinds
+    {
+        WASD,
+        Arrows
+
+    }
+
     internal class FishingRod
     {
         /* FIELDS AND PROPERTIES */
@@ -50,6 +59,7 @@ namespace Fishing
 
         //Direction enum and keyboard state
         private Direction direction;
+        private Keybinds keybinds;
         private KeyboardState kbState;
         private KeyboardState prevKBState;
 
@@ -105,7 +115,13 @@ namespace Fishing
         {
             get => currentDepth;
         }
-
+        //---------------------------------------------------
+        //Keybinds Property
+        public Keybinds Keybinds 
+        { 
+            get { return keybinds; } 
+            set { keybinds = value; }
+        }
         //---------------------------------------------------
 
         // List of known spells
@@ -174,40 +190,84 @@ namespace Fishing
             //Determines state switching
 
             //Ascent
-            if (kbState.IsKeyDown(Keys.Space))
+            //movement becomes based on keybind preset, this case is WASD preset
+            if(keybinds == Keybinds.WASD)
             {
-                direction = Direction.Ascent;
+                if (kbState.IsKeyDown(Keys.Space))
+                {
+                    direction = Direction.Ascent;
+                }
+
+                //Down
+                else if (kbState.IsKeyDown(Keys.S))
+                {
+                    direction = Direction.Down;
+                }
+
+                //Up
+                else if (kbState.IsKeyDown(Keys.W))
+                {
+                    direction = Direction.Up;
+                }
+
+                //Left
+                else if (kbState.IsKeyDown(Keys.A))
+                {
+                    direction = Direction.Left;
+                }
+
+                //Right
+                else if (kbState.IsKeyDown(Keys.D))
+                {
+                    direction = Direction.Right;
+                }
+
+                //Stationary
+                else
+                {
+                    direction = Direction.Stationary;
+                }
             }
 
-            //Down
-            else if (kbState.IsKeyDown(Keys.Down))
+            //Moves based if keybinds preset is arrow keys
+            if(keybinds == Keybinds.Arrows)
             {
-                direction = Direction.Down;
-            }
+                if (kbState.IsKeyDown(Keys.Space))
+                {
+                    direction = Direction.Ascent;
+                }
 
-            //Up
-            else if (kbState.IsKeyDown(Keys.Up))
-            {
-                direction = Direction.Up;
-            }
+                //Down
+                else if (kbState.IsKeyDown(Keys.Down))
+                {
+                    direction = Direction.Down;
+                }
 
-            //Left
-            else if (kbState.IsKeyDown(Keys.Left))
-            {
-                direction = Direction.Left;
-            }
+                //Up
+                else if (kbState.IsKeyDown(Keys.Up))
+                {
+                    direction = Direction.Up;
+                }
 
-            //Right
-            else if (kbState.IsKeyDown(Keys.Right))
-            {
-                direction = Direction.Right;
-            }
+                //Left
+                else if (kbState.IsKeyDown(Keys.Left))
+                {
+                    direction = Direction.Left;
+                }
 
-            //Stationary
-            else
-            {
-                direction = Direction.Stationary;
+                //Right
+                else if (kbState.IsKeyDown(Keys.Right))
+                {
+                    direction = Direction.Right;
+                }
+
+                //Stationary
+                else
+                {
+                    direction = Direction.Stationary;
+                }
             }
+            
 
             //Switch to update movement based on the state
             //TODO: For future sprint, verify maximum window that fishing rod can reach, values are placeholder for now

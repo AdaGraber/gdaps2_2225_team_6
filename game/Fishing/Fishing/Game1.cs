@@ -84,6 +84,9 @@ namespace Fishing
 
             //Initializes rod texture
             base.Initialize();
+
+            //Initialize base keybinds
+            fishingRod.Keybinds = Keybinds.WASD;
         }
 
         protected override void LoadContent()
