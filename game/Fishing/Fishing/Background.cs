@@ -21,6 +21,7 @@ namespace Fishing
         //Background information
         private Rectangle position;
         private Texture2D texture;
+        private int windowHeight;
 
         public Rectangle Position
         {
@@ -38,9 +39,10 @@ namespace Fishing
 
         /* CONSTRUCTORS AND METHODS */
 
-        public Background (Texture2D texture, int windowWidth)
+        public Background (Texture2D texture, int windowWidth, int windowHeight)
         {
             this.texture = texture;
+            this.windowHeight = windowHeight;
 
             position = new Rectangle(0, 0, windowWidth, texture.Height);
         }
@@ -50,7 +52,19 @@ namespace Fishing
         /// </summary>
         public void Update(FishingRod fishingRod)
         {
-            position.Y = -fishingRod.CurrentDepth;
+            //As long as the fishing rod isn't at the very top of the level
+            if (fishingRod.CurrentDepth > windowHeight / 2)
+            {
+                //Set the position to the negative of the current depth
+                //(negative because background needs to move up as player moves down and vice versa)
+                position.Y = -fishingRod.CurrentDepth + windowHeight / 2;
+            }
+
+            //If the fishing rod IS at the top of the level, keep the position at y = 0
+            else
+            {
+                position.Y = 0;
+            }
         }
 
         /// <summary>

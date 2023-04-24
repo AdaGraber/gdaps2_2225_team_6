@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using System.Reflection.Metadata;
+using System.IO;
 
 namespace Fishing
 {
@@ -57,6 +58,9 @@ namespace Fishing
         private List<Button> achievementsButtonList;
         private MenuState currentState;
 
+        //reference to fishing rod
+        FishingRod fishingRod;
+        
         //fish achievements
         Dictionary<string, int[]> fishSpecies; // copy CollectibleManager reference of dict to menu for display purposes
         List<Texture2D> fishTextures = new List<Texture2D>();
@@ -66,10 +70,12 @@ namespace Fishing
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor
-        public Menu(int windowWidth, int windowHeight)
+        public Menu(int windowWidth, int windowHeight, FishingRod fishingRod)
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
+
+            this.fishingRod = fishingRod;
 
             currentState = MenuState.Closed;
         }
@@ -305,7 +311,7 @@ namespace Fishing
 
                     string flavorText = "";
                     string currentFishName = fishTextures[currentFish].Name;
-                    int caught = fishSpecies[currentFishName][6];
+                    int caught = fishSpecies[currentFishName][(fishSpecies[currentFishName].Count() - 1)];
 
                     string firstLetter = currentFishName.Substring(0, 1);
                     firstLetter = firstLetter.ToUpper();
@@ -341,7 +347,43 @@ namespace Fishing
         }
         private void SaveButtonClick(object sender, System.EventArgs e)
         {
-            saveButton.Text = "Saved!"; //add actual fileio later
+            StreamWriter output = null;
+
+            try
+            {
+                //Initialize the StreamWriter
+                output = new StreamWriter("../../../Content/Save.txt");
+
+                //Add the fishing rod's stats to the first line
+                output.WriteLine("{0},{1},{2}",
+                    fishingRod.Level, fishingRod.MaxDepth, fishingRod.MaxSpeed);
+
+                //Add the player's learned spells to the second line
+                foreach (string n in fishingRod.Spells)
+                {
+                    output.Write("{0},", n);
+                }
+                output.WriteLine();
+
+                //Add what fish have and haven't been caught
+                foreach (KeyValuePair<string, int[]> n in fishSpecies)
+                {
+                    output.Write("{0},", n.Value[n.Value.Count() - 1]);
+                }
+            }
+
+            catch
+            {
+                //Not sure what to put here
+            }
+
+            //If the file was open, close it
+            if (output != null)
+            {
+                output.Close();
+            }
+
+            saveButton.Text = "Saved!";
         }
         private void StatsButtonClick(object sender, System.EventArgs e)
         {

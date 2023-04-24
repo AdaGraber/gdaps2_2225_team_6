@@ -68,16 +68,11 @@ namespace Fishing
             windowWidth = _graphics.GraphicsDevice.Viewport.Width;
             windowHeight = _graphics.GraphicsDevice.Viewport.Height;
 
-            //Initialize background color
-
             //Initialize Random object
             rng = new Random();
 
             //Initialize the list of fish textures
             fishTextures = new List<Texture2D>();
-
-            //Initialize menu
-            menu = new Menu(windowWidth, windowHeight);
 
             //Set the initial menuState to be closed
             menuState = MenuState.Closed;
@@ -112,14 +107,18 @@ namespace Fishing
             bookTexture = Content.Load<Texture2D>("book");
 
             //Initialize the background
-            bg = new Background(backgroundTexture, windowWidth);
+            bg = new Background(backgroundTexture, windowWidth, windowHeight);
 
             //initializes fishing rod
-            fishingRod = new FishingRod(rodTexture, rodLineTexture, 1000, windowWidth / 2, 1, windowWidth, windowHeight, bg); //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
+            fishingRod = new FishingRod(rodTexture, rodLineTexture, 1000 + windowWidth / 2,
+                windowWidth / 2, 1, windowWidth, windowHeight, bg); //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
 
             //Initialize the CollectibleManager
             collectibleManager = new CollectibleManager(rng, bg, windowWidth, windowHeight,
                 fishTextures, bookTexture, fishingRod);
+
+            //Initialize menu
+            menu = new Menu(windowWidth, windowHeight, fishingRod);
 
             //load textures for menu
             menu.Load(GraphicsDevice, Content, collectibleManager);

@@ -278,11 +278,14 @@ namespace Fishing
                 case Direction.Ascent:
                     if (rect.Y > 0)
                     {
+                        //As long as the fishing rod shouldn't be centered
                         if (currentDepth <= windowHeight / 2 || rect.Y > windowHeight / 2)
                         {
+                            //Move the fishing rod up
                             rect.Y -= 5;
                         }
 
+                        //Decrease the depth
                         currentDepth -= 5;
                     }
                     break;
@@ -311,17 +314,23 @@ namespace Fishing
 
                         //Update the current depth separately here, since currentDepth can go
                         //deeper than the y value
+
+                        //If the user is moving at double speed
                         if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
                         {
+                            //Decrease the depth by double the speed
                             currentDepth -= 2;
                         }
 
+                        //Otherwise
                         else
                         {
+                            //Decrease the depth by a normal amount
                             currentDepth--;
                         }
 
                     }
+
                     break;
 
                 //Down
@@ -352,7 +361,7 @@ namespace Fishing
                         //If the current depth does not exceed max depth
                         currentDepth < maxDepth
                         //And the current depth does not exceed bottom of level
-                        && currentDepth < bg.TextureHeight + bg.Position.Y
+                        && currentDepth < bg.TextureHeight - windowHeight / 2
                         //And the shift key is being held down
                         && (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift)))
                     {
@@ -365,7 +374,7 @@ namespace Fishing
                         //If the current depth does not exceed max depth
                         currentDepth < maxDepth
                         //And the current depth does not exceed bottom of level
-                        && currentDepth < bg.TextureHeight + bg.Position.Y)
+                        && currentDepth < bg.TextureHeight - windowHeight / 2)
                     {
                         //Add to the current depth
                         currentDepth++;
