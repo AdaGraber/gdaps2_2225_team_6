@@ -132,6 +132,8 @@ namespace Fishing
                     || (collectibles[i].Position.Intersects(fishingRod.CatchRadius)
                     //and the fishing rod does not already have an item
                     && !fishingRod.HasItem
+                    //and the collectible is not affected by the siren's power
+                    && !collectibles[i].AffectedByPower
                     //And if the collectible is either a book
                     && ((collectibles[i] is Books)
                     //and isn't the siren call spell book (isn't in itself catchable)
@@ -218,6 +220,14 @@ namespace Fishing
 
                     //The collectible should be destroyed
                     collectibles[i].IsDead = true;
+                }
+
+                //If the collectible is being affected by a siren and is caught
+                if (collectibles[i].AffectedByPower && collectibles[i].IsCaught)
+                {
+                    //The fishing rod no longer has the item
+                    fishingRod.HasItem = false;
+                    collectibles[i].IsCaught = false;
                 }
 
                 //If the collectible is dead

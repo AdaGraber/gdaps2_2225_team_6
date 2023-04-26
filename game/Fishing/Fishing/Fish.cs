@@ -111,6 +111,11 @@ namespace Fishing
                     //The fish should be removed from play
                     isDead = true;
                 }
+
+                if (sender.isDead)
+                {
+                    affectedByPower = false;
+                }
             }
         }
 

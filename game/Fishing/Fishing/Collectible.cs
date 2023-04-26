@@ -56,7 +56,8 @@ namespace Fishing
         public bool IsCaught
         {
             get { return isCaught; }
-            //Get-only property
+
+            set { isCaught = value; }
         }
 
         public bool IsDead
@@ -127,6 +128,7 @@ namespace Fishing
         /// </summary>
         public virtual void Update()
         {
+            //If the fishing rod does not have the fish
             if (!isCaught)
             {
                 //Move the collectible horizontally across the screen
@@ -134,6 +136,13 @@ namespace Fishing
 
                 //Move the collectible with the background
                 position.Y = spawnDepth + bg.Position.Y;
+            }
+
+            //If the fish is caught
+            else
+            {
+                //Update depth so if the fish is stolen by a siren, it will stay at the same depth
+                spawnDepth = position.Y - bg.Position.Y;
             }
         }
 
