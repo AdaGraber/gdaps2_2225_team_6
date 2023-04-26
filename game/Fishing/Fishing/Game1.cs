@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Fishing
 {
@@ -111,11 +113,14 @@ namespace Fishing
 
             //initializes fishing rod
             fishingRod = new FishingRod(rodTexture, rodLineTexture, 1000 + windowWidth / 2,
-                windowWidth / 2, 1, windowWidth, windowHeight, bg); //TODO: Update the depth and position to the starting depth and position we want, values are just placeholder
+                windowWidth / 2, 1, windowWidth, windowHeight, bg);
 
             //Initialize the CollectibleManager
             collectibleManager = new CollectibleManager(rng, bg, windowWidth, windowHeight,
                 fishTextures, bookTexture, fishingRod);
+
+            //Load any saved data
+            LoadSaveFile();
 
             //Initialize menu
             menu = new Menu(windowWidth, windowHeight, fishingRod);
@@ -175,6 +180,68 @@ namespace Fishing
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        /// <summary>
+        /// Helper method for loading player progress from a save file.
+        /// </summary>
+        public void LoadSaveFile()
+        {
+            StreamReader input = null;
+
+            try
+            {
+                //Open the StreamReader
+                input = new StreamReader("../../../Content/Save.txt");
+
+                //Read in the first line -- fishing rod stats
+                string[] fishingRodStats = input.ReadLine().Split(',');
+
+                //TODO: this might not work properly
+                fishingRod.Level = int.Parse(fishingRodStats[0]);
+                fishingRod.MaxDepth = int.Parse(fishingRodStats[1]);
+                fishingRod.MaxSpeed = int.Parse(fishingRodStats[2]);
+
+                //Read in the second line -- spells learned
+                string[] spells = input.ReadLine().Split(',');
+
+                //Create a list to store the spells in
+                List<string> spellsList = new List<string>();
+
+                //Copy the array to the list
+                foreach (string n in spells)
+                {
+                    spellsList.Add(n);
+                }
+
+                //Put the list into the fishing rod's spells
+                fishingRod.Spells = spellsList;
+
+                //Read in the third line -- fish caught
+                string[] fishCaught = input.ReadLine().Split(',');
+
+                //For each fish in the array of species
+                for (int i = 0; i < fishCaught.Count(); i++)
+                {
+                    //Get the array for the species at i for readability
+                    int[] fishData = collectibleManager.FishSpecies.ElementAt(i).Value;
+
+                    //Set whether or not the fish has been caught before to the value in the file
+                    fishData[fishData.Count() - 1] = int.Parse(fishCaught[i]);
+                }
+            }
+
+            catch
+            {
+                //Leave everything as default values
+                //TODO: find some way of communicating failed load to player?
+            }
+
+            //If the file was opened, close it
+            if (input != null)
+            {
+                input.Close();
+            }
         }
 
     }

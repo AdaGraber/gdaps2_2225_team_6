@@ -279,7 +279,6 @@ namespace Fishing
                     {
                         //Add a final value to track whether or not the fish has been caught before --
                         //1 if caught and 0 if not
-                        //TODO: Add this value to file if saving is implemented
                         collectibleData[lines.Count()] = 0;
 
                         //Add the fish to the list of species
@@ -363,8 +362,6 @@ namespace Fishing
             //Check each fish in the dictionary
             foreach (KeyValuePair<string, int[]> n in books)
             {
-                //TODO: Will add implementation for depth later
-
                 //Get the chance of the fish spawning
                 int spawnChance = n.Value[0];
 

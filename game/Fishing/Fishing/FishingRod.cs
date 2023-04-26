@@ -94,16 +94,23 @@ namespace Fishing
         public int Level
         {
             get { return (int)Math.Sqrt(totalExp / 10); }
+
+            //Set the exp, not the level
+            set { totalExp = value * value * 10; }
         }
 
         public int MaxSpeed
         {
             get => maxSpeed;
+
+            set { maxSpeed = value; }
         }
 
         public int MaxDepth
         {
             get => maxDepth;
+
+            set { maxDepth = value; }
         }
 
         public Direction PlayerDirection
@@ -131,6 +138,8 @@ namespace Fishing
         public List<string> Spells
         {
             get => spells;
+
+            set { spells = value; }
         }
 
         public Rectangle Rect

@@ -343,6 +343,9 @@ namespace Fishing
             else
             {
                 currentState = MenuState.Closed; //close menu
+
+                // Reset save button text
+                saveButton.Text = "Save Game";
             }
         }
         private void SaveButtonClick(object sender, System.EventArgs e)
@@ -359,25 +362,45 @@ namespace Fishing
                     fishingRod.Level, fishingRod.MaxDepth, fishingRod.MaxSpeed);
 
                 //Add the player's learned spells to the second line
-                foreach (string n in fishingRod.Spells)
+                for (int i = 0; i < fishingRod.Spells.Count; i++)
                 {
-                    output.Write("{0},", n);
+                    output.Write(fishingRod.Spells[i]);
+                    
+                    //As long as the spell being added is not the last one
+                    if (i < fishingRod.Spells.Count - 1)
+                    {
+                        //Add a comma
+                        output.Write(",");
+                    }
                 }
+
                 output.WriteLine();
 
                 //Add what fish have and haven't been caught
-                foreach (KeyValuePair<string, int[]> n in fishSpecies)
+                for (int i = 0; i < fishSpecies.Count; i++)
                 {
-                    output.Write("{0},", n.Value[n.Value.Count() - 1]);
+                    // Get the array for the species at i for readability
+                    int[] fishData = fishSpecies.ElementAt(i).Value;
+
+                    // Write whether or not the fish has been caught to the file
+                    output.Write(fishData[fishData.Count() - 1]);
+
+                    // As long as the fish being added is not the last one
+                    if (i < fishSpecies.Count - 1)
+                    {
+                        // Add a comma
+                        output.Write(",");
+                    }
                 }
             }
 
-            catch
+            catch (Exception savingException)
             {
-                //Not sure what to put here
+                // Inform the user there was an error
+                saveButton.Text = "Error saving: " + savingException.Message;
             }
 
-            //If the file was open, close it
+            //If the file was opened, close it
             if (output != null)
             {
                 output.Close();

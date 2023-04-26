@@ -139,9 +139,6 @@ namespace Fishing
 
                 direction = false;
             }
-
-            //TODO: Add animation
-
         }
     }
 }
