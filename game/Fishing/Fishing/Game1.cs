@@ -201,8 +201,8 @@ namespace Fishing
                 //Read in the first line -- fishing rod stats
                 string[] fishingRodStats = input.ReadLine().Split(',');
 
-                //TODO: this might not work properly
-                fishingRod.Level = int.Parse(fishingRodStats[0]);
+                //Put the fishing rod stats into the appropriate properties
+                fishingRod.TotalExp = int.Parse(fishingRodStats[0]);
                 fishingRod.MaxDepth = int.Parse(fishingRodStats[1]);
                 fishingRod.MaxSpeed = int.Parse(fishingRodStats[2]);
 
@@ -237,8 +237,8 @@ namespace Fishing
 
             catch
             {
-                //Leave everything as default values
-                //TODO: find some way of communicating failed load to player?
+                //Nothing needs to be done -- just leave everything as default values as handled
+                //in FishingRod
             }
 
             //If the file was opened, close it

@@ -359,7 +359,7 @@ namespace Fishing
 
                 //Add the fishing rod's stats to the first line
                 output.WriteLine("{0},{1},{2}",
-                    fishingRod.Level, fishingRod.MaxDepth, fishingRod.MaxSpeed);
+                    fishingRod.TotalExp, fishingRod.MaxDepth, fishingRod.MaxSpeed);
 
                 //Add the player's learned spells to the second line
                 for (int i = 0; i < fishingRod.Spells.Count; i++)

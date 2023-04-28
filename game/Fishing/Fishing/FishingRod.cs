@@ -95,8 +95,7 @@ namespace Fishing
         {
             get { return (int)Math.Sqrt(totalExp / 10); }
 
-            //Set the exp, not the level
-            set { totalExp = value * value * 10; }
+            //Get-only property
         }
 
         public int MaxSpeed

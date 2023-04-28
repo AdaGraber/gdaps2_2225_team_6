@@ -118,6 +118,7 @@ namespace Fishing
                     isDead = true;
                 }
 
+                // If the sender is dead, the fish should no longer be affected
                 if (sender.isDead)
                 {
                     affectedByPower = false;
@@ -150,25 +151,29 @@ namespace Fishing
 
                 direction = false;
             }
+        }
 
-            //If the fish is a siren
-            if (name == "siren")
+        /// <summary>
+        /// Draws the effect that accompanies the sirens.
+        /// </summary>
+        /// <param name="_spriteBatch">The SpriteBatch.</param>
+        public void DrawSirenEffect(SpriteBatch _spriteBatch)
+        {
+            //Add the special siren effects for the width of the whole window
+            for (int i = 1; i < windowWidth; i++)
             {
-                //Add the special siren effects for the width of the whole window
-                for (int i = 1; i < windowWidth; i++)
-                {
-                    //Draw the effects going to the right
-                    _spriteBatch.Draw(sirenEffectTexture, new Vector2(position.X + 200 * i, position.Y),
-                        new Rectangle(0, 0, sirenEffectTexture.Width, sirenEffectTexture.Height),
-                        Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+                //Draw the effects going to the right
+                _spriteBatch.Draw(sirenEffectTexture, new Vector2(position.X + 200 * i, position.Y),
+                    new Rectangle(0, 0, sirenEffectTexture.Width, sirenEffectTexture.Height),
+                    Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
 
-                    //Draw the effects going to the left
-                    _spriteBatch.Draw(sirenEffectTexture, new Vector2(position.X - 200 * i, position.Y),
-                        new Rectangle(0, 0, sirenEffectTexture.Width, sirenEffectTexture.Height),
-                        Color.White, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0);
+                //Draw the effects going to the left
+                _spriteBatch.Draw(sirenEffectTexture, new Vector2(position.X - 200 * i, position.Y),
+                    new Rectangle(0, 0, sirenEffectTexture.Width, sirenEffectTexture.Height),
+                    Color.White, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0);
 
-                }
             }
+
         }
     }
 }

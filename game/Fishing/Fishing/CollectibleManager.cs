@@ -422,6 +422,13 @@ namespace Fishing
             foreach (Collectible n in collectibles)
             {
                 n.Draw(_spriteBatch);
+
+                //As long as the sirens should not be muted
+                if (n is Fish && ((Fish)n).Name == "siren" && !fishingRod.Spells.Contains("mute"))
+                {
+                    //Draw their effect
+                    ((Fish)n).DrawSirenEffect(_spriteBatch);
+                }
             }
         }
     }
