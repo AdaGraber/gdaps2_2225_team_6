@@ -14,7 +14,8 @@ namespace Fishing
         Closed,
         Main,
         Stats,
-        Achievements
+        Achievements,
+        HowToPlay
     }
 
     public class Game1 : Game

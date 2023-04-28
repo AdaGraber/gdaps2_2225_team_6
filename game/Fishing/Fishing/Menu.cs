@@ -25,6 +25,7 @@ namespace Fishing
         Button saveButton;
         Button statsButton;
         Button achieveButton;
+        Button howToPlayButton;
         Button quitButton;
         Button backButton;
         Button rightArrowButton;
@@ -56,6 +57,7 @@ namespace Fishing
         private List<Button> mainButtonList;
         private List<Button> statsButtonList;
         private List<Button> achievementsButtonList;
+        private List<Button> howToPlayButtonList;
         private MenuState currentState;
 
         //reference to fishing rod
@@ -152,7 +154,7 @@ namespace Fishing
             {
                 Text = "Quit",
             };
-            quitButton.Position = new Vector2(windowWidth / 2 - quitButton.Rectangle.Width / 2, (windowHeight / 2 - quitButton.Rectangle.Height / 2) + 100);
+            quitButton.Position = new Vector2(windowWidth / 2 - quitButton.Rectangle.Width / 2, (windowHeight / 2 - quitButton.Rectangle.Height / 2) + 150);
             quitButton.Click += QuitButtonClick;
 
             //back button
@@ -178,6 +180,14 @@ namespace Fishing
             leftArrowButton.Position = new Vector2(clipRect.Left - 40, (clipRect.Center.Y - arrow.Height / 2));
             leftArrowButton.Click += LeftArrowButtonClick;
 
+            //howtoplay
+            howToPlayButton = new Button(graphicsDevice, content.Load<Texture2D>("longButton"), content.Load<SpriteFont>("Font"), Color.Bisque, Color.Peru, Color.Peru)
+            {
+                Text = "How To Play",
+            };
+            howToPlayButton.Position = new Vector2(windowWidth / 2 - backButton.Rectangle.Width / 2, (windowHeight / 2 - backButton.Rectangle.Height / 2) + 100);
+            howToPlayButton.Click += HowToPlayButtonClick;
+
 
             //button lists
             mainButtonList = new List<Button>() //for the main menu
@@ -185,6 +195,7 @@ namespace Fishing
                 saveButton,
                 statsButton,
                 achieveButton,
+                howToPlayButton,
                 quitButton,
             };
 
@@ -198,6 +209,11 @@ namespace Fishing
                 backButton,
                 rightArrowButton,
                 leftArrowButton,
+            };
+
+            howToPlayButtonList = new List<Button>() //instructions menu
+            {
+                backButton,
             };
 
             fishSpecies = collectibleManager.FishSpecies; //Reference existing FileIo dict
@@ -224,6 +240,10 @@ namespace Fishing
 
                     case MenuState.Achievements:
                         updateButton = achievementsButtonList;
+                        break;
+
+                    case MenuState.HowToPlay:
+                        updateButton = howToPlayButtonList;
                         break;
 
                     default:
@@ -328,6 +348,22 @@ namespace Fishing
                     
                     spriteBatch.DrawString(menuFooter, flavorText, new Vector2((windowWidth / 2 - menuFooter.MeasureString(flavorText).X / 2), (windowHeight / 2 + 38)), Color.Black);
                 }
+                else if (currentState == MenuState.HowToPlay)
+                {
+                    headerText = "How To Play";
+                    for (int i = 0; i < howToPlayButtonList.Count; i++)
+                    {
+                        howToPlayButtonList[i].Draw(gameTime, spriteBatch); //load buttons for HowToPlay state
+                    }
+
+                    //use stats text box thing to house the instructions text
+                    spriteBatch.Draw(statsOutline, new Rectangle((windowWidth / 2 - 252), (windowHeight / 2 - 100), 504, 165), Color.White);
+                    spriteBatch.Draw(statsFrame, new Rectangle((windowWidth / 2 - 249), (windowHeight / 2 - 97), 498, 159), Color.White);
+
+                    //howtoplay text
+                    string footText = String.Format("Use WASD or arrow keys (check controls) in order \nto move the rod.\nCatching fish increases your score, catching books \nincreases your skill.\nHold space to quickly reel in the hook.\nHold shift to move the hook quickly in the water.");
+                    spriteBatch.DrawString(menuFooter, footText, new Vector2((windowWidth / 2 - 239), (windowHeight / 2 - 87)), Color.Black);
+                }
                 //header text
                 spriteBatch.DrawString(menuHeader, headerText, new Vector2((windowWidth / 2 - menuHeader.MeasureString(headerText).X / 2), (windowHeight / 2 - 180)), Color.Black);
             }  
@@ -431,7 +467,6 @@ namespace Fishing
                 offsetX -= 100;
                 currentFish++;
             }
-           
         }
         private void LeftArrowButtonClick(object sender, System.EventArgs e)
         {
@@ -441,6 +476,10 @@ namespace Fishing
                 currentFish--;
             }
             
+        }
+        private void HowToPlayButtonClick(object sender, System.EventArgs e)
+        {
+            currentState = MenuState.HowToPlay;
         }
     }
 }
