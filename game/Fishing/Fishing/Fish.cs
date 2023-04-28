@@ -99,15 +99,31 @@ namespace Fishing
                     //The fish is affected by the siren power
                     affectedByPower = true;
 
-                    //Slow the fish down if swimming away from the siren,
-                    //or speed it up if swimming towards it
-                    if (sender.Position.X > position.X)
+                    //Check if the fish should slow down -- direction = right and !direction = left 
+                    if (
+                        //Fish is to the left of siren and fish and siren are facing left
+                        (sender.Position.X > position.X
+                        && !sender.Direction && !direction)
+                        //Or fish is to the left of siren, fish is facing left, and siren is facing right
+                        || (sender.Position.X > position.X
+                        && sender.Direction && !direction)
+                        //Or fish is to the right of siren and fish and siren are facing right
+                        || (sender.Position.X < position.X
+                        && sender.Direction && direction)
+                        //Or fish is to the right of siren, fish is facing right, and siren is facing left
+                        || (sender.Position.X < position.X
+                        && direction && !sender.Direction))
+
                     {
-                        position.X += speed - 1;
+                        //Slow the fish down
+                        position.X -= speed - 1;
                     }
+
+                    //Any other configuration
                     else
                     {
-                        position.X -= speed - 1;
+                        //Speed the fish up
+                        position.X += speed - 1;
                     }
                 }
 
