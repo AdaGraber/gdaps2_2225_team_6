@@ -31,6 +31,9 @@ namespace Fishing
         // Fish direction (for use with some book handling) (true is right, false is left)
         private bool direction;
 
+        //Texture for special effect on siren
+        Texture2D sirenEffectTexture;
+
         public string Name
         {
             get { return name; }
@@ -55,11 +58,14 @@ namespace Fishing
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor, pass neccessary parameters to parent class
-        public Fish(string name, int speed, Texture2D texture, int minDepth, int maxDepth, int windowWidth, int windowHeight, Random rng, Background bg)
+        public Fish(string name, int speed, Texture2D texture, Texture2D sirenEffectTexture, int minDepth, int maxDepth, int windowWidth, int windowHeight, Random rng, Background bg)
             : base(speed, texture, minDepth, maxDepth, windowWidth, windowHeight, rng, bg)
         {
             //Initialize name field
             this.name = name;
+
+            //Initialize siren effect
+            this.sirenEffectTexture = sirenEffectTexture;
 
             //If the fish is mythical, set isMythical to true
             if (name == "siren")
@@ -143,6 +149,25 @@ namespace Fishing
                     Color.White, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0);
 
                 direction = false;
+            }
+
+            //If the fish is a siren
+            if (name == "siren")
+            {
+                //Add the special siren effects for the width of the whole window
+                for (int i = 1; i < windowWidth; i++)
+                {
+                    //Draw the effects going to the right
+                    _spriteBatch.Draw(sirenEffectTexture, new Vector2(position.X + 200 * i, position.Y),
+                        new Rectangle(0, 0, sirenEffectTexture.Width, sirenEffectTexture.Height),
+                        Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+
+                    //Draw the effects going to the left
+                    _spriteBatch.Draw(sirenEffectTexture, new Vector2(position.X - 200 * i, position.Y),
+                        new Rectangle(0, 0, sirenEffectTexture.Width, sirenEffectTexture.Height),
+                        Color.White, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0);
+
+                }
             }
         }
     }

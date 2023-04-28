@@ -41,6 +41,7 @@ namespace Fishing
         private Texture2D rodTexture;
         private Texture2D bookTexture;
         private Texture2D rodLineTexture;
+        private Texture2D sirenEffectTexture;
 
         //Collectible manager
         private CollectibleManager collectibleManager;
@@ -108,6 +109,9 @@ namespace Fishing
             // Load book texture
             bookTexture = Content.Load<Texture2D>("book");
 
+            //Load siren texture
+            sirenEffectTexture = Content.Load<Texture2D>("sirenEffect");
+
             //Initialize the background
             bg = new Background(backgroundTexture, windowWidth, windowHeight);
 
@@ -117,7 +121,7 @@ namespace Fishing
 
             //Initialize the CollectibleManager
             collectibleManager = new CollectibleManager(rng, bg, windowWidth, windowHeight,
-                fishTextures, bookTexture, fishingRod);
+                fishTextures, sirenEffectTexture, bookTexture, fishingRod);
 
             //Load any saved data
             LoadSaveFile();

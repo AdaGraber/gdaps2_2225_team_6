@@ -53,6 +53,9 @@ namespace Fishing
         //List of textures
         List<Texture2D> fishTextures = new List<Texture2D>();
 
+        //Texture for siren effect
+        Texture2D sirenEffectTexture;
+
         // Texture for the books
         Texture2D bookTexture;
 
@@ -80,7 +83,7 @@ namespace Fishing
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor
-        public CollectibleManager(Random rng, Background bg, int windowWidth, int windowHeight, List<Texture2D> fishTextures, Texture2D bookTexture, FishingRod fishingRod)
+        public CollectibleManager(Random rng, Background bg, int windowWidth, int windowHeight, List<Texture2D> fishTextures, Texture2D sirenEffectTexture, Texture2D bookTexture, FishingRod fishingRod)
         {
             //Initialize given values
             this.rng = rng;
@@ -88,6 +91,7 @@ namespace Fishing
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
             this.fishTextures = fishTextures;
+            this.sirenEffectTexture = sirenEffectTexture;
             this.bookTexture = bookTexture;
             this.fishingRod = fishingRod;
 
@@ -168,7 +172,7 @@ namespace Fishing
                 }
 
                 //Check if the collectible is caught and the player made it to the top of the level with it
-                if (collectibles[i].IsCaught && fishingRod.Rect.Y <= 0)
+                if (collectibles[i].IsCaught && fishingRod.Rect.Y <= 5)
                 {
                     //If the collectible is a fish
                     if (collectibles[i] is Fish)
@@ -336,7 +340,7 @@ namespace Fishing
                 if (rng.Next(1001) <= spawnChance)
                 {
                     //Create a new fish using the data in the array in the dictionary
-                    Fish newFish = new Fish(n.Key, n.Value[1], fishTexture, n.Value[2], n.Value[3],
+                    Fish newFish = new Fish(n.Key, n.Value[1], fishTexture, sirenEffectTexture, n.Value[2], n.Value[3],
                         windowWidth, windowHeight, rng, bg);
 
                     if (!newFish.IsMythical)
