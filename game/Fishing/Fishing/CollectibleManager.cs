@@ -133,17 +133,30 @@ namespace Fishing
                     //If the collectible is caught already
                     (collectibles[i].IsCaught && !collectibles[i].AffectedByPower)
                     //OR if the collectible is overlapping the fishing rod's catch radius
-                    || (collectibles[i].Position.Intersects(fishingRod.CatchRadius)
-                    //and the fishing rod does not already have an item
-                    && !fishingRod.HasItem
-                    //and the collectible is not affected by the siren's power
-                    && !collectibles[i].AffectedByPower
-                    //And if the collectible is either a book
-                    && ((collectibles[i] is Books)
-                    //and isn't the siren call spell book (isn't in itself catchable)
-                    && (tempBook.Spell != "sirencall")
-                    //or a fish whose required level is lower than the player's level
-                    || (collectibles[i] is Fish && fishingRod.Level >= fishSpecies[((Fish)collectibles[i]).Name][4]))))
+                    || (
+                        collectibles[i].Position.Intersects(fishingRod.CatchRadius)
+                        //and the fishing rod does not already have an item
+                        && !fishingRod.HasItem
+                        //and the collectible is not affected by the siren's power
+                        && !collectibles[i].AffectedByPower
+                        //And if the collectible is either a book
+                        && (
+                            (collectibles[i] is Books
+                            //and isn't the siren call spell book (isn't in itself catchable)
+                            && tempBook.Spell != "sirencall")
+                            //or if the collectible is a fish
+                            || (collectibles[i] is Fish
+                            //whose required level is lower than the player's level
+                                && fishingRod.Level >= fishSpecies[((Fish)collectibles[i]).Name][4]
+                                //and either the fish is not a siren
+                                && (((Fish)collectibles[i]).Name != "siren"
+                                    //or the player has the mute spell
+                                    || fishingRod.Spells.Contains("mute")
+                                   )
+                                )
+                            )
+                        )
+                    )
                 {
                     //If the above conditions are met,
                     //set the collectible's position to that of the fishing rod
@@ -153,8 +166,11 @@ namespace Fishing
                     fishingRod.HasItem = true;
                 }
 
-                //If the collectible is a fish and is mythical
-                if (collectibles[i] is Fish && ((Fish)collectibles[i]).IsMythical)
+                //If the collectible is a fish, is mythical,
+                //and the player does not have the mute spell
+                if (collectibles[i] is Fish
+                    && ((Fish)collectibles[i]).IsMythical
+                    && !fishingRod.Spells.Contains("mute"))
                 {
                     //Have the fish use its power
                     if (UsingPower != null)
