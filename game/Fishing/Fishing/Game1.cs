@@ -203,6 +203,7 @@ namespace Fishing
                 fishingRod.MaxDepth = int.Parse(fishingRodStats[1]);
                 fishingRod.MaxSpeed = int.Parse(fishingRodStats[2]);
                 fishingRod.SkillPoints = int.Parse(fishingRodStats[3]);
+                collectibleManager.SkillPoints = int.Parse(fishingRodStats[3]); //skill points are stored in two places
 
                 //Read in the second line -- spells learned
                 string[] spells = input.ReadLine().Split(',');
@@ -213,7 +214,10 @@ namespace Fishing
                 //Copy the array to the list
                 foreach (string n in spells)
                 {
-                    spellsList.Add(n);
+                    if (n != "")
+                    {
+                        spellsList.Add(n);
+                    }
                 }
 
                 //Put the list into the fishing rod's spells

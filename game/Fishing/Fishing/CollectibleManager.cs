@@ -74,6 +74,8 @@ namespace Fishing
         public int SkillPoints
         {
             get => skillPoints;
+
+            set { skillPoints = value; }
         }
         // Property to get the dictionary over to the achievments menu
         public Dictionary<string, int[]> FishSpecies
