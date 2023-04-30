@@ -394,8 +394,9 @@ namespace Fishing
                 output = new StreamWriter("../../../Content/Save.txt");
 
                 //Add the fishing rod's stats to the first line
-                output.WriteLine("{0},{1},{2}",
-                    fishingRod.TotalExp, fishingRod.MaxDepth, fishingRod.MaxSpeed);
+                output.WriteLine("{0},{1},{2},{3}",
+                    fishingRod.TotalExp, fishingRod.MaxDepth, fishingRod.MaxSpeed,
+                    fishingRod.SkillPoints);
 
                 //Add the player's learned spells to the second line
                 for (int i = 0; i < fishingRod.Spells.Count; i++)

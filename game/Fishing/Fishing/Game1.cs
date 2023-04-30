@@ -202,6 +202,7 @@ namespace Fishing
                 fishingRod.TotalExp = int.Parse(fishingRodStats[0]);
                 fishingRod.MaxDepth = int.Parse(fishingRodStats[1]);
                 fishingRod.MaxSpeed = int.Parse(fishingRodStats[2]);
+                fishingRod.SkillPoints = int.Parse(fishingRodStats[3]);
 
                 //Read in the second line -- spells learned
                 string[] spells = input.ReadLine().Split(',');
@@ -234,8 +235,8 @@ namespace Fishing
 
             catch
             {
-                //Nothing needs to be done -- just leave everything as default values as handled
-                //in FishingRod
+                //Nothing needs to be done -- just leave everything as the default values
+                //given in FishingRod
             }
 
             //If the file was opened, close it

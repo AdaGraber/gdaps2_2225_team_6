@@ -82,6 +82,8 @@ namespace Fishing
         public int SkillPoints 
         {
             get => skillPoints;
+
+            set { skillPoints = value; }
         }
 
         public int TotalExp
@@ -293,15 +295,19 @@ namespace Fishing
                             rect.Y -= 5;
                         }
 
-                        //Decrease the depth
-                        currentDepth -= 5;
+                        //Decrease the depth unless the player's at the very bottom of the screen
+                        if (rect.Y <= windowHeight / 2)
+                        {
+                            //Decrease the depth
+                            currentDepth -= 5;
+                        }
                     }
                     break;
 
                 //Up
                 case Direction.Up:
 
-                    //As long as the y position is less than 0
+                    //As long as the player isn't at the top of the screen
                     if (rect.Y > 5)
                     {
                         //Only allow the player to leave the center of the window if they're close to the top
@@ -323,19 +329,25 @@ namespace Fishing
                         //Update the current depth separately here, since currentDepth can go
                         //deeper than the y value
 
-                        //If the user is moving at double speed
-                        if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
+                        //Decrease the depth unless the player's at the very bottom of the screen
+                        if (rect.Y <= windowHeight / 2)
                         {
-                            //Decrease the depth by double the speed
-                            currentDepth -= 2;
+                            //If the user is moving at double speed
+                            if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
+                            {
+                                //Decrease the depth by double the speed
+                                currentDepth -= 2;
+                            }
+
+                            //Otherwise
+                            else
+                            {
+                                //Decrease the depth by a normal amount
+                                currentDepth--;
+                            }
+
                         }
 
-                        //Otherwise
-                        else
-                        {
-                            //Decrease the depth by a normal amount
-                            currentDepth--;
-                        }
 
                     }
 
@@ -347,8 +359,8 @@ namespace Fishing
                     if (
                         //As long as the player isn't going off the edge of the screen
                         rect.Y < windowHeight - rect.Height + 3
-                        //And isn't centered, or is near the bottom of the level
-                        && (rect.Y < windowHeight / 2 || currentDepth >= bg.TextureHeight + bg.Position.Y - windowHeight / 2))
+                        //And isn't centered, or if it's near the bottom of the level
+                        && (rect.Y < windowHeight / 2 || currentDepth >= bg.TextureHeight - windowHeight / 2))
                     {
                         //If the shift key is being held down
                         if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
