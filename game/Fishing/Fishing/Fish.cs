@@ -99,7 +99,8 @@ namespace Fishing
                     //The fish is affected by the siren power
                     affectedByPower = true;
 
-                    //Check if the fish should slow down -- direction = right and !direction = left 
+                    //Check if the fish should slow down --
+                    //direction is right and !direction is left 
                     if (
                         //Fish is to the left of siren and fish and siren are facing left
                         (sender.Position.X > position.X
@@ -134,8 +135,9 @@ namespace Fishing
                     isDead = true;
                 }
 
-                // If the sender is dead, the fish should no longer be affected
-                if (sender.isDead)
+                // If the sender is about to be removed from play, the fish should be freed
+                if (sender.Position.X == windowWidth
+                    || sender.Position.X == 0 - sender.Position.Width)
                 {
                     affectedByPower = false;
                 }

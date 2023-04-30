@@ -364,7 +364,7 @@ namespace Fishing
                         UsingPower += newFish.PowerEffect;
                     }
 
-                    if (newFish.Name == "siren" && books.ContainsKey("sirencall"))
+                    if (newFish.Name == "siren" && !fishingRod.Spells.Contains("sirencall"))
                     {
                         // Create a new book that will follow the siren, and give the siren call spell if teh player doesn't have it already
                         Books sirenCall = new Books("sirencall", books["sirencall"][1], bookTexture, books["sirencall"][2], books["sirencall"][3],

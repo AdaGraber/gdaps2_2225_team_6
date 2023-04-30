@@ -141,18 +141,14 @@ namespace Fishing
 
             // TODO: Add your update logic here
 
-            //If the game is running
-            if (menuState == MenuState.Closed)
-            {
-                //Update the collectibles
-                collectibleManager.Update();
+            //Update the collectibles
+            collectibleManager.Update();
 
-                //Update the fishing rod
-                fishingRod.Update(gameTime);
+            //Update the fishing rod
+            fishingRod.Update(gameTime);
 
-                // Check for a change in the number of skill points
-                fishingRod.skillPointChange(collectibleManager.SkillPoints);
-            }
+            // Check for a change in the number of skill points
+            fishingRod.skillPointChange(collectibleManager.SkillPoints);
 
             //Update the background color
             bg.Update(fishingRod);
