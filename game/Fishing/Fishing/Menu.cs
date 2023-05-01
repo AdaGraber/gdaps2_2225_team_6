@@ -19,6 +19,8 @@ namespace Fishing
         Texture2D outerShade;
         Texture2D menuFrame;
         Texture2D menuOutline;
+        Texture2D depthFrame; //display score
+        Texture2D depthOutline;
 
         //menu buttons
         Button menuButton;
@@ -34,9 +36,10 @@ namespace Fishing
         //stats menu
         Texture2D statsFrame;
         Texture2D statsOutline;
-        int skillLevel = 0; //actual stats
+        int level = 0; //actual stats
         int maxDepth = 0;
         int maxSpeed = 0;
+        int currentDepth;
 
         //achievements menu
         Texture2D flavorFrame;
@@ -96,6 +99,9 @@ namespace Fishing
             //frames
             menuFrame = new Texture2D(graphicsDevice, 1, 1);
             menuFrame.SetData(new[] { Color.BurlyWood });
+            //depth frame
+            depthFrame = new Texture2D(graphicsDevice, 1, 1);
+            depthFrame.SetData(new[] { Color.BurlyWood });
             //stats frame
             statsFrame = new Texture2D(graphicsDevice, 1, 1); 
             statsFrame.SetData(new[] { Color.Bisque });
@@ -110,6 +116,9 @@ namespace Fishing
             //frame outlines
             menuOutline = new Texture2D(graphicsDevice, 1, 1);
             menuOutline.SetData(new[] { Color.Chocolate });
+            //depth frame outline
+            depthOutline = new Texture2D(graphicsDevice, 1, 1);
+            depthOutline.SetData(new[] { Color.Chocolate });
             //stats frame
             statsOutline = new Texture2D(graphicsDevice, 1, 1); 
             statsOutline.SetData(new[] { Color.Peru });
@@ -237,7 +246,7 @@ namespace Fishing
                 {
                     case MenuState.Stats:
                         updateButton = statsButtonList;
-                        skillLevel = fishingRod.SkillPoints; //skill level
+                        level = fishingRod.Level; //skill level
                         maxDepth = fishingRod.MaxDepth; //depth
                         maxSpeed = fishingRod.MaxSpeed; //speed
 
@@ -260,6 +269,10 @@ namespace Fishing
                 {
                     btn.Update(gameTime); //update buttons
                 }
+            }
+            else
+            {
+                currentDepth = fishingRod.CurrentDepth;
             }
             
             menuButton.Update(gameTime); //hamburger
@@ -295,7 +308,7 @@ namespace Fishing
                     spriteBatch.Draw(statsFrame, new Rectangle((windowWidth / 2 - 249), (windowHeight / 2 - 97), 498, 144), Color.White);
 
                     //stats text
-                    string footText = String.Format("Skill Level: {0}\nMax:Depth: {1}\nSpeed: {2}", skillLevel, maxDepth, maxSpeed);
+                    string footText = String.Format("Skill Level: {0}\nMax:Depth: {1}\nSpeed: {2}", level, maxDepth, maxSpeed);
                     spriteBatch.DrawString(menuFooter, footText, new Vector2((windowWidth / 2 - 239), (windowHeight / 2 - 87)), Color.Black);
                 }
                 else if (currentState == MenuState.Achievements) //achievements menu state
@@ -372,6 +385,12 @@ namespace Fishing
                 //header text
                 spriteBatch.DrawString(menuHeader, headerText, new Vector2((windowWidth / 2 - menuHeader.MeasureString(headerText).X / 2), (windowHeight / 2 - 180)), Color.Black);
             }  
+            else
+            {
+                spriteBatch.Draw(depthOutline, new Rectangle(10, windowHeight - 56, 136, 46), Color.White);
+                spriteBatch.Draw(depthFrame, new Rectangle(13, windowHeight - 53, 130, 40), Color.White);
+                spriteBatch.DrawString(menuFooter, "Depth: " + currentDepth, new Vector2(20, windowHeight - 45), Color.Black);
+            }
             menuButton.Draw(gameTime, spriteBatch); //hamburger btn
         }
 
