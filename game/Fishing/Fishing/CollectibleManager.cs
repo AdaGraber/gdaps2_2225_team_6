@@ -33,42 +33,42 @@ namespace Fishing
         public event AffectedByPower UsingPower;
 
         //Random object
-        Random rng;
+        private Random rng;
 
         //Background
-        Background bg;
+        private Background bg;
 
         //Window width and height
-        int windowWidth;
-        int windowHeight;
+        private int windowWidth;
+        private int windowHeight;
 
         //Dictionary to hold the data for individual fish species
-        Dictionary<string, int[]> fishSpecies = new Dictionary<string, int[]>();
+        private Dictionary<string, int[]> fishSpecies = new Dictionary<string, int[]>();
 
         // Dictionary to hold the different books (skill / spells)
-        Dictionary<string, int[]> books = new Dictionary<string, int[]>();
+        private Dictionary<string, int[]> books = new Dictionary<string, int[]>();
 
         //List of collectibles
-        List<Collectible> collectibles = new List<Collectible>();
+        private List<Collectible> collectibles = new List<Collectible>();
 
         //List of textures
-        List<Texture2D> fishTextures = new List<Texture2D>();
+        private List<Texture2D> fishTextures = new List<Texture2D>();
 
         //Texture for siren effect
-        Texture2D sirenEffectTexture;
+        private Texture2D sirenEffectTexture;
 
         // Texture for the books
-        Texture2D bookTexture;
+        private Texture2D bookTexture;
 
         //Reference to fishing rod
-        FishingRod fishingRod;
+        private FishingRod fishingRod;
 
         //Variables for file reading
-        StreamReader input = null;
-        string fishData = "../../../Content/FishData.txt";
-        string bookData = "../../../Content/BookData.txt";
+        private StreamReader input = null;
+        private string fishData = "../../../Content/FishData.txt";
+        private string bookData = "../../../Content/BookData.txt";
 
-        // TEMPORARY variable to hold skill points until skills are properly implemented
+        // Skill points
         private int skillPoints = 0;
 
         // Property for the SP so the player can "see" when the number of points increases
