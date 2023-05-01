@@ -40,6 +40,9 @@ namespace Fishing
         protected int maxDepth;
         protected bool isCaught;
 
+        //Player level
+        protected int playerLevel;
+
         //Boolean to allow collectible to recognize if it should be removed from play
         protected bool isDead;
 
@@ -58,6 +61,12 @@ namespace Fishing
             get { return isCaught; }
 
             set { isCaught = value; }
+        }
+
+        public int PlayerLevel
+        {
+            get { return playerLevel; }
+            set { playerLevel = value; }
         }
 
         public bool IsDead

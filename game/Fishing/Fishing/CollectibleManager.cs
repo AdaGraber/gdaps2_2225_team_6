@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Net.Security;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Text;
@@ -252,6 +253,9 @@ namespace Fishing
                     collectibles[i].IsCaught = false;
                 }
 
+                //Update the collectible's knowledge of the player level
+                collectibles[i].PlayerLevel = fishingRod.Level;
+
                 //If the collectible is dead
                 if (collectibles[i].IsDead)
                 {
@@ -358,7 +362,7 @@ namespace Fishing
                 if (rng.Next(1001) <= spawnChance)
                 {
                     //Create a new fish using the data in the array in the dictionary
-                    Fish newFish = new Fish(n.Key, n.Value[1], fishTexture, sirenEffectTexture, n.Value[2], n.Value[3],
+                    Fish newFish = new Fish(n.Key, n.Value[1], n.Value[4], fishTexture, sirenEffectTexture, n.Value[2], n.Value[3],
                         windowWidth, windowHeight, rng, bg);
 
                     if (!newFish.IsMythical)
@@ -429,7 +433,7 @@ namespace Fishing
                 if (n is Fish && ((Fish)n).Name == "siren" && !fishingRod.Spells.Contains("mute"))
                 {
                     //Draw their effect
-                    ((Fish)n).DrawSirenEffect(_spriteBatch);
+                    ((Fish)n).DrawSiren(_spriteBatch);
                 }
             }
         }

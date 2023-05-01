@@ -26,6 +26,7 @@ namespace Fishing
 
         //Fish information
         private string name;
+        private int level;
         private bool isMythical;
 
         // Fish direction (for use with some book handling) (true is right, false is left)
@@ -58,11 +59,14 @@ namespace Fishing
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor, pass neccessary parameters to parent class
-        public Fish(string name, int speed, Texture2D texture, Texture2D sirenEffectTexture, int minDepth, int maxDepth, int windowWidth, int windowHeight, Random rng, Background bg)
+        public Fish(string name, int speed, int level, Texture2D texture, Texture2D sirenEffectTexture, int minDepth, int maxDepth, int windowWidth, int windowHeight, Random rng, Background bg)
             : base(speed, texture, minDepth, maxDepth, windowWidth, windowHeight, rng, bg)
         {
             //Initialize name field
             this.name = name;
+
+            //Initialize level required to catch
+            this.level = level;
 
             //Initialize siren effect
             this.sirenEffectTexture = sirenEffectTexture;
@@ -150,9 +154,10 @@ namespace Fishing
         /// <param name="_spriteBatch">The sprite batch.</param>
         public override void Draw(SpriteBatch _spriteBatch)
         {
-            //If the fish is going to the right, draw it normally
-            if (speed > 0)
+            //If the fish is facing right and the player has a high enough level to catch it
+            if (speed > 0 && playerLevel >= level)
             {
+                //Draw it normally
                 _spriteBatch.Draw(texture, new Vector2(position.X, position.Y),
                     new Rectangle(0, 0, texture.Width, texture.Height),
                     Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
@@ -160,12 +165,35 @@ namespace Fishing
                 direction = true;
             }
 
-            //If the fish is going to the left, draw it flipped
-            else
+            //If the fish is facing right and the player doesn't have a high enough level to catch it
+            else if (speed > 0)
             {
+                //Draw it grayed out
+                _spriteBatch.Draw(texture, new Vector2(position.X, position.Y),
+                    new Rectangle(0, 0, texture.Width, texture.Height),
+                    Color.Gray, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+
+                direction = true;
+            }
+
+            //If the fish is facing left and the player's level is high enough
+            else if (playerLevel >= level)
+            {
+                //Draw it flipped
                 _spriteBatch.Draw(texture, new Vector2(position.X, position.Y),
                     new Rectangle(0, 0, texture.Width, texture.Height),
                     Color.White, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0);
+
+                direction = false;
+            }
+
+            //Otherwise, draw it flipped and grayed out
+            else
+            {
+                //Draw it flipped
+                _spriteBatch.Draw(texture, new Vector2(position.X, position.Y),
+                    new Rectangle(0, 0, texture.Width, texture.Height),
+                    Color.Gray, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0);
 
                 direction = false;
             }
@@ -175,8 +203,35 @@ namespace Fishing
         /// Draws the effect that accompanies the sirens.
         /// </summary>
         /// <param name="_spriteBatch">The SpriteBatch.</param>
-        public void DrawSirenEffect(SpriteBatch _spriteBatch)
+        public void DrawSiren(SpriteBatch _spriteBatch)
         {
+            //This method only gets called if the player does not have the mute spell,
+            //so everything should be grayed out regardless of level
+
+            //If the fish is facing right
+            if (speed > 0)
+            {
+                //Draw it normally
+                _spriteBatch.Draw(texture, new Vector2(position.X, position.Y),
+                    new Rectangle(0, 0, texture.Width, texture.Height),
+                    Color.Gray, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+
+                direction = true;
+            }
+
+            //If the fish is facing left
+            else
+            {
+                //Draw it flipped
+                _spriteBatch.Draw(texture, new Vector2(position.X, position.Y),
+                    new Rectangle(0, 0, texture.Width, texture.Height),
+                    Color.Gray, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0);
+
+                direction = false;
+            }
+
+
+
             //Add the special siren effects for the width of the whole window
             for (int i = 1; i < windowWidth; i++)
             {

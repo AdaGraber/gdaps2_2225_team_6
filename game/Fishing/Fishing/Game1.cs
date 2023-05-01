@@ -69,6 +69,9 @@ namespace Fishing
             // TODO: Add your initialization logic here
             IsMouseVisible = true;
 
+            //Set the window text to the title of the game
+            Window.Title = "A Wizard's Day Off";
+
             //Initialize window width and height
             windowWidth = _graphics.GraphicsDevice.Viewport.Width;
             windowHeight = _graphics.GraphicsDevice.Viewport.Height;
