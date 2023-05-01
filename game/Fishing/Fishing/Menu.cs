@@ -73,6 +73,9 @@ namespace Fishing
 
         //reference to fishing rod
         FishingRod fishingRod;
+
+        //reference to backgrond
+        Background bg;
         
         //fish achievements
         Dictionary<string, int[]> fishSpecies; // copy CollectibleManager reference of dict to menu for display purposes
@@ -88,12 +91,14 @@ namespace Fishing
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor
-        public Menu(int windowWidth, int windowHeight, FishingRod fishingRod)
+        public Menu(int windowWidth, int windowHeight, FishingRod fishingRod, Background bg)
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
 
             this.fishingRod = fishingRod;
+
+            this.bg = bg;
 
             currentState = MenuState.Closed;
         }
@@ -312,7 +317,20 @@ namespace Fishing
             }
             else
             {
-                currentDepth = fishingRod.CurrentDepth;
+                //If the fishing rod is above the point where CurrentDepth doesn't increase
+                if (fishingRod.CurrentDepth < bg.TextureHeight - windowHeight / 2)
+                {
+                    //Set the display's current depth to the fishing rod's current depth
+                    currentDepth = fishingRod.CurrentDepth;
+                }
+
+                //If the fishing rod is below that point
+                else
+                {
+                    //Set the display's depth to the fishing rod's current depth
+                    //+ the number of pixels between the point the depth stopped decreasing
+                    currentDepth = fishingRod.CurrentDepth + fishingRod.Rect.Y - windowHeight / 2;
+                }
             }
             
             menuButton.Update(gameTime); //hamburger
@@ -437,6 +455,7 @@ namespace Fishing
             {
                 spriteBatch.Draw(depthOutline, new Rectangle(10, windowHeight - 56, 136, 46), Color.White);
                 spriteBatch.Draw(depthFrame, new Rectangle(13, windowHeight - 53, 130, 40), Color.White);
+
                 spriteBatch.DrawString(menuFooter, "Depth: " + currentDepth, new Vector2(20, windowHeight - 45), Color.Black);
             }
             menuButton.Draw(gameTime, spriteBatch); //hamburger btn

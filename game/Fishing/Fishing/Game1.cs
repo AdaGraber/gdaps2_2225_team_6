@@ -129,7 +129,7 @@ namespace Fishing
             LoadSaveFile();
 
             //Initialize menu
-            menu = new Menu(windowWidth, windowHeight, fishingRod);
+            menu = new Menu(windowWidth, windowHeight, fishingRod, bg);
 
             //load textures for menu
             menu.Load(GraphicsDevice, Content, collectibleManager);
