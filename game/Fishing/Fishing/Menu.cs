@@ -28,10 +28,17 @@ namespace Fishing
         Button statsButton;
         Button achieveButton;
         Button howToPlayButton;
+        Button controlsButton;
         Button quitButton;
         Button backButton;
+
+        //achievements buttons
         Button rightArrowButton;
         Button leftArrowButton;
+
+        //control buttons
+        Button WASDButton;
+        Button ArrowsButton;
 
         //stats menu
         Texture2D statsFrame;
@@ -61,6 +68,7 @@ namespace Fishing
         private List<Button> statsButtonList;
         private List<Button> achievementsButtonList;
         private List<Button> howToPlayButtonList;
+        private List<Button> controlsButtonList;
         private MenuState currentState;
 
         //reference to fishing rod
@@ -103,7 +111,7 @@ namespace Fishing
             depthFrame = new Texture2D(graphicsDevice, 1, 1);
             depthFrame.SetData(new[] { Color.BurlyWood });
             //stats frame
-            statsFrame = new Texture2D(graphicsDevice, 1, 1); 
+            statsFrame = new Texture2D(graphicsDevice, 1, 1);
             statsFrame.SetData(new[] { Color.Bisque });
             //achievements frame
             flavorFrame = new Texture2D(graphicsDevice, 1, 1);
@@ -120,7 +128,7 @@ namespace Fishing
             depthOutline = new Texture2D(graphicsDevice, 1, 1);
             depthOutline.SetData(new[] { Color.Chocolate });
             //stats frame
-            statsOutline = new Texture2D(graphicsDevice, 1, 1); 
+            statsOutline = new Texture2D(graphicsDevice, 1, 1);
             statsOutline.SetData(new[] { Color.Peru });
             //achievements frame
             flavorOutline = new Texture2D(graphicsDevice, 1, 1);
@@ -144,7 +152,7 @@ namespace Fishing
             {
                 Text = "Save Game",
             };
-            saveButton.Position = new Vector2(windowWidth / 2 - saveButton.Rectangle.Width / 2, (windowHeight / 2 - saveButton.Rectangle.Height / 2)-100);
+            saveButton.Position = new Vector2(windowWidth / 2 - saveButton.Rectangle.Width / 2, (windowHeight / 2 - saveButton.Rectangle.Height / 2) - 100);
             saveButton.Click += SaveButtonClick;
 
             //stats button
@@ -158,9 +166,9 @@ namespace Fishing
             //achieve button
             achieveButton = new Button(graphicsDevice, content.Load<Texture2D>("shortButton"), content.Load<SpriteFont>("Font"), Color.Bisque, Color.Peru, Color.Peru)
             {
-                Text = "Achievement",
+                Text = "Achievements",
             };
-            achieveButton.Position = new Vector2(statsButton.Rectangle.Right+30, (windowHeight / 2 - saveButton.Rectangle.Height / 2) - 50);
+            achieveButton.Position = new Vector2(statsButton.Rectangle.Right + 30, (windowHeight / 2 - saveButton.Rectangle.Height / 2) - 50);
             achieveButton.Click += AchievementButtonClick;
 
             //quit button
@@ -176,7 +184,7 @@ namespace Fishing
             {
                 Text = "Back to Main Menu",
             };
-            backButton.Position = new Vector2(windowWidth / 2 - backButton.Rectangle.Width / 2, (windowHeight / 2 - backButton.Rectangle.Height / 2) + 100);
+            backButton.Position = new Vector2(windowWidth / 2 - backButton.Rectangle.Width / 2, (windowHeight / 2 - backButton.Rectangle.Height / 2) + 150);
             backButton.Click += BackButtonClick;
 
             //right arrow button (for achievements)
@@ -202,6 +210,28 @@ namespace Fishing
             howToPlayButton.Position = new Vector2(windowWidth / 2 - backButton.Rectangle.Width / 2, (windowHeight / 2 - backButton.Rectangle.Height / 2) + 100);
             howToPlayButton.Click += HowToPlayButtonClick;
 
+            //controls
+            controlsButton = new Button(graphicsDevice, content.Load<Texture2D>("longButton"), content.Load<SpriteFont>("Font"), Color.Bisque, Color.Peru, Color.Peru)
+            {
+                Text = "Controls",
+            };
+            controlsButton.Position = new Vector2(windowWidth / 2 - backButton.Rectangle.Width / 2, (windowHeight / 2 - backButton.Rectangle.Height / 2) + 50);
+            controlsButton.Click += ControlsButtonClick;
+            //wasd
+            WASDButton = new Button(graphicsDevice, content.Load<Texture2D>("squareButton"), content.Load<SpriteFont>("Font"), Color.Bisque, Color.Peru, Color.Peru)
+            {
+                Text = "WASD\nUp - W\nDown - S\nLeft - A\nRight - D\nAscend - Space",
+            };
+            WASDButton.Position = new Vector2((windowWidth / 2 - WASDButton.Rectangle.Width / 2) - 130, (windowHeight / 2 - WASDButton.Rectangle.Height / 2));
+            WASDButton.Click += WASDButtonClick;
+            //arrows
+            ArrowsButton = new Button(graphicsDevice, content.Load<Texture2D>("squareButton"), content.Load<SpriteFont>("Font"), Color.Bisque, Color.Peru, Color.Peru)
+            {
+                Text = "Arrows\nUp - Up\nDown - Arrow\nLeft - Left\nRight - Right\nAscend - Space",
+            };
+            ArrowsButton.Position = new Vector2((windowWidth / 2 - WASDButton.Rectangle.Width / 2) + 130, (windowHeight / 2 - WASDButton.Rectangle.Height / 2));
+            ArrowsButton.Click += ArrowsButtonClick;
+
 
             //button lists
             mainButtonList = new List<Button>() //for the main menu
@@ -210,6 +240,7 @@ namespace Fishing
                 statsButton,
                 achieveButton,
                 howToPlayButton,
+                controlsButton,
                 quitButton,
             };
 
@@ -227,6 +258,13 @@ namespace Fishing
 
             howToPlayButtonList = new List<Button>() //instructions menu
             {
+                backButton,
+            };
+
+            controlsButtonList = new List<Button>() //controls
+            {
+                WASDButton,
+                ArrowsButton,
                 backButton,
             };
 
@@ -259,7 +297,9 @@ namespace Fishing
                     case MenuState.HowToPlay:
                         updateButton = howToPlayButtonList;
                         break;
-
+                    case MenuState.Controls:
+                        updateButton = controlsButtonList;
+                        break;
                     default:
                         updateButton = mainButtonList;
                         break;
@@ -308,7 +348,7 @@ namespace Fishing
                     spriteBatch.Draw(statsFrame, new Rectangle((windowWidth / 2 - 249), (windowHeight / 2 - 97), 498, 144), Color.White);
 
                     //stats text
-                    string footText = String.Format("Skill Level: {0}\nMax:Depth: {1}\nSpeed: {2}", level, maxDepth, maxSpeed);
+                    string footText = String.Format("Level: {0}\nMax:Depth: {1}\nSpeed: {2}", level, maxDepth, maxSpeed);
                     spriteBatch.DrawString(menuFooter, footText, new Vector2((windowWidth / 2 - 239), (windowHeight / 2 - 87)), Color.Black);
                 }
                 else if (currentState == MenuState.Achievements) //achievements menu state
@@ -381,6 +421,14 @@ namespace Fishing
                     //howtoplay text
                     string footText = String.Format("Use WASD or arrow keys (check controls) in order \nto move the rod.\nCatching fish increases your score, catching books \nincreases your skill.\nHold space to quickly reel in the hook.\nHold shift to move the hook quickly in the water.");
                     spriteBatch.DrawString(menuFooter, footText, new Vector2((windowWidth / 2 - 239), (windowHeight / 2 - 87)), Color.Black);
+                }
+                else if(currentState == MenuState.Controls)
+                {
+                    headerText = "Controls";
+                    for (int i = 0; i < controlsButtonList.Count; i++)
+                    {
+                       controlsButtonList[i].Draw(gameTime, spriteBatch); //load buttons for controls state
+                    }
                 }
                 //header text
                 spriteBatch.DrawString(menuHeader, headerText, new Vector2((windowWidth / 2 - menuHeader.MeasureString(headerText).X / 2), (windowHeight / 2 - 180)), Color.Black);
@@ -500,11 +548,22 @@ namespace Fishing
                 offsetX += 100;
                 currentFish--;
             }
-            
         }
         private void HowToPlayButtonClick(object sender, System.EventArgs e)
         {
             currentState = MenuState.HowToPlay;
+        }
+        private void ControlsButtonClick(object sender, System.EventArgs e)
+        {
+            currentState = MenuState.Controls;
+        }
+        private void WASDButtonClick(object sender, System.EventArgs e)
+        {
+            fishingRod.Keybinds = Keybinds.WASD;
+        }
+        private void ArrowsButtonClick(object sender, System.EventArgs e)
+        {
+            fishingRod.Keybinds = Keybinds.Arrows;
         }
     }
 }

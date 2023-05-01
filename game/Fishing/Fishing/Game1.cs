@@ -15,7 +15,8 @@ namespace Fishing
         Main,
         Stats,
         Achievements,
-        HowToPlay
+        HowToPlay,
+        Controls
     }
 
     public class Game1 : Game
