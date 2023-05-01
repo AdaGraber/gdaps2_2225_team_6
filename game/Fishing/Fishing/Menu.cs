@@ -69,6 +69,11 @@ namespace Fishing
         int offsetX; //for displaying the fish
         int currentFish = 0;
 
+        public MenuState CurrentState
+        {
+            get => currentState;
+        }
+
         /* CONSTRUCTORS AND METHODS */
 
         //Parameterized constructor
