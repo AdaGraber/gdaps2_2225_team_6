@@ -499,7 +499,7 @@ namespace Fishing
         public void Draw(SpriteBatch _spriteBatch)
         {
             _spriteBatch.Draw(rodDesign, rect, Color.White);
-            _spriteBatch.Draw(rodWire, new Rectangle(rect.X, rect.Y-(rect.Y/2), 1000,100), Color.White); //TODO: This shows sometimes but not always, find the right values for this to work
+           // _spriteBatch.Draw(rodWire, new Rectangle(rect.X, rect.Y-(rect.Y/2), 1000,100), Color.White); //TODO: This shows sometimes but not always, find the right values for this to work
         }
 
         /// <summary>
