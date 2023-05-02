@@ -366,7 +366,7 @@ namespace Fishing
                     spriteBatch.Draw(statsFrame, new Rectangle((windowWidth / 2 - 249), (windowHeight / 2 - 97), 498, 144), Color.White);
 
                     //stats text
-                    string footText = String.Format("Level: {0}\nMax:Depth: {1}\nSpeed: {2}", level, maxDepth, maxSpeed);
+                    string footText = String.Format("Level: {0}\nXP: {1}\n\nMax:Depth: {2}\nSpeed: {3}", level, fishingRod.TotalExp, maxDepth, maxSpeed);
                     spriteBatch.DrawString(menuFooter, footText, new Vector2((windowWidth / 2 - 239), (windowHeight / 2 - 87)), Color.Black);
                 }
                 else if (currentState == MenuState.Achievements) //achievements menu state
