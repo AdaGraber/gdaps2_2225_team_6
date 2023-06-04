@@ -63,7 +63,7 @@ namespace Fishing
         //Reference to fishing rod
         private FishingRod fishingRod;
 
-        //Variables for file reading
+        //Variables for file reading/
         private StreamReader input = null;
         private string fishData = "../../../Content/FishData.txt";
         private string bookData = "../../../Content/BookData.txt";
